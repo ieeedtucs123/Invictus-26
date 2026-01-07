@@ -54,9 +54,9 @@ export default function Authpage() {
   };
 
   return (
-    <div className="min-h-screen bg-black flex" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+    <div className="min-h-screen bg-black flex overflow-hidden" style={{ fontFamily: 'Montserrat, sans-serif' }}>
       {/* Left Half - Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-4 lg:p-8 relative">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-4 lg:p-8 relative overflow-y-auto">
         {/* Temple background for mobile */}
         <div 
           className="lg:hidden absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -67,21 +67,21 @@ export default function Authpage() {
           }}
         ></div>
         
-        <div className="w-full max-w-md relative z-10">
-          <div className="border-2 bg-black p-6 md:p-10 shadow-2xl" style={{ borderColor: '#FFD98ACC' }}>
+        <div className="w-full max-w-md relative z-10 my-auto">
+          <div className="border-2 bg-black p-4 md:p-6 shadow-2xl" style={{ borderColor: '#FFD98ACC' }}>
             {/* Header */}
-            <h1 className="text-3xl md:text-4xl font-bold mb-2" style={{ color: '#FFFFFF' }}>
+            <h1 className="text-2xl md:text-3xl font-bold mb-1" style={{ color: '#FFFFFF' }}>
               {isLogin ? "Welcome Back" : "Create Account"}
             </h1>
-            <p className="text-sm mb-1" style={{ color: '#FFFFFF' }}>
+            <p className="text-xs md:text-sm mb-0.5" style={{ color: '#FFFFFF' }}>
               {isLogin ? "Login to your account" : "Register your account"}
             </p>
-            <p className="text-sm mb-8" style={{ color: '#FFFFFF' }}>
+            <p className="text-xs md:text-sm mb-4 md:mb-6" style={{ color: '#FFFFFF' }}>
               To continue your journey to Invictus'26
             </p>
 
             {/* Form */}
-            <div className="space-y-4">
+            <div className="space-y-3">
               {/* Full Name - Only for Register */}
               {!isLogin && (
                 <div className="relative">
@@ -98,7 +98,7 @@ export default function Authpage() {
                     value={formData.fullName}
                     onChange={handleChange}
                     required={!isLogin}
-                    className="w-full border pl-10 pr-4 py-3 focus:outline-none rounded"
+                    className="w-full border pl-10 pr-4 py-2.5 focus:outline-none rounded text-sm"
                     style={{ 
                       backgroundColor: '#3E3E3E',
                       borderColor: '#FFD98A',
@@ -124,7 +124,7 @@ export default function Authpage() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full border pl-10 pr-4 py-3 focus:outline-none rounded"
+                  className="w-full border pl-10 pr-4 py-2.5 focus:outline-none rounded text-sm"
                   style={{ 
                     backgroundColor: '#3E3E3E',
                     borderColor: '#FFD98A',
@@ -149,7 +149,7 @@ export default function Authpage() {
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  className="w-full border pl-10 pr-4 py-3 focus:outline-none rounded"
+                  className="w-full border pl-10 pr-4 py-2.5 focus:outline-none rounded text-sm"
                   style={{ 
                     backgroundColor: '#3E3E3E',
                     borderColor: '#FFD98A',
@@ -175,7 +175,7 @@ export default function Authpage() {
                     value={formData.confirmPassword}
                     onChange={handleChange}
                     required={!isLogin}
-                    className="w-full border pl-10 pr-4 py-3 focus:outline-none rounded"
+                    className="w-full border pl-10 pr-4 py-2.5 focus:outline-none rounded text-sm"
                     style={{ 
                       backgroundColor: '#3E3E3E',
                       borderColor: '#FFD98A',
@@ -206,7 +206,7 @@ export default function Authpage() {
               <button
                 type="button"
                 onClick={handleSubmit}
-                className="w-full font-semibold py-3 tracking-wider uppercase"
+                className="w-full font-semibold py-2.5 tracking-wider uppercase text-sm"
                 style={{ 
                   backgroundColor: '#FFD98A', 
                   color: '#000000',
@@ -217,9 +217,9 @@ export default function Authpage() {
               </button>
 
               {/* Divider */}
-              <div className="flex items-center gap-4 py-2">
+              <div className="flex items-center gap-4 py-1.5">
                 <div className="flex-1 h-px" style={{ backgroundColor: '#FFD98A', opacity: 0.3 }}></div>
-                <span className="text-sm font-medium" style={{ color: '#FFD98A' }}>OR</span>
+                <span className="text-xs font-medium" style={{ color: '#FFD98A' }}>OR</span>
                 <div className="flex-1 h-px" style={{ backgroundColor: '#FFD98A', opacity: 0.3 }}></div>
               </div>
 
@@ -227,7 +227,7 @@ export default function Authpage() {
               <button
                 type="button"
                 onClick={handleGoogleLogin}
-                className="w-full bg-transparent font-semibold py-3 tracking-wider uppercase flex items-center justify-center gap-3"
+                className="w-full bg-transparent font-semibold py-2.5 tracking-wider uppercase flex items-center justify-center gap-3 text-sm"
                 style={{ 
                   border: '2px solid #FFD98A',
                   color: '#FFD98A'
@@ -246,7 +246,7 @@ export default function Authpage() {
               <button
                 type="button"
                 onClick={() => setIsLogin(!isLogin)}
-                className="w-full text-sm pt-2"
+                className="w-full text-xs pt-1.5"
                 style={{ color: '#FFD98A' }}
               >
                 {isLogin 
@@ -255,7 +255,7 @@ export default function Authpage() {
               </button>
 
               {/* Contact Us */}
-              <p className="text-center text-sm pt-4" style={{ color: '#FFFFFF' }}>
+              <p className="text-center text-xs pt-2" style={{ color: '#FFFFFF' }}>
                 Having Trouble?{' '}
                 <button 
                   type="button"
@@ -291,7 +291,7 @@ export default function Authpage() {
           className="w-full max-w-lg object-contain relative z-10"
           style={{ 
             filter: 'drop-shadow(0 0 30px rgba(255, 217, 138, 0.4))',
-            transform: isLogin ? 'translate(-80px, 0)' : 'translate(-80px, -80px)'
+            transform: isLogin ? 'translate(-80px, 0)' : 'translate(-80px, 0px)'
           }}
         />
       </div>
