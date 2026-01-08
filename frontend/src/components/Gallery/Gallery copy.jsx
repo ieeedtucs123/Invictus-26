@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { utils } from "swapy";
 import { SwapyItem, SwapyLayout, SwapySlot } from "@/component/ui/swapy";
 import { Heart, PlusCircle } from "lucide-react";
@@ -58,77 +58,44 @@ export function CardBalanceCard() {
     </div>
   );
 }
-const initialItems = [
-  {
-    id: "1",
-    title: "1",
-    widgets: <ProjectViewsCard />,
-    className: "lg:col-span-4 sm:col-span-7 col-span-12",
-  },
-  {
-    id: "2",
-    title: "2",
-    widgets: <NewUsersCard />,
-    className: "lg:col-span-3 sm:col-span-5 col-span-12",
-  },
-  {
-    id: "3",
-    title: "3",
-    widgets: <DesignIndustryCard />,
-    className: "lg:col-span-5 sm:col-span-5 col-span-12",
-  },
-  {
-    id: "4",
-    title: "4",
-    widgets: <TeamCard />,
-    className: "lg:col-span-5 sm:col-span-7 col-span-12",
-  },
-  {
-    id: "5",
-    title: "5",
-    widgets: <LogoCard />,
-    className: "lg:col-span-4 sm:col-span-6 col-span-12",
-  },
-  {
-    id: "6",
-    title: "6",
-    widgets: <FontCard />,
-    className: "lg:col-span-3 sm:col-span-6 col-span-12",
-  },
-  {
-    id: "7",
-    title: "7",
-    widgets: <AgencyCard />,
-    className: "lg:col-span-4 sm:col-span-5 col-span-12",
-  },
-  {
-    id: "8",
-    title: "8",
-    widgets: <UserTrustCard />,
-    className: "lg:col-span-4 sm:col-span-7 col-span-12",
-  },
-  {
-    id: "9",
-    title: "9",
-    widgets: <CardBalanceCard />,
-    className: "lg:col-span-4 sm:col-span-12 col-span-12",
-  },
-];
+const buildImageItems = (cat) => {
+  return Array.from({ length: 9 }).map((_, index) => {
+    const id = `${cat}-${index + 1}`;
+    return {
+      id,
+      widgets: (
+        <img
+          src={`/Gallery pics/${cat}/cat${cat.slice(-1)}_${index + 1}.png`}
+          alt={id}
+          className="w-full h-full object-cover rounded-xl"
+        />
+      ),
+      className: "lg:col-span-4 sm:col-span-6 col-span-12",
+    };
+  });
+};
 function Gallery() {
   const [category, setCategory] = useState("FUN");
 
   const categoryMap = {
-    FUN: initialItems,
-    CULTURAL: initialItems,
-    WORKSHOP: initialItems,
+    FUN: buildImageItems("cat1"),
+    CULTURAL: buildImageItems("cat2"),
+    WORKSHOP: buildImageItems("cat3"),
   };
 
+  const activeItems = categoryMap[category];
+
   const [slotItemMap, setSlotItemMap] = useState(
-    utils.initSlotItemMap(initialItems, "id")
+    utils.initSlotItemMap(activeItems, "id")
   );
+
+  useEffect(() => {
+    setSlotItemMap(utils.initSlotItemMap(activeItems, "id"));
+  }, [category]);
+
   const slottedItems = useMemo(
-    () => utils.toSlottedItems(initialItems, "id", slotItemMap),
-    [initialItems, slotItemMap]
+    () => utils.toSlottedItems(activeItems, "id", slotItemMap),
+    [activeItems, slotItemMap]
   );
   return (
   <div className={styles.galleryBackground}>
@@ -184,7 +151,7 @@ function Gallery() {
         >
           <div className="grid w-full grid-cols-12 gap-6 py-6">
             {slottedItems.map(({ slotId, itemId }) => {
-              const item = initialItems.find((i) => i.id === itemId);
+              const item = activeItems.find((i) => i.id === itemId) ?? activeItems[0];
               return (
                 <SwapySlot
                   key={slotId}
