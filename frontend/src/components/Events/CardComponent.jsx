@@ -6,7 +6,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from '@/components/ui/carousel'
+} from '@/components/Events/ui/carousel'
 
 // --- 1. Event Card ---
 const EventCard = ({ title, isActive }) => {
