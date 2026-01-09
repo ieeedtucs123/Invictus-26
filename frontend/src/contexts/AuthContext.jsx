@@ -32,7 +32,7 @@ export function AuthProvider({children}) {
 
   return <AuthContext.Provider
     value={{
-        // user
+        user,
         // loading,
         login
         // logout,

@@ -59,28 +59,15 @@ const SearchInput = () => {
 export default function Events() {
   return (
     <div 
-      className="min-h-screen w-full relative overflow-x-hidden bg-[#FFFBF2]"
-      style={{
-        // Assuming backdrop.svg is in your public folder
-        backgroundImage: `url('/backdrop.svg')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
-      }}
+      className="min-h-screen w-full relative overflow-x-hidden "
+
     >
-      <div className="container mx-auto px-4 py-10 flex flex-col items-center relative z-10">
+      <div className="container mx-auto px-4 py-10  flex flex-col items-center relative z-10">
         
         {/* HEADER - Specs: Orbitron, 700 Bold, Gradient Text */}
         <h1 
-          className="font-[orbitron]  font-bold text-transparent bg-clip-text text-center leading-none mt-4 mb-12"
-          style={{
-             // The specific gradient from your image specs
-             backgroundImage: 'linear-gradient(180deg, #E2AA38 20%, #473C24 100%)',
-             // Responsive font size: 170px is huge, so we scale it down on mobile
-             fontSize: 'clamp(60px, 12vw, 170px)',
-             letterSpacing: '0.08em', // 8% letter spacing
-             filter: 'drop-shadow(0px 4px 6px rgba(0,0,0,0.5))'
-          }}
+          className="invictus-heading py-12 text-[7.7rem]"
+          
         >
           EVENTS
         </h1>
