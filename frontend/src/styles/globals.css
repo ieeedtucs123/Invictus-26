@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@tailwind utilities;
 
 :root {
   --background: #ffffff;
@@ -17,10 +18,46 @@
     --background: #0a0a0a;
     --foreground: #ededed;
   }
+
+  @layer utilities {
+  .invictus-heading {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 1000;
+    background: linear-gradient(to bottom, #E2AA38, #473C24);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    opacity: 0.9;
+    filter: brightness(1.05) saturate(1.15);
+    filter: drop-shadow(8px 8px 2px rgba(0,0,0,0.25));
+    -webkit-text-stroke: 1px rgba(255, 217, 138, 1);
+    line-height: 1.1;
+    display: block;
+  }
+
+    .invictus-subheading {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    background: linear-gradient(to bottom, #D4AF37, #6E5B1D);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    opacity: 1;
+    filter: brightness(1.05) saturate(1.15);
+    margin-top: 0.5rem;
+  }
+}
+
+}
+html, body {
+  height: 100%;
+  margin: 0;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  background-image: url(/bg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
 }
