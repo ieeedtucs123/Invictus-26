@@ -371,7 +371,7 @@ const handleSubmit = async (e) => {
               onClick={() => setIsLogin(v => !v)}
               className={`w-full text-xs pt-1.5 text-[#FFD98A] relative
                         after:absolute after:left-1/2 after:-bottom-0.5
-                        after:h-[1px] after:w-0 after:bg-[#FFD98A]
+                        after:h-px after:w-0 after:bg-[#FFD98A]
                         after:transition-all after:duration-300
                         after:-translate-x-1/2 hover:after:w-[70%] cursor-pointer ${isAdminLogin ? "hidden" : ""} `}
             >
