@@ -1,12 +1,18 @@
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '@/contexts/AuthContext';
+import { Eye,EyeOff } from 'lucide-react';
 
 export default function Authpage() {
-  const { login } = useContext(AuthContext);
-  
+  const { login, register, Adminlogin } = useContext(AuthContext);
+  const backend_URL = "http://localhost:3004/";  
   const [isLogin, setIsLogin] = useState(true);
+  const [eyeToggle, setEyeToggle] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [isAdminLogin, setIsAdminLogin] = useState(false);
+
   const [formData, setFormData] = useState({
     fullName: '',
+    userName: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -20,26 +26,95 @@ export default function Authpage() {
     document.head.appendChild(link);
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
+  const validate = () => {
+  const newErrors = {};
+
+  if (!formData.email.trim()) {
+    newErrors.email = "Email is required";
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    newErrors.email = "Invalid email format";
+  }
+
+  if (!formData.password) {
+    newErrors.password = "Password is required";
+  } else if (!isLogin && formData.password.length < 8) {
+    newErrors.password = "Password must be at least 8 characters";
+  }
+
+  if (!isLogin) {
+    if (!formData.fullName.trim()) {
+      newErrors.fullName = "Full name is required";
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
+
+    if (!formData.agreedToTerms) {
+      newErrors.agreedToTerms = "You must agree to the terms";
+    }
+  }
+
+  if (Object.keys(newErrors).length > 0) {
+    showErrors(newErrors);
+    return false;
+  }
+
+  return true;
+
+};
+
+const showErrors = (newErrors) => {
+  setErrors(newErrors);
+
+  setTimeout(() => {
+    setErrors({});
+  }, 3000);
+};
+
+const adminLogin = () => {
+  setIsAdminLogin(!isAdminLogin);
+  setIsLogin(true);
+}
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+    if (isAdminLogin) {
+    if (!formData.userName || !formData.password) {
+      showErrors({ admin: "Username and password required" });
+      return;
+    }
+
+    await Adminlogin({
+      username: formData.userName,
+      password: formData.password,
+      role: "admin",
+    });
+
+    return;
+  }
+
+  if (!validate()) return;
+
+  try {
     if (isLogin) {
       await login({
         email: formData.email,
         password: formData.password,
       });
     } else {
-      if (formData.password !== formData.confirmPassword) {
-        alert('Passwords do not match!');
-        return;
-      }
-      if (!formData.agreedToTerms) {
-        alert('Please agree to terms and conditions');
-        return;
-      }
-      console.log('Register:', formData);
+      await register({
+        fullName: formData.fullName,
+        email: formData.email,
+        password: formData.password,
+      });
     }
-  };
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -50,7 +125,7 @@ export default function Authpage() {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:3004/auth/google";
+    window.location.href = `${backend_URL}auth/google`;
   };
 
   return (
@@ -62,7 +137,7 @@ export default function Authpage() {
           className="lg:hidden absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ 
             backgroundImage: 'url(/image.png)',
-            opacity: 0.1,
+            opacity: 0.7,
             filter: 'blur(2px)'
           }}
         ></div>
@@ -106,6 +181,10 @@ export default function Authpage() {
                       color: '#FFD98A'
                     }}
                   />
+                  {errors.fullName && (
+                    <p className="text-xs mt-1 text-red-400">{errors.fullName}</p>
+                  )}
+
                 </div>
               )}
 
@@ -118,10 +197,10 @@ export default function Authpage() {
                   style={{ filter: 'brightness(0) saturate(100%) invert(78%) sepia(61%) saturate(466%) hue-rotate(359deg) brightness(104%) contrast(101%)' }} 
                 />
                 <input
-                  type="email"
-                  name="email"
-                  placeholder="Email or Username"
-                  value={formData.email}
+                  type={isAdminLogin ? "text" : "email"}
+                  name={isAdminLogin ? "userName" : "email"}
+                  placeholder={isAdminLogin ? "userName" : "Email"}
+                  value={isAdminLogin ? formData.userName : formData.email}
                   onChange={handleChange}
                   required
                   className="w-full border pl-10 pr-4 py-2.5 focus:outline-none rounded text-sm"
@@ -132,6 +211,10 @@ export default function Authpage() {
                     color: '#FFD98A'
                   }}
                 />
+                {errors.email && (
+                  <p className="text-xs mt-1 text-red-400">{errors.email}</p>
+                )}
+
               </div>
 
               {/* Password */}
@@ -143,7 +226,7 @@ export default function Authpage() {
                   style={{ filter: 'brightness(0) saturate(100%) invert(78%) sepia(61%) saturate(466%) hue-rotate(359deg) brightness(104%) contrast(101%)' }} 
                 />
                 <input
-                  type="password"
+                  type = {eyeToggle ? "text" : "password"}
                   name="password"
                   placeholder={isLogin ? "Password" : "Create Password"}
                   value={formData.password}
@@ -157,7 +240,22 @@ export default function Authpage() {
                     color: '#FFD98A'
                   }}
                 />
+                {errors.password && (
+                  <p className="text-xs mt-1 text-red-400">{errors.password}</p>
+                )}
+
+                <div
+                className="absolute right-5 top-[40%] -translate-y-1/2 w-4 h-4"
+                style={{
+                  filter:
+                    "brightness(0) saturate(100%) invert(78%) sepia(61%) saturate(466%) hue-rotate(359deg) brightness(90%) contrast(101%)",
+                }}
+                onClick={() => setEyeToggle(v => !v)}
+              >
+                {eyeToggle ? <Eye /> : <EyeOff />}
               </div>
+    
+                </div>
 
               {/* Confirm Password - Only for Register */}
               {!isLogin && (
@@ -183,6 +281,22 @@ export default function Authpage() {
                       color: '#FFD98A'
                     }}
                   />
+
+                  {errors.confirmPassword && (
+                    <p className="text-xs mt-1 text-red-400">{errors.confirmPassword}</p>
+                  )}
+
+                <div
+                  className="absolute right-5 top-[40%] -translate-y-1/2 w-4 h-4"
+                  style={{
+                    filter:
+                      "brightness(0) saturate(100%) invert(78%) sepia(61%) saturate(466%) hue-rotate(359deg) brightness(90%) contrast(101%)",
+                  }}
+                  onClick={() => setEyeToggle(v => !v)}
+                >
+                  {eyeToggle ? <Eye /> : <EyeOff />}
+              </div>
+
                 </div>
               )}
 
@@ -198,21 +312,30 @@ export default function Authpage() {
                     className="mt-0.5 w-4 h-4 cursor-pointer"
                     style={{ accentColor: '#FFD98A' }}
                   />
+                  {errors.agreedToTerms && (
+                    <p className="text-xs text-red-400">{errors.agreedToTerms}</p>
+                  )}
+
                   <span>I agree to the terms of service and privacy policy</span>
                 </label>
               )}
 
               {/* Submit Button */}
+              {errors.admin && (
+                <p className="text-xs text-red-400 text-center mb-1">
+                  {errors.admin}
+                </p>
+              )}
               <button
                 type="button"
                 onClick={handleSubmit}
-                className="w-full font-semibold py-2.5 tracking-wider uppercase text-sm"
+                className="w-full font-semibold py-2.5 bg-[#FFD98A] hover:bg-[#917d53] cursor-pointer tracking-wider uppercase text-sm"
                 style={{ 
-                  backgroundColor: '#FFD98A', 
                   color: '#000000',
                   border: '2px solid #FFD98A'
                 }}
               >
+
                 {isLogin ? "LOGIN" : "REGISTER"}
               </button>
 
@@ -227,7 +350,7 @@ export default function Authpage() {
               <button
                 type="button"
                 onClick={handleGoogleLogin}
-                className="w-full bg-transparent font-semibold py-2.5 tracking-wider uppercase flex items-center justify-center gap-3 text-sm"
+                className={`w-full bg-transparent hover:bg-[#917d53] cursor-pointer font-semibold py-2.5 tracking-wider uppercase flex items-center justify-center gap-3 text-sm ${isAdminLogin ? "hidden" : ""} `}
                 style={{ 
                   border: '2px solid #FFD98A',
                   color: '#FFD98A'
@@ -244,25 +367,29 @@ export default function Authpage() {
 
               {/* Toggle Login/Register */}
               <button
-                type="button"
-                onClick={() => setIsLogin(!isLogin)}
-                className="w-full text-xs pt-1.5"
-                style={{ color: '#FFD98A' }}
-              >
-                {isLogin 
-                  ? "Need an account? Register here" 
-                  : "Already have an account? Login here"}
-              </button>
+              type="button"
+              onClick={() => setIsLogin(v => !v)}
+              className={`w-full text-xs pt-1.5 text-[#FFD98A] relative
+                        after:absolute after:left-1/2 after:-bottom-0.5
+                        after:h-[1px] after:w-0 after:bg-[#FFD98A]
+                        after:transition-all after:duration-300
+                        after:-translate-x-1/2 hover:after:w-[70%] cursor-pointer ${isAdminLogin ? "hidden" : ""} `}
+            >
+              {isLogin
+                ? "Need an account? Register here"
+                : "Already have an account? Login here"}
+            </button>
 
-              {/* Contact Us */}
+              {/* admin login */}
               <p className="text-center text-xs pt-2" style={{ color: '#FFFFFF' }}>
-                Having Trouble?{' '}
+                {isAdminLogin ? "User?" : "Admin?"}{' '}
                 <button 
                   type="button"
-                  className="underline"
+                  className="underline cursor-pointer"
+                  onClick={adminLogin}
                   style={{ color: '#FFFFFF' }}
                 >
-                  Contact Us
+                  Login here
                 </button>
               </p>
             </div>
