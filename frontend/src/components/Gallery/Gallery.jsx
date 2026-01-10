@@ -66,7 +66,7 @@ export default function Gallery({ setLotusClass, setLotusStyle }) {
       transform: "translate(-50%, -50%)",
     });
 
-    setLotusClass(`
+    setLotusClass(`absolute
       w-[90px] md:w-[120px] lg:w-[150px]
       opacity-80
       transition-all duration-700 ease-in-out

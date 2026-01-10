@@ -23,7 +23,7 @@ export default function Authpage({setLotusClass, setLotusStyle}) {
       if (!setLotusClass) return
       setLotusStyle({})
   
-      setLotusClass(`
+      setLotusClass(`absolute
         top-3/4 left-1/2
         -translate-x-1/2 -translate-y-1/2
         w-[160px]
@@ -33,7 +33,7 @@ export default function Authpage({setLotusClass, setLotusStyle}) {
       `)
   
       const timeout = setTimeout(() => {
-        setLotusClass(`
+        setLotusClass(`absolute
           top-3/4 left-1/2
           -translate-x-1/2 -translate-y-1/2
           w-[160px]

@@ -13,7 +13,7 @@ export default function Landing({ setLotusClass, setLotusStyle }) {
       transform: 'translateX(-50%)',
     })
 
-    setLotusClass(`
+    setLotusClass(`fixed
       w-[140px] md:w-[160px] lg:w-[200px]
       opacity-90
       drop-shadow-[0_0_25px_rgba(255,215,138,0.8)]

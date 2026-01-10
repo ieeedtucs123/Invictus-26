@@ -76,7 +76,7 @@ export default function CardComponent({ setLotusClass, setLotusStyle }) {
     setLotusStyle({})
 
     setLotusClass(`
-      top-3/4 left-1/2
+      top-3/4 left-1/2 fixed
       -translate-x-1/2 -translate-y-1/2
       w-[160px]
       opacity-80
@@ -85,7 +85,7 @@ export default function CardComponent({ setLotusClass, setLotusStyle }) {
     `)
 
     const timeout = setTimeout(() => {
-      setLotusClass(`
+      setLotusClass(`fixed
         top-3/4 left-1/2
         -translate-x-1/2 -translate-y-1/2
         w-[160px]
