@@ -65,10 +65,13 @@ export default function Events() {
       <div className="container mx-auto px-4 pt-10 flex flex-col items-center relative z-10">
         
         <h1 
-          className="invictus-heading py-12 text-[4.7rem] lg:text-[7rem]"
+          className="invictus-heading pt-12 text-[4.7rem] lg:text-[7rem]"
         >
           EVENTS
         </h1>
+         <div className="invictus-subheading pb-15 text-[0.8em] md:text-[1.1em]">
+          The passionate minds and dedicated leaders driving Invictus forward.
+        </div>
 
         <div className="w-full max-w-5xl grid grid-cols-1 sm:grid-cols-2 md:flex md:flex-row gap-4 justify-center items-start mb-16">
           

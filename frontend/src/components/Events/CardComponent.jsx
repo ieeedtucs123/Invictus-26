@@ -6,10 +6,10 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from '@/components/Events/ui/carousel'
+} from '@/components/Events/ui/carousel' 
 
-// --- 1. Event Card ---
-const EventCard = ({ title, isActive }) => {
+// --- 1. Event Card Sub-Component ---
+const EventCard = ({ title, isActive, isLive }) => {
   return (
     <div
       className={`
@@ -19,13 +19,10 @@ const EventCard = ({ title, isActive }) => {
         border-4 border-[#C5A059]
         flex flex-col items-center p-4
         shadow-[6px_10px_4px_rgba(0,0,0,0.25)]
-        ${isActive
-          ? 'scale-100 md:scale-110 z-20'
-          : 'scale-90 z-10'
-        }
+        ${isActive ? 'scale-100 md:scale-110 z-20' : 'scale-90 z-10'}
       `}
     >
-      {/* Decorative Inner Border */}
+      {/* Inner Decorative Border */}
       <div className="absolute inset-2 border-2 border-[#C5A059]/50 rounded-xl pointer-events-none" />
 
       {/* Header */}
@@ -35,7 +32,7 @@ const EventCard = ({ title, isActive }) => {
         </h3>
       </div>
 
-      {/* Image Placeholder */}
+      {/* Image Area */}
       <div className="z-10 w-full flex-1 my-3 border-2 border-[#C5A059]/30 bg-[#FFF8E7] rounded-lg flex items-center justify-center p-4">
         <div className="text-center">
           <div className="w-12 h-12 rounded-full bg-[#C5A059]/20 mx-auto mb-2 flex items-center justify-center">
@@ -47,18 +44,13 @@ const EventCard = ({ title, isActive }) => {
         </div>
       </div>
 
-      {/* 🌸 LOTUS — CENTERED, RESPONSIVE */}
+      {/* Lotus only when active */}
       {isActive && (
-        <div className="flex justify-center items-center ">
+        <div className="flex justify-center items-center">
           <img
             src="/lotus.svg"
             alt="Lotus Decoration"
-            className="
-              w-14 h-10
-              sm:w-16 sm:h-10
-              md:w-18 md:h-12
-              drop-shadow-md
-            "
+            className="w-14 h-10 sm:w-16 sm:h-10 md:w-18 md:h-12 drop-shadow-md"
           />
         </div>
       )}
@@ -71,56 +63,92 @@ const EventCard = ({ title, isActive }) => {
   )
 }
 
-// --- 2. Main Carousel Component ---
+// --- 2. Main Component ---
 export default function CardComponent() {
   const [api, setApi] = useState(null)
   const [current, setCurrent] = useState(0)
+  const [events, setEvents] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
 
-  const events = [
-    { id: 1, title: 'WEDDING' },
-    { id: 2, title: 'MUSIC FEST' },
-    { id: 3, title: 'TECH TALK' },
-    { id: 4, title: 'ART GALA' },
-    { id: 5, title: 'BIRTHDAY' },
-  ]
+  // FETCH FROM BACKEND / JSON
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch('/EventsData.json')
+        const data = await response.json()
+        setEvents(data || [])
+      } catch (error) {
+        setEvents([])
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    fetchEvents()
+  }, [])
 
-  // Loop-safe active index
+  // Carousel active index
   useEffect(() => {
     if (!api) return
-
     const update = () => {
-      setCurrent(api.selectedScrollSnap() % events.length)
+      setCurrent(api.selectedScrollSnap())
     }
-
-    update()
     api.on('select', update)
-  }, [api, events.length])
+    update()
+  }, [api])
 
+  // ================== RENDER ==================
+
+  // 1️⃣ Loading
+  if (isLoading) {
+    return (
+      <div className="w-full py-20 flex justify-center items-center min-h-[400px]">
+        <p className="text-[#C5A059] font-bold animate-pulse tracking-widest">
+          LOADING EVENTS...
+        </p>
+      </div>
+    )
+  }
+
+  // 2️⃣ Backend returned empty array → Coming Soon
+  if (events.length === 0) {
+    return (
+      <div className="w-full py-20 flex flex-col items-center justify-center min-h-[400px]">
+        <div className="text-center space-y-4 p-8 border-4 border-[#C5A059] rounded-2xl bg-[#FFF8E7] shadow-xl">
+          <h2 className="text-[#C5A059] text-4xl md:text-7xl font-bold font-serif tracking-widest">
+            COMING SOON
+          </h2>
+          <div className="w-24 h-1 bg-[#C5A059] mx-auto rounded-full"></div>
+          <p className="text-[#7A6C45] font-bold uppercase tracking-widest mt-4">
+            Stay tuned for amazing events
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  // 3️⃣ Data exists → Show carousel
   return (
     <div className="w-full py-20 flex justify-center min-h-[600px] overflow-hidden">
       <Carousel
         setApi={setApi}
-        opts={{
-          align: 'center',
-          loop: true,
-        }}
+        opts={{ align: 'center', loop: true }}
         className="w-full max-w-5xl"
       >
         <CarouselContent className="-ml-4 items-center pt-10 pb-10">
           {events.map((ev, index) => (
             <CarouselItem
-              key={ev.id}
+              key={ev.id || index}
               className="pl-4 basis-[85%] md:basis-1/3 flex justify-center"
             >
               <EventCard
                 title={ev.title}
                 isActive={index === current}
+                isLive={ev.live}
               />
             </CarouselItem>
           ))}
         </CarouselContent>
 
-        {/* Navigation */}
         <CarouselPrevious
           className="absolute left-2 md:-left-12 top-1/2 -translate-y-1/2 z-30
           h-10 w-10 rounded-full border-2 border-[#C5A059] bg-white text-[#C5A059]
