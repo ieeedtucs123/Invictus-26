@@ -26,6 +26,7 @@ import { Ocean } from "./Ocean";
 import { Fog } from "./Fog";
 import { AnimatedTextSections } from "./AnimatedTextSections";
 import { Lotus } from "./Lotus";
+import { Birds } from "./Birds";
 
 export function SceneContent() {
   const modelRef = useRef();
@@ -114,7 +115,8 @@ export function SceneContent() {
       <GradientSky />
 
       {/* Sun */}
-      <Sun ref={sun} position={[-20, 15, -40]} />
+      <Sun ref={sun} position={[-20, 15, -60]} />
+      <Birds />
 
       <Environment preset="sunset" />
 
