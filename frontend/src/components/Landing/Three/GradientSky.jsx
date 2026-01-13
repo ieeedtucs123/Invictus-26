@@ -13,12 +13,13 @@ export function GradientSky() {
     // Create gradient from horizon to zenith
     const gradient = ctx.createLinearGradient(0, canvas.height, 0, 0);
     
-    // Sky gradient colors (bottom to top)
-    gradient.addColorStop(0, '#87CEEB');    // Light sky blue at horizon
-    gradient.addColorStop(0.3, '#6DB3D8'); // Slightly deeper blue
-    gradient.addColorStop(0.5, '#5FA4D0'); // Medium blue
-    gradient.addColorStop(0.7, '#4A8BC2'); // Deeper blue
-    gradient.addColorStop(1, '#3D75AD');   // Deep blue at zenith
+    // Sunset gradient colors (bottom to top)
+    gradient.addColorStop(0, '#FF6B35');    // Deep orange at horizon
+    gradient.addColorStop(0.2, '#FF8C42'); // Orange
+    gradient.addColorStop(0.4, '#FFA07A'); // Light salmon
+    gradient.addColorStop(0.6, '#E9967A'); // Pink salmon
+    gradient.addColorStop(0.8, '#6A5ACD'); // Purple
+    gradient.addColorStop(1, '#1E3A8A');   // Deep blue at zenith
     
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
