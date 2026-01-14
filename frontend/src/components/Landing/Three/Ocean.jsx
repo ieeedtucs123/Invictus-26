@@ -12,7 +12,7 @@ export function Ocean({ position = [0, -4, 0] }) {
   const ref = useRef();
   const gl = useThree((state) => state.gl);
   const waterNormals = useLoader(
-    THREE.TextureLoader, "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/water/Water_1_M_Normal.jpg"
+    THREE.TextureLoader, "/texture/water.jpg"
   );
 
 

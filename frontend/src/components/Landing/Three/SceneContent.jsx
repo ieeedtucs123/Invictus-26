@@ -27,6 +27,9 @@ import { Fog } from "./Fog";
 import { AnimatedTextSections } from "./AnimatedTextSections";
 import { Lotus } from "./Lotus";
 import { Birds } from "./Birds";
+import { Boat } from "./Boat";
+import { Mountain } from "./Mountain";
+import { Shiva } from "./Shiva";
 
 export function SceneContent() {
   const modelRef = useRef();
@@ -116,7 +119,19 @@ export function SceneContent() {
 
       {/* Sun */}
       <Sun ref={sun} position={[-20, 15, -60]} />
+
+      {/* Birds */}
       <Birds />
+
+      {/* boat */}
+      <Boat />
+
+      {/* mountain */}
+      <Mountain position={[40,-4,-95]} scale={18} />
+      <Mountain position={[-60,-6,-100]} scale={15} />
+
+      {/* shiva */}
+      <Shiva position={[-70,-2,30]} scale={0.4} />
 
       <Environment preset="sunset" />
 
