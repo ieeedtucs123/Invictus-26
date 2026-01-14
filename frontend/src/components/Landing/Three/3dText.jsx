@@ -14,7 +14,8 @@ export function ThreeDText({
   bevelEnabled,
   section,
   activeSection,
-  scroll,
+  scroll,  
+  onStartExplore,
 }) {
   const ref = useRef();
   const { viewport } = useThree();
@@ -53,6 +54,9 @@ export function ThreeDText({
       position={position}
       rotation={rotation}
     //   letterSpacing={0.01}
+      onClick={onStartExplore}
+      onPointerOver={() => (document.body.style.cursor = "pointer")}
+      onPointerOut={() => (document.body.style.cursor = "default")}
     >
       {text}
       <meshStandardMaterial

@@ -32,7 +32,7 @@ import { Mountain } from "./Mountain";
 import { Shiva } from "./Shiva";
 import { ThreeDText, MultiLineText3D } from "./3dText";
 
-export function SceneContent() {
+export function SceneContent({ playTransition, onStartExplore }) {
   const modelRef = useRef();
   const scroll = useScroll();
   const [sun, setSun] = useState();
@@ -83,7 +83,9 @@ useFrame((state) => {
 
   return (
     <>
+  
       {/* Lights */}
+
       <ambientLight intensity={0.9} />
       <directionalLight position={[5, 10, 5]} intensity={1.2} />
 
@@ -160,7 +162,9 @@ useFrame((state) => {
           section={2}
           activeSection={activeSection}
           scroll={scroll}
+          onStartExplore={onStartExplore}
         />
+
       )}
 
       {/* Sun */}
@@ -185,6 +189,7 @@ useFrame((state) => {
       {/* <AnimatedTextSections /> */}
 
       {/* Post-processing effects */}
+      {!playTransition && (
       <EffectComposer>
         <Bloom
           intensity={0.7}
@@ -205,6 +210,7 @@ useFrame((state) => {
           />
         )} */}
       </EffectComposer>
+      )}
     </>
   );
 }
