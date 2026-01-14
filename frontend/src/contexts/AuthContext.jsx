@@ -31,7 +31,7 @@ export function AuthProvider({ children }) {
         setUser(res.data.name);
       })
       .catch(() => {
-        localStorage.removeItem("accessToken");
+        localStorage.removeItem("accessToken");//if accesstoken not valid
         setUser(null);
       })
       .finally(() => {
