@@ -32,12 +32,11 @@ import { Mountain } from "./Mountain";
 import { Shiva } from "./Shiva";
 import { ThreeDText, MultiLineText3D } from "./3dText";
 
-export function SceneContent({ playTransition, onStartExplore }) {
+export function SceneContent({ setcurrSection, playTransition, onStartExplore }) {
   const modelRef = useRef();
   const scroll = useScroll();
   const [sun, setSun] = useState();
   const [activeSection, setActiveSection] = useState(0);
-
 
   // Camera keyframes
   const cameraShots = [
@@ -63,7 +62,11 @@ useFrame((state) => {
   const sectionIndex = Math.floor(progress);
   const sectionT = progress % 1;
 
-    setActiveSection((prev) =>
+  setActiveSection((prev) =>
+    prev !== sectionIndex ? sectionIndex : prev
+  );
+
+  setcurrSection((prev) =>
     prev !== sectionIndex ? sectionIndex : prev
   );
 

@@ -3,7 +3,7 @@
 import { Canvas } from "@react-three/fiber";
 import { ScrollControls } from "@react-three/drei";
 import { SceneContent } from "./SceneContent";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import GlitchIntro from "./GlitchIntro";
 import VideoTransition from "./VideoTransition";
 /* -----------------------------
@@ -12,10 +12,22 @@ import VideoTransition from "./VideoTransition";
 export default function ThreeScene() {
 
   const [playTransition, setPlayTransition] = useState(false);
+  const [currSection, setcurrSection] = useState(0);
+  const [glitchTrigger, setGlitchTrigger] = useState(0);
+
+  useEffect(() => {
+    setGlitchTrigger((t) => t + 1);
+  }, []);
+
+  useEffect(() => {
+    if (currSection === 2) {
+      setGlitchTrigger((t) => t + 1);
+    }
+  }, [currSection]);
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
-      <GlitchIntro />
+      <GlitchIntro trigger={glitchTrigger} currSection={currSection}  />
 
       <Canvas
         camera={{ position: [0, 12, 12], fov: 50 }}
@@ -23,7 +35,7 @@ export default function ThreeScene() {
         frameloop={playTransition ? "never" : "always"}
         >
         <ScrollControls pages={3} damping={0.18}>
-          <SceneContent playTransition={playTransition} onStartExplore={() => setPlayTransition(true)} />
+          <SceneContent setcurrSection={setcurrSection} playTransition={playTransition} onStartExplore={() => setPlayTransition(true)} />
         </ScrollControls>
       </Canvas>
 
