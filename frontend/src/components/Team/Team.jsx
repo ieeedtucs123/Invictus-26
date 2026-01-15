@@ -25,7 +25,7 @@ export default function TeamComponent({ setLotusClass, setLotusStyle }) {
         ? window.innerWidth / 2
         : rect.left + rect.width / 2,
 
-      top: isMobile ? rect.top + 25 : rect.top,
+      top: isMobile ? rect.top + 30 : rect.top,
 
       transform: "translate(-50%, -50%)",
     });
@@ -82,7 +82,7 @@ export default function TeamComponent({ setLotusClass, setLotusStyle }) {
 
       {/* ---------------- HEADING SECTION ---------------- */}
 
-      <div className="px-6 mt-18 lg:pt-8 md:pt-4 md:pl-10 text-center md:text-left">
+      <div className="px-6 mt-22 lg:pt-8 md:pt-4 md:pl-10 text-center md:text-left">
 
         <div className="relative inline-block">
           <span className="invictus-heading mr-2 text-[3.7rem] lg:text-[7rem]">
