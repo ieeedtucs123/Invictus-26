@@ -72,14 +72,10 @@ const CarouselCard = ({ personInfo, offset, isFlipped }) => {
           <div className="mb-4">
           <div className="group p-1 rounded-lg border-2 border-[#D4AF37]/60 hover:bg-[#D4AF37] hover:scale-110 transition-all 
           duration-300 cursor-pointer">
-
+            <a href={personInfo.link} target="_blank" rel="noopener noreferrer">
             {/* default state */}
-            <a href={personInfo.link} target='blank'>
             <Linkedin size={20} strokeWidth={2} color='#D4AF37' className="group-hover:hidden" />
-            </a>
-
             {/* hover state */}
-            <a href={personInfo.link} target='blank'>
             <Linkedin size={20} strokeWidth={0} className="fill-current text-white hidden group-hover:block" />
             </a>
           </div>

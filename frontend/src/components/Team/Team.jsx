@@ -5,25 +5,36 @@ import TeamCarousel from '@/utils/Team Carousel/TeamCarousel'
 export default function TeamComponent({ setLotusClass, setLotusStyle }) {
 
   /* ---------------- MOVE GLOBAL LOTUS NEXT TO "TEAM" ---------------- */
-useEffect(() => {
-  if (!setLotusStyle || !setLotusClass) return;
+  useEffect(() => {
+    if (!setLotusStyle || !setLotusClass) return;
 
-  const anchor = document.querySelector("[data-lotus-anchor]");
-  if (!anchor) return;
+    const isMobile = window.innerWidth < 768;
 
-  const rect = anchor.getBoundingClientRect();
+    const anchor = document.querySelector(
+      isMobile
+        ? "[data-lotus-anchor-mobile]"
+        : "[data-lotus-anchor]"
+    );
 
-  setLotusStyle({
-    left: rect.left + rect.width / 2,
-    top: rect.top + rect.height / 2,
-    transform: "translate(-50%, -50%)",
-  });
+    if (!anchor) return;
 
-  setLotusClass(`absolute
-    w-[90px] md:w-[120px] lg:w-[150px]
-    opacity-80
-  `);
-}, [setLotusStyle, setLotusClass]);
+    const rect = anchor.getBoundingClientRect();
+
+    setLotusStyle({
+      left: isMobile
+        ? window.innerWidth / 2
+        : rect.left + rect.width / 2,
+
+      top: isMobile ? rect.top + 25 : rect.top,
+
+      transform: "translate(-50%, -50%)",
+    });
+
+    setLotusClass(`absolute
+      w-[90px] md:w-[120px] lg:w-[150px]
+      opacity-80
+    `);
+  }, [setLotusStyle, setLotusClass]);
 
 
   return (
@@ -78,22 +89,22 @@ useEffect(() => {
             TEAM
           </span>
 
-          {/* 🌸 LOTUS ANCHOR — exact placement reference */}
+          {/* LOTUS ANCHOR — exact placement reference */}
           <span
             data-lotus-anchor
-            className="
-              absolute
-              right-[-2.5rem] md:right-[-3.5rem] lg:right-[-4.5rem]
-              top-1/2
-              -translate-y-1/2
-              w-0 h-0
-            "
+            className=" absolute right-[-2.5rem] md:right-[-3.5rem] lg:right-[-4.5rem] top-1/2 -translate-y-1/2 w-0 h-0"
           />
         </div>
 
         <div className="invictus-subheading text-[0.8em] md:text-[1.1em]">
           The passionate minds and dedicated leaders driving Invictus forward.
         </div>
+
+        {/* LOTUS ANCHOR — mobile between heading & carousel */}
+        <span
+          data-lotus-anchor-mobile
+          className="block w-0 h-0 md:hidden"
+        />
 
       </div>
 
