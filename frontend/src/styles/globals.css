@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @tailwind utilities;
-@import "tw-animate-css";
+/* @import "tw-animate-css"; */
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -52,21 +52,18 @@ body {
 }
 
 
-@keyframes slideUp {
-  0% {
-    transform: translate(-50%, 20px);
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-120%);
     opacity: 0;
   }
-  50% {
-    transform: translate(-50%, 10px);
-    opacity: 0.5;
-  }
-  100%{
-    transform: translate(-50%, 0);
+  to {
+    transform: translateX(0%);
     opacity: 1;
   }
 }
 
 .animate-slideUp {
-  animation: slideUp 0.2s ease-out;
+  animation: slideInFromLeft 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
+

@@ -17,11 +17,13 @@ export default function SnackBar({ text, onClose, actionText, onAction }) {
         max-w-[90vw]
       ">
 
-        <p className="text-sm invictus-subheading w-75 flex-1">
+        <p className="text-sm invictus-subheading w-75">
           {text}
         </p>
 
         {actionText && (
+          <>
+          {/* Vertical line sepeartion */}
           <button
             onClick={onAction}
             className="
@@ -36,6 +38,7 @@ export default function SnackBar({ text, onClose, actionText, onAction }) {
           >
             {actionText}
           </button>
+          </>
         )}
 
         <button
