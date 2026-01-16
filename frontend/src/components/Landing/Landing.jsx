@@ -6,7 +6,7 @@ import SnackBar from "@/utils/snackBar";
 export default function Landing({ setLotusClass, setLotusStyle }) {
 
     const [show, setShow] = useState(true);
-    const SNACKBAR_TIMEOUT = 5000;
+    const SNACKBAR_TIMEOUT = 10000;
 
     useEffect(() => {
       if(localStorage.getItem("ModelSeen")){
@@ -110,6 +110,7 @@ export default function Landing({ setLotusClass, setLotusStyle }) {
           actionText="No"
           onAction={() => {
             localStorage.setItem("ModelSeen", "true");
+            document.cookie = "seenModel=true; path=/; max-age=10";
             handleClose();
           }}
           onClose={() => handleClose()}

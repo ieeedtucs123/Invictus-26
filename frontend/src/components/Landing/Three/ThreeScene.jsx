@@ -50,7 +50,7 @@ export default function ThreeScene() {
         play={playTransition}
         onEnd={() => {
 
-          window.location.href = "/";
+          window.location.href = "/Home";
           //unmount the model or three scene & start the site or show the model at in the starting only at /model directly then route to /
         }}
       />
