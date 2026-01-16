@@ -1,11 +1,11 @@
 {   
     "items": [
-        { "name": "Aditya Tiwari", "designation": "General Technical Secretary", "link": "https://in.linkedin.com/in/aditya-tiwari-784517279", "avatar": "/Team/TC/AdityaTiwari.webp" },
-        { "name": "Shashwat Jha", "designation": "Treasurer", "link": "https://in.linkedin.com/in/shashwatjha26", "avatar": "/Team/TC/ShashwatJha.webp" },
-        { "name": "Abhishek Kumar Jangid", "designation": "Joint Treasurer", "link": "https://in.linkedin.com/in/abhishek-kumar-jangid-086243288", "avatar": "/Team/TC/AbhishekJangid.webp" },
-        { "name": "Trilokendra Singh", "designation": "Joint Treasurer", "link": "https://in.linkedin.com/in/trilokendra-singh-54b894318", "avatar": "/Team/TC/TrilokendraSingh.webp" },
-        { "name": "Shraddha Singh", "designation": "Joint Technical Secretary", "link": "https://in.linkedin.com/in/shraddha-singh-29b3a528a", "avatar": "/Team/TC/ShraddhaSingh.webp" },
-        { "name": "Hitesh Mehta", "designation": "Joint Technical Secretary", "link": "https://in.linkedin.com/in/hiteshmehta02", "avatar": "/Team/TC/HiteshMehta.webp" },
-        { "name": "Soumya Garg", "designation": "Joint Technical Secretary", "link": "https://in.linkedin.com/in/soumya-garg-59919b312", "avatar": "/Team/TC/SoumyaGarg.webp" }
+        { "name": "Aditya Tiwari", "designation": "General Technical Secretary", "ig_link": "https://www.instagram.com/adityatiwari_in/", "ln_link": "https://in.linkedin.com/in/aditya-tiwari-784517279", "avatar": "/Team/TC/AdityaTiwari.webp" },
+        { "name": "Shashwat Jha", "designation": "Treasurer", "ln_link": "https://in.linkedin.com/in/shashwatjha26", "avatar": "/Team/TC/ShashwatJha.webp" },
+        { "name": "Abhishek Kumar Jangid", "designation": "Joint Treasurer", "ig_link": "https://www.instagram.com/abhishekjangid_6350/", "ln_link": "https://in.linkedin.com/in/abhishek-kumar-jangid-086243288", "avatar": "/Team/TC/AbhishekJangid.webp" },
+        { "name": "Trilokendra Singh", "designation": "Joint Treasurer", "ig_link": "https://www.instagram.com/_trilok_126/", "ln_link": "https://in.linkedin.com/in/trilokendra-singh-54b894318", "avatar": "/Team/TC/TrilokendraSingh.webp" },
+        { "name": "Shraddha Singh", "designation": "Joint Technical Secretary", "ig_link": "https://www.instagram.com/shraddha_singh05/", "ln_link": "https://in.linkedin.com/in/shraddha-singh-29b3a528a", "avatar": "/Team/TC/ShraddhaSingh.webp" },
+        { "name": "Hitesh Mehta", "designation": "Joint Technical Secretary", "ig_link": "https://www.instagram.com/hiteshmehta02/", "ln_link": "https://in.linkedin.com/in/hiteshmehta02", "avatar": "/Team/TC/HiteshMehta.webp" },
+        { "name": "Soumya Garg", "designation": "Joint Technical Secretary", "ig_link": "https://www.instagram.com/_soumya_30_garg/", "ln_link": "https://in.linkedin.com/in/soumya-garg-59919b312", "avatar": "/Team/TC/SoumyaGarg.webp" }
     ]
 }

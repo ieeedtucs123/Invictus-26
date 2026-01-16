@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Linkedin } from 'lucide-react';
+import { Instagram } from 'lucide-react';
 
 const CarouselCard = ({ personInfo, offset, isFlipped }) => {
   const [screenSize, setScreenSize] = useState('desktop');
@@ -69,16 +70,25 @@ const CarouselCard = ({ personInfo, offset, isFlipped }) => {
               {personInfo.designation}
             </p>
           </div>
-          <div className="mb-4">
+          <div className="mb-4 flex justify-center gap-4">
           <div className="group p-1 rounded-lg border-2 border-[#D4AF37]/60 hover:bg-[#D4AF37] hover:scale-110 transition-all 
           duration-300 cursor-pointer">
-            <a href={personInfo.link} target="_blank" rel="noopener noreferrer">
+            <a href={personInfo.ln_link} target="_blank" rel="noopener noreferrer">
             {/* default state */}
             <Linkedin size={20} strokeWidth={2} color='#D4AF37' className="group-hover:hidden" />
             {/* hover state */}
             <Linkedin size={20} strokeWidth={0} className="fill-current text-white hidden group-hover:block" />
             </a>
           </div>
+           { personInfo.ig_link && <div className="group p-1 rounded-lg border-2 border-[#D4AF37]/60 hover:bg-[#D4AF37] hover:scale-110 transition-all 
+          duration-300 cursor-pointer">
+            <a href={personInfo.ig_link} target="_blank" rel="noopener noreferrer">
+            {/* default state */}
+            <Instagram size={20} strokeWidth={2} color='#D4AF37' className="group-hover:hidden" />
+            {/* hover state */}
+            <Instagram size={20} color='white' strokeWidth={2} className="hidden group-hover:block" />
+            </a>
+          </div> }
           </div>
 
         </div>
