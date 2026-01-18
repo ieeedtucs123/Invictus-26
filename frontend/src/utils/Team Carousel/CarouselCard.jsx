@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
+import { Linkedin } from 'lucide-react';
+import { Instagram } from 'lucide-react';
 
 const CarouselCard = ({ personInfo, offset, isFlipped }) => {
   const [screenSize, setScreenSize] = useState('desktop');
@@ -50,12 +52,13 @@ const CarouselCard = ({ personInfo, offset, isFlipped }) => {
             backgroundSize: 'cover',
             backgroundPosition: 'center' }}>
 
-
-          {/* individual picture will be rendered here (personInfo.avatar) */}
-          <div className="h-32 sm:h-40 flex items-center justify-center">
+          <div className="h-32 sm:h-40 flex items-center justify-center ">
             <div className="w-20 h-20 sm:w-26 sm:h-26 rounded-full border-3 border-[#D4AF37]/60 brightness-105 saturate-125 
             flex items-center justify-center">
-              <div className="w-18 h-18 sm:w-24 sm:h-24 rounded-full bg-[#808080]"></div>
+              
+              <div className={`w-18 h-18 sm:w-24 sm:h-24 rounded-full bg-cover`} style={{//no need to give it in tailwind specific only because tailwind will crash it
+                backgroundImage: `url(${personInfo.avatar})`,
+              }}></div>
             </div>
           </div>
 
@@ -66,6 +69,26 @@ const CarouselCard = ({ personInfo, offset, isFlipped }) => {
             <p className="py-2 sm:py-3 text-black opacity-70 text-[0.9em] sm:text-[1.2em]">
               {personInfo.designation}
             </p>
+          </div>
+          <div className="mb-4 flex justify-center gap-4">
+          <div className="group p-1 rounded-lg border-2 border-[#D4AF37]/60 hover:bg-[#D4AF37] hover:scale-110 transition-all 
+          duration-300 cursor-pointer">
+            <a href={personInfo.ln_link} target="_blank" rel="noopener noreferrer">
+            {/* default state */}
+            <Linkedin size={20} strokeWidth={2} color='#D4AF37' className="group-hover:hidden" />
+            {/* hover state */}
+            <Linkedin size={20} strokeWidth={0} className="fill-current text-white hidden group-hover:block" />
+            </a>
+          </div>
+           { personInfo.ig_link && <div className="group p-1 rounded-lg border-2 border-[#D4AF37]/60 hover:bg-[#D4AF37] hover:scale-110 transition-all 
+          duration-300 cursor-pointer">
+            <a href={personInfo.ig_link} target="_blank" rel="noopener noreferrer">
+            {/* default state */}
+            <Instagram size={20} strokeWidth={2} color='#D4AF37' className="group-hover:hidden" />
+            {/* hover state */}
+            <Instagram size={20} color='white' strokeWidth={2} className="hidden group-hover:block" />
+            </a>
+          </div> }
           </div>
 
         </div>

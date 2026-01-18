@@ -1,14 +1,26 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext,useEffect, useState } from 'react';
 import { AuthContext } from '@/contexts/AuthContext';
 import { Eye,EyeOff } from 'lucide-react';
+import { useRouter } from "next/router";
 
-export default function Authpage() {
-  const { login, register, Adminlogin } = useContext(AuthContext);
+
+export default function Authpage({setLotusClass, setLotusStyle}) {
+  const { user,isAdmin, login, register, Adminlogin } = useContext(AuthContext);
   const backend_URL = "http://localhost:3004/";  
   const [isLogin, setIsLogin] = useState(true);
   const [eyeToggle, setEyeToggle] = useState(false);
   const [errors, setErrors] = useState({});
   const [isAdminLogin, setIsAdminLogin] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+  if (user) {
+    router.replace("/Dashboard");
+  }
+  if(isAdmin){
+    router.replace("/admin/code");
+  }
+}, [user, router]);
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -18,6 +30,33 @@ export default function Authpage() {
     confirmPassword: '',
     agreedToTerms: false
   });
+
+  useEffect(() => {
+      if (!setLotusClass) return
+      setLotusStyle({})
+  
+      setLotusClass(`absolute
+        top-3/4 left-1/2
+        -translate-x-1/2 -translate-y-1/2
+        w-[160px]
+        opacity-80
+        z-999
+        transition-all duration-700 ease-in-out
+      `)
+  
+      const timeout = setTimeout(() => {
+        setLotusClass(`absolute
+          top-3/4 left-1/2
+          -translate-x-1/2 -translate-y-1/2
+          w-[160px]
+          opacity-0
+          z-999
+          transition-all duration-500 ease-in-out
+        `)
+      }, 500)
+  
+      return () => clearTimeout(timeout)
+    }, [setLotusClass, setLotusStyle])
   
   React.useEffect(() => {
     const link = document.createElement('link');
@@ -371,7 +410,7 @@ const handleSubmit = async (e) => {
               onClick={() => setIsLogin(v => !v)}
               className={`w-full text-xs pt-1.5 text-[#FFD98A] relative
                         after:absolute after:left-1/2 after:-bottom-0.5
-                        after:h-[1px] after:w-0 after:bg-[#FFD98A]
+                        after:h-px after:w-0 after:bg-[#FFD98A]
                         after:transition-all after:duration-300
                         after:-translate-x-1/2 hover:after:w-[70%] cursor-pointer ${isAdminLogin ? "hidden" : ""} `}
             >

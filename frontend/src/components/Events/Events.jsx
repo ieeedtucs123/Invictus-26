@@ -1,7 +1,9 @@
 'use client';
-import React, { useState } from 'react';
-import { Search, ChevronDown } from 'lucide-react';
+import React, { useState,useEffect } from 'react';
+import { Search, ChevronDown, Navigation, Router } from 'lucide-react';
 import CardComponent from './CardComponent';
+import SnackBar from "@/utils/snackBar";
+import { useRouter } from 'next/router';
 
 // Reusable Dropdown Component
 const CustomDropdown = ({ label, options, icon: Icon }) => {
@@ -56,7 +58,32 @@ const SearchInput = () => {
   );
 };
 
-export default function Events() {
+export default function Events({setLotusClass, setLotusStyle}) {
+    const [show, setShow] = useState(true);
+    const SNACKBAR_TIMEOUT = 3000;
+    const router = useRouter();
+
+    useEffect(() => {
+      if (typeof window === "undefined") return;
+
+      const shown = localStorage.getItem("SnackbarShownEvents");
+      if(!shown){
+        setShow(true);
+        return;
+      }
+      const lastShown = Number(shown);
+      // console.log(Date.now() - lastShown);
+      if (Date.now() - lastShown < SNACKBAR_TIMEOUT || localStorage.getItem("ModelSeen") ) {
+        setShow(false);
+      }
+    }, []);
+
+    const handleClose = () => {
+      setShow(false);
+      localStorage.setItem("SnackbarShownEvents",  Date.now().toString());
+    };
+
+
   return (
     <div 
       className=" w-full relative overflow-x-hidden "
@@ -65,10 +92,14 @@ export default function Events() {
       <div className="container mx-auto px-4 pt-10 flex flex-col items-center relative z-10">
         
         <h1 
-          className="invictus-heading py-12 text-[4.7rem] lg:text-[7rem]"
+          className="invictus-heading pt-12 text-[4.7rem] lg:text-[7rem]"
         >
           EVENTS
         </h1>
+
+        <div className="invictus-subheading pb-15 text-[0.8em] md:text-[1.1em]">
+          The passionate minds and dedicated leaders driving Invictus forward.
+        </div>
 
         <div className="w-full max-w-5xl grid grid-cols-1 sm:grid-cols-2 md:flex md:flex-row gap-4 justify-center items-start mb-16">
           
@@ -98,10 +129,24 @@ export default function Events() {
 
         {/* CARD CAROUSEL SECTION */}
         <div className="w-full max-w-6xl">
-           <CardComponent />
+           <CardComponent setLotusClass={setLotusClass} setLotusStyle={setLotusStyle}/>
         </div>
 
       </div>
+        {show && (
+          <SnackBar
+            text="See your registered events or workshops in your Profile"
+            actionText={
+              <span className="flex h-6 items-center">
+              <Navigation />
+              </span>
+            }
+            onAction={() => router.replace("/Dashboard")}
+            onClose={handleClose}
+          />
+        )}
+
+                    
     </div>
   );
 }
