@@ -48,7 +48,7 @@ const GRID_CLASSES = [
 
 /* ---------------- COMPONENT ---------------- */
 
-export default function Gallery({ setLotusClass, setLotusStyle }) {
+export default function Gallery({ setLotusClass, setLotusStyle, setFigureClass, setFigureStyle }) {
   const [category, setCategory] = useState("FUN");
 
   /* 🌸 LOTUS POSITION — RELATIVE TO GALLERY HEADING */
@@ -77,6 +77,28 @@ export default function Gallery({ setLotusClass, setLotusStyle }) {
       transition-all duration-700 ease-in-out
     `);
   }, [setLotusClass, setLotusStyle]);
+
+  useEffect(() => {
+    if (!setFigureClass || !setFigureStyle) return;
+  
+    setFigureStyle({
+      left: "0px",
+      bottom: "0px",
+      transform: "translate(10%, 10%)",
+    });
+  
+    setFigureClass(`
+      fixed
+      w-[120px]
+      md:w-[140px]
+      lg:w-[190px]
+      pointer-events-none
+      z-[30]
+      opacity-90
+      drop-shadow-[0_0_30px_rgba(255,215,138,0.4)]
+      transition-all duration-700 ease-out
+    `);
+  }, [setFigureClass, setFigureStyle]);
 
   return (
     <div className="relative w-full bg-transparent">

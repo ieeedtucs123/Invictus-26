@@ -4,7 +4,7 @@ import { Eye,EyeOff } from 'lucide-react';
 import { useRouter } from "next/router";
 
 
-export default function Authpage({setLotusClass, setLotusStyle}) {
+export default function Authpage({setLotusClass, setLotusStyle, setFigureClass, setFigureStyle}) {
   const { user, isAdmin, login, register, Adminlogin, loading, regError } = useContext(AuthContext);
   const backend_URL = "http://localhost:3004/";  
   const [isLogin, setIsLogin] = useState(true);
@@ -66,6 +66,43 @@ export default function Authpage({setLotusClass, setLotusStyle}) {
   
       return () => clearTimeout(timeout)
     }, [setLotusClass, setLotusStyle])
+
+    useEffect(() => {
+      if (!setFigureClass || !setFigureStyle) return;
+    
+      setFigureStyle({
+        left: "0px",
+        bottom: "0px",
+        transform: "translate(10%, 10%)",
+      });
+    
+      setFigureClass(`
+        fixed
+        w-[120px]
+        md:w-[140px]
+        lg:w-[190px]
+        pointer-events-none
+        z-[30]
+        opacity-90
+        drop-shadow-[0_0_30px_rgba(255,215,138,0.4)]
+        transition-all duration-700 ease-out
+      `)
+
+      const timeout = setTimeout(() => {
+        setFigureClass(`fixed
+        w-[120px]
+        md:w-[140px]
+        lg:w-[190px]
+        pointer-events-none
+        z-[30]
+        opacity-0
+        drop-shadow-[0_0_30px_rgba(255,215,138,0.4)]
+        transition-all duration-700 ease-out
+        `)
+      }, 500)
+  
+      return () => clearTimeout(timeout)
+    }, [setFigureClass, setFigureStyle]);
   
   React.useEffect(() => {
     const link = document.createElement('link');

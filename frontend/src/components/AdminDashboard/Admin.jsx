@@ -5,7 +5,7 @@ import Papa from "papaparse";
 // CONFIGURATION: Change this to your actual backend URL
 const API_BASE_URL = "http://localhost:3004/api"; 
 
-export default function Admin({ setLotusClass, setLotusStyle }) {
+export default function Admin({ setLotusClass, setLotusStyle, setFigureClass, setFigureStyle }) {
   // State for Events
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -33,6 +33,28 @@ export default function Admin({ setLotusClass, setLotusStyle }) {
     latitude: '',
     longitude: ''
   });
+
+  useEffect(() => {
+    if (!setFigureClass || !setFigureStyle) return;
+  
+    setFigureStyle({
+      left: "0px",
+      bottom: "0px",
+      transform: "translate(10%, 10%)",
+    });
+  
+    setFigureClass(`
+      fixed
+      w-[120px]
+      md:w-[140px]
+      lg:w-[190px]
+      pointer-events-none
+      z-[30]
+      opacity-90
+      drop-shadow-[0_0_30px_rgba(255,215,138,0.4)]
+      transition-all duration-700 ease-out
+    `);
+  }, [setFigureClass, setFigureStyle]);
 
   // --- 1. INITIAL DATA FETCHING ---
   useEffect(() => {

@@ -26,7 +26,7 @@ export default function App({ Component, pageProps }) {
       />
     <AuthProvider>
       
-      {/* {router.pathname === '/model' ? null : <Navbar />} */}
+      {router.pathname === '/model' ? null : <Navbar />}
       {router.pathname === '/model' ? null : <CommonLotus className={lotusClass} style={lotusStyle} />}
       {router.pathname === '/model' ? null : <LandingFigure className={figureClass} style={figureStyle} />}
 

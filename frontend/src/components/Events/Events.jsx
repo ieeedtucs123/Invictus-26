@@ -58,7 +58,7 @@ const SearchInput = () => {
   );
 };
 
-export default function Events({setLotusClass, setLotusStyle}) {
+export default function Events({setLotusClass, setLotusStyle, setFigureClass, setFigureStyle}) {
     const [show, setShow] = useState(true);
     const SNACKBAR_TIMEOUT = 3000;
     const router = useRouter();
@@ -77,6 +77,28 @@ export default function Events({setLotusClass, setLotusStyle}) {
         setShow(false);
       }
     }, []);
+
+    useEffect(() => {
+      if (!setFigureClass || !setFigureStyle) return;
+    
+      setFigureStyle({
+        left: "0px",
+        bottom: "0px",
+        transform: "translate(10%, 10%)",
+      });
+    
+      setFigureClass(`
+        fixed
+        w-[120px]
+        md:w-[140px]
+        lg:w-[190px]
+        pointer-events-none
+        z-[30]
+        opacity-90
+        drop-shadow-[0_0_30px_rgba(255,215,138,0.4)]
+        transition-all duration-700 ease-out
+      `);
+    }, [setFigureClass, setFigureStyle]);
 
     const handleClose = () => {
       setShow(false);
