@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Navbar from "@/components/NavBar/Navbar";
 import CommonLotus from "@/utils/commonLotus";
+import LandingFigure from "@/utils/landingFigure";
 import "@/styles/globals.css";
 import { useRouter } from "next/router";
 import Script from "next/script";
@@ -9,6 +10,10 @@ import Script from "next/script";
 export default function App({ Component, pageProps }) {
   const [lotusStyle, setLotusStyle] = useState({});
   const [lotusClass, setLotusClass] = useState(
+    "top-0 left-0 w-[180px] opacity-100 hidden"
+  );
+  const [figureStyle,setFigureStyle] = useState({});
+  const [figureClass, setFigureClass] = useState(
     "top-0 left-0 w-[180px] opacity-100"
   );
   const router = useRouter();
@@ -21,10 +26,11 @@ export default function App({ Component, pageProps }) {
       />
     <AuthProvider>
       
-      {router.pathname === '/model' ? null : <Navbar />}
-       {router.pathname === '/model' ? null : <CommonLotus className={lotusClass} style={lotusStyle} />}
+      {/* {router.pathname === '/model' ? null : <Navbar />} */}
+      {router.pathname === '/model' ? null : <CommonLotus className={lotusClass} style={lotusStyle} />}
+      {router.pathname === '/model' ? null : <LandingFigure className={figureClass} style={figureStyle} />}
 
-      <Component {...pageProps} setLotusClass={setLotusClass} setLotusStyle={setLotusStyle} />
+      <Component {...pageProps} setLotusClass={setLotusClass} setLotusStyle={setLotusStyle} setFigureClass={setFigureClass} setFigureStyle={setFigureStyle}/>
     </AuthProvider>
 
     </>
