@@ -14,11 +14,12 @@ export default function Navbar() {
     { name: "Workshop", href: "/Workshops" },
     { name: "Team", href: "/Team" },
     { name: "Sponsor", href: "/Sponsors" },
-    { name: "Gallery", href: "/Gallery" }
+    { name: "Gallery", href: "/Gallery" },
+    { name: "About Us", href: "/AboutUs" } // Added About Us
   ];
 
   //hindi/sanskrit numeric characters
-  const nums = ['०१', '०२', '०३', '०४', '०५', '०६'];
+  const nums = ['०१', '०२', '०३', '०४', '०५', '०६', '०७']; // Added one more for About Us
 
   const authIndex = navItems.length; // PROFILE / LOGIN pill index
 

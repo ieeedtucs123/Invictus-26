@@ -5,6 +5,7 @@ import CommonLotus from "@/utils/commonLotus";
 import "@/styles/globals.css";
 import { useRouter } from "next/router";
 import Script from "next/script";
+import '../components/AboutUs/AboutusScroller.css';
 
 export default function App({ Component, pageProps }) {
   const [lotusStyle, setLotusStyle] = useState({});
