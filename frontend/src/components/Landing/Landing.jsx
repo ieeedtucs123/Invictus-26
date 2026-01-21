@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { useState } from "react";
 import SnackBar from "@/utils/snackBar";
 
-export default function Landing({ setLotusClass, setLotusStyle }) {
+export default function Landing({ setLotusClass, setLotusStyle, setFigureClass, setFigureStyle }) {
 
     const [show, setShow] = useState(true);
     const SNACKBAR_TIMEOUT = 10000;
@@ -41,69 +41,168 @@ export default function Landing({ setLotusClass, setLotusStyle }) {
       setShow(false);
       localStorage.setItem("SnackbarShownLanding",  Date.now().toString());
     }
+    useEffect(() => {
+    if (!setLotusClass || !setLotusStyle) return;
+
+    setLotusStyle({
+      left: "50%",
+    animation: "lotusFloat 5s ease-in-out infinite",
+    filter: "drop-shadow(0 0 22px rgba(255,215,138,0.65))",
+    willChange: "transform",
+    });
+
+    setLotusClass(`
+      fixed
+      max-[380px]:bottom-[20%]
+      bottom-[22%]
+      md:bottom-[29%]
+      w-[80px] md:w-[100px] lg:w-[110px]
+      opacity-100
+      pointer-events-none
+      z-[60]
+      transition-all duration-1000 ease-in-out
+
+    `);
+  }, [setLotusClass, setLotusStyle]);
+
 
   useEffect(() => {
-    if (!setLotusClass || !setLotusStyle) return
+    if (!setFigureClass || !setFigureStyle) return;
 
-    // Position lotus slightly above bottom
-    setLotusStyle({
-      left: '50%',
-      bottom: '140px',
-      transform: 'translateX(-50%)',
-    })
+    setFigureStyle({
+      left: "49%",
+      bottom: "0px",
+      transform: "translateX(-50%)",
+    });
 
-    setLotusClass(`fixed
-      w-[140px] md:w-[160px] lg:w-[200px]
-      opacity-90
-      drop-shadow-[0_0_25px_rgba(255,215,138,0.8)]
+    setFigureClass(`
+      fixed bottom-0
+      w-[240px]
+      max-[380px]:w-[160px]
+      max-[400px]:w-[280px]
+      md:w-[280px]
+      lg:w-[17.625vw]
+      drop-shadow-[0_0_30px_rgba(255,215,138,0.55)]
       transition-all duration-1000 ease-in-out
-    `)
-  }, [setLotusClass, setLotusStyle])
+      z-[40]
+    `);
+  }, [setFigureClass, setFigureStyle]);
 
-  
 
   return (
-    
-    <div className="min-h-screen w-full flex flex-col items-center justify-items-center pt-24 pb-10 relative overflow-hidden">
+    <div className="min-h-screen w-full flex flex-col items-center pt-6 relative overflow-hidden bg-transparent">
 
-      <div className="text-center mt-6">
-        <h1
+      {/* WORD ART */}
+      <div className="relative z-10 px-4 w-full flex justify-center">
+        <img
+          src="/wordArt.svg"
+          alt="Invictus 26"
           className="
-            invictus-heading
-            text-[2rem] md:text-[6rem] lg:text-[7rem]
-            tracking-widest
+            w-full max-w-[320px] md:max-w-[560px] lg:max-w-[680px]
+            drop-shadow-[0_8px_30px_rgba(255,215,138,0.4)]
+            select-none
+            animate-float
+          "
+        />
+      </div>
+
+      {/* TAGLINE */}
+      <h1
+        className="
+          mt-6 md:mt-4
+          text-center
+          text-xl md:text-4xl lg:text-5xl
+          font-extrabold
+          tracking-wider
+          bg-gradient-to-b from-[#e0bd4a] to-[#8f7326]
+          bg-clip-text text-transparent
+          invictus-outline-text
+          drop-shadow-sm
+          px-4
+        "
+      >
+        Technology, Threaded in Tradition
+      </h1>
+
+      {/* GOLD SEPARATOR */}
+      <div className="mt-4 h-[2px] w-[60%] md:w-[40%] bg-gradient-to-r from-transparent via-[#C5A059] to-transparent opacity-80" />
+
+      {/* DATE */}
+      <p
+        className="
+          mt-4
+          text-center
+          text-3xl md:text-6xl
+          font-bold
+          tracking-[0.15em]
+          text-[#FFF6E0]
+          font-['Orbitron']
+          relative z-10
+        "
+        style={{
+          textShadow: "0px 0px 15px rgba(197, 160, 89, 0.6)",
+        }}
+      >
+        9-11
+        <sup className="text-[0.5em] ml-1 text-[#D4AF37]">TH</sup>
+        <span className="ml-3">FEB'26</span>
+      </p>
+
+      {/* BUTTONS */}
+      <div className="flex flex-col md:flex-row gap-4 md:gap-24 mt-10 md:mt-12 w-full px-8 md:px-0 justify-center items-center">
+        
+        {/* JOIN GROUP - Darker Gold/Bronze Style */}
+        <button
+          className="
+            group relative
+            w-full md:w-auto
+            px-6 py-3.5
+            rounded-full
+            font-bold tracking-widest uppercase text-sm md:text-base
+            text-[#FFEeb0]
+            
+            bg-gradient-to-b from-[#8E6E24] via-[#684F16] to-[#45330B]
+            border border-[#A88732]
+            
+            shadow-[0_4px_20px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.2)]
+            
+            transition-all duration-300 ease-out
+            hover:scale-105
+            hover:shadow-[0_0_25px_rgba(197,160,89,0.5)]
+            hover:border-[#FFD700]
+            active:scale-95
           "
         >
-          INVICTUS'26
-        </h1>
+          <span className="relative z-10">Join Group</span>
+        </button>
+
+        {/* REGISTER - Lighter Cream/Gold Style */}
+        <button
+          className="
+            group relative
+            w-full md:w-auto
+            px-10 py-3.5
+            min-w-[180px]
+            rounded-full
+            font-bold tracking-widest uppercase text-sm md:text-base
+            text-[#5C450E]
+            bg-gradient-to-b from-[#FFFBEB] via-[#F3E3B6] to-[#D4AF37]
+            border border-[#FDE68A]
+            
+            shadow-[0_4px_20px_rgba(212,175,55,0.3),inset_0_1px_0_rgba(255,255,255,0.8)]
+            
+            transition-all duration-300 ease-out
+            hover:scale-105
+            hover:shadow-[0_0_30px_rgba(255,215,138,0.6)]
+            hover:brightness-110
+            active:scale-95
+          "
+        >
+          <span className="relative z-10">Register</span>
+        </button>
       </div>
 
-      <div className="w-full flex flex-col items-center justify-center h-[400px]">
-        <div className="text-center space-y-4 p-8 border-4 border-[#C5A059] rounded-2xl bg-[#FFF8E7] shadow-xl">
-          <h2 className="text-[#C5A059] text-4xl md:text-7xl font-bold font-serif tracking-widest">
-            COMING SOON
-          </h2>
-          <div className="w-24 h-1 bg-[#C5A059] mx-auto rounded-full" />
-          <p className="text-[#7A6C45] font-bold uppercase tracking-widest mt-4">
-            Stay tuned for amazing events
-          </p>
-        </div>
-      </div>
-
-      <img
-        src="/robothand.svg"
-        alt="Robotic Hand"
-        className="
-          pointer-events-none
-          absolute bottom-0
-          left-1/2
-          -translate-x-1/2
-          w-[260px] md:w-[360px] lg:w-[420px]
-          opacity-90
-          transition-all duration-700
-        "
-      />
-
+      {/* SNACKBAR */}
       {show && (
         <SnackBar
           text="Do you wish to see the live 3d model on your next visit as well?"

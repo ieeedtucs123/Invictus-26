@@ -25,6 +25,19 @@
   }
 
   @layer utilities {
+@keyframes lotusFloat {
+  0% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(calc(-50% + 3px)) translateY(-4px);
+  }
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+  
   .invictus-heading {
     font-family: 'Orbitron', sans-serif;
     font-weight: 1000;
@@ -43,7 +56,7 @@
     .invictus-subheading {
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
-    background: linear-gradient(to bottom, #837446, #6E5B1D);
+    background: linear-gradient(to bottom, #a69153, #6E5B1D);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -51,22 +64,61 @@
     filter: brightness(1.05) saturate(1.15);
     margin-top: 0.5rem;
   }
+
+  .invictus-text {
+    font-family: 'Orbitron';
+    opacity: 0.92;
+    filter: brightness(1.05) saturate(1.15);
+    /* filter: drop-shadow(4px 4px 1px rgba(0,0,0,0.25)); */
+    /* line-height: 1.7; */
+    /* letter-spacing: 0.83px; */
+  }
+
+  .invictus-outline-text {
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.85);
+  text-shadow:
+    0 1px 2px rgba(0,0,0,0.35),
+    0 0 10px rgba(255,215,138,0.4);
+}
+
+@media (max-width: 768px) {
+  .invictus-outline-text {
+    -webkit-text-stroke: 0;
+    text-shadow:     
+    0 1px 2px rgba(0,0,0,0.35),
+    0 0 10px rgba(255,215,138,0.4);;
+  }
 }
 
 }
-html, body {
-  height:fit-content;
-  margin: 0;
+
 }
 
-
-body {
-  font-family: Arial, Helvetica, sans-serif;
+body::before { 
+/* using before to add background image because want bg image to stay at one place */
+  content: "";
+  position: fixed;
+  inset: 0;
   background-image: url("/backdrop.png");
   background-repeat: no-repeat;
   background-size: cover;
-  min-height: 100vh;
+  background-position: center;
+  z-index: -1;
 }
+body::after { /* for adding a blur/darkness effect  */
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.24);
+  z-index: -1;
+}
+
+html,
+body {
+  min-height: 100%;
+  background: transparent;
+}
+
 
 .loader {
   position: fixed;
@@ -146,4 +198,3 @@ body.cursor-hidden {
 .animate-slideUp {
   animation: slideInFromLeft 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
-
