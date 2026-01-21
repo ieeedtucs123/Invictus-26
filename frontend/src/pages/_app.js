@@ -1,4 +1,4 @@
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Navbar from "@/components/NavBar/Navbar";
 import CommonLotus from "@/utils/commonLotus";
@@ -19,19 +19,30 @@ export default function App({ Component, pageProps }) {
   const router = useRouter();
 
   const [displayNavbar, setDisplayNavbar] = useState(false);
+  const [displayWordArt, setDisplayWordArt] = useState(false);
 
   useEffect(() => {
-    if (router.pathname !== "/Home") {
+    //always show navbar by default when route changes
+    if (router.pathname !== "/Home" && router.pathname !== "/model") {
       setDisplayNavbar(true);
-      return;
     }
 
-    const handleScroll = () => { setDisplayNavbar(window.scrollY > 150); };
+    //on home reset first, observer will correct it
+    if (router.pathname === "/Home") {
+      setDisplayNavbar(false);
+    }
+  }, [router.pathname]);
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
+  useEffect(() => {
+    //for any route except home fixed wordArt must be visible
+    if (router.pathname !== "/Home" && router.pathname !== "/model") {
+      setDisplayWordArt(true);
+    }
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    //on home observer decides (start hidden)
+    if (router.pathname === "/Home") {
+      setDisplayWordArt(false);
+    }
   }, [router.pathname]);
       
 
@@ -43,13 +54,34 @@ export default function App({ Component, pageProps }) {
       />
     <AuthProvider>
       
-      {router.pathname === '/model' || !displayNavbar ? null : <Navbar className={`fixed top-0 left-0 w-full z-50 transform 
-      transition-transform transition-opacity duration-300 ${displayNavbar ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
-      }`} />}
+      {router.pathname !== "/model" && (
+        <Navbar
+          className={`
+            fixed z-50
+            transform transition-all duration-700 ease-in-out
+            ${displayNavbar
+              ? "translate-y-0 opacity-100 pointer-events-auto"
+              : "-translate-y-full opacity-0 pointer-events-none"}
+          `}/>)}
+      {router.pathname !== "/model" && (
+        <img
+          src="/wordArt.svg"
+          alt="Invictus 26"
+          onClick={() => router.push('/Home')}
+          className={`
+            fixed top-1 left-0 z-60
+            w-[240px] md:w-[320px] cursor-pointer
+            transform transition-all duration-700 ease-in-out
+            ${displayWordArt
+              ? "opacity-100 translate-y-0 pointer-events-auto"
+              : "opacity-0 -translate-y-full pointer-events-none"}
+          `}/>)}
       {router.pathname === '/model' ? null : <CommonLotus className={lotusClass} style={lotusStyle} />}
       {router.pathname === '/model' ? null : <LandingFigure className={figureClass} style={figureStyle} />}
 
-      <Component {...pageProps} setLotusClass={setLotusClass} setLotusStyle={setLotusStyle} setFigureClass={setFigureClass} setFigureStyle={setFigureStyle}/>
+      <Component {...pageProps} setLotusClass={setLotusClass} setLotusStyle={setLotusStyle} setFigureClass={setFigureClass} 
+      setFigureStyle={setFigureStyle} setDisplayNavbar={setDisplayNavbar} displayWordArt={displayWordArt} 
+      setDisplayWordArt={setDisplayWordArt} />
     </AuthProvider>
 
     </>

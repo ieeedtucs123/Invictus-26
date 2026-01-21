@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { AuthContext } from "@/contexts/AuthContext";
 import { LogOut } from "lucide-react";
 
-export default function Navbar() {
+export default function Navbar({ className = "" }) {
   const { user, logout } = useContext(AuthContext);
   const router = useRouter();
 
@@ -74,7 +74,7 @@ export default function Navbar() {
 
   return (
     <div className="flex justify-center">
-      <nav className={`fixed top-4 right-0 w-auto md:w-fit z-[50] flex bg-transparent backdrop-blur-md text-black rounded-l-2xl rounded-r-2xl md:rounded-l-4xl border-3 border-[#D4AF37] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.15)]`}>
+      <nav className={`${className} fixed top-4 right-0 w-auto md:w-fit z-[50] flex bg-transparent backdrop-blur-md text-black rounded-l-2xl rounded-r-2xl md:rounded-l-4xl border-3 border-[#D4AF37] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.15)]`}>
         <div className="px-4 py-3 flex items-center">
 
           {/* desktop menu */}
