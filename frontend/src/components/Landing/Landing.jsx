@@ -59,7 +59,7 @@ export default function Landing({ setLotusClass, setLotusStyle, setFigureClass, 
       w-[80px] md:w-[100px] lg:w-[110px]
       opacity-100
       pointer-events-none
-      z-[60]
+      z-[30]
       transition-all duration-1000 ease-in-out
 
     `);
@@ -84,7 +84,7 @@ export default function Landing({ setLotusClass, setLotusStyle, setFigureClass, 
       lg:w-[17.625vw]
       drop-shadow-[0_0_30px_rgba(255,215,138,0.55)]
       transition-all duration-1000 ease-in-out
-      z-[40]
+      z-[20]
     `);
   }, [setFigureClass, setFigureStyle]);
 

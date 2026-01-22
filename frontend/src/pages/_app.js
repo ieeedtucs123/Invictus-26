@@ -10,11 +10,11 @@ import Script from "next/script";
 export default function App({ Component, pageProps }) {
   const [lotusStyle, setLotusStyle] = useState({});
   const [lotusClass, setLotusClass] = useState(
-    "top-0 left-0 w-[180px] opacity-100 hidden"
+    "top-0 left-0 w-[180px] opacity-0"
   );
   const [figureStyle,setFigureStyle] = useState({});
   const [figureClass, setFigureClass] = useState(
-    "top-0 left-0 w-[180px] opacity-100"
+    "top-0 left-0 w-[180px] opacity-0"
   );
   const router = useRouter();
 

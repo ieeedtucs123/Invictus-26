@@ -4,7 +4,7 @@ import { AuthContext } from "@/contexts/AuthContext";
 import { LogOut } from "lucide-react";
 
 export default function Navbar() {
-  const { user, logout } = useContext(AuthContext);
+  const { user, isAdmin, logout } = useContext(AuthContext);
   const router = useRouter();
 
   //sections and routes
@@ -40,7 +40,8 @@ export default function Navbar() {
 
     if (
       router.pathname === "/login" ||
-      router.pathname === "/Dashboard"
+      router.pathname === "/Dashboard" ||
+      router.pathname === "/Admin"
     ) {
       index = authIndex;
     }
@@ -135,7 +136,9 @@ export default function Navbar() {
                   e.preventDefault();
                   if (user) {
                     router.push("/Dashboard");
-                  } else {
+                  } else if(isAdmin){
+                    router.push("/Admin");
+                  }else{
                     router.push("/login");
                   }
                 }}
@@ -152,7 +155,7 @@ export default function Navbar() {
                     : "hover:text-[#D4AF37] hover:drop-shadow-[0_0_1rem_rgba(212,175,55,0.8)]"
                   }
                 `}>
-                {user ? "PROFILE" : "LOGIN"}
+                {user || isAdmin ? "PROFILE" : "LOGIN"}
               </button>
             </div>
 
@@ -168,6 +171,17 @@ export default function Navbar() {
                 <LogOut size={20} strokeWidth={2.5} className="text-[#D4AF37] group-hover:text-white transition-colors duration-300" />
               </button>
             )}
+            {isAdmin && (
+            <button
+                onClick={() => {
+                  logout();
+                  router.push("/login");
+                }}
+                className="ml-2 p-2 transition-colors duration-300 rounded-md hover:bg-[#D4AF37] group cursor-pointer"
+                title="Logout">
+                <LogOut size={30} strokeWidth={2.5} className="text-[#D4AF37]" />
+              </button>
+          )}
           </div>
 
           {/* mobile menu btn */}
@@ -223,6 +237,17 @@ export default function Navbar() {
           </button>
 
           {user && (
+            <button
+                onClick={() => {
+                  logout();
+                  router.push("/login");
+                }}
+                className="ml-2 p-2 transition-colors duration-300 rounded-md hover:bg-[#D4AF37] group cursor-pointer"
+                title="Logout">
+                <LogOut size={30} strokeWidth={2.5} className="text-[#D4AF37]" />
+              </button>
+          )}
+          {isAdmin && (
             <button
                 onClick={() => {
                   logout();
