@@ -14,8 +14,6 @@ export default function FAQ() {
 
   return (
     <div className="min-h-screen w-full relative overflow-x-hidden font-sans pt-28 pb-12 px-6">
-      
-
 
       {/* CONTENT */}
       <div className="relative z-10 max-w-4xl mx-auto">

@@ -38,8 +38,8 @@ export function ThreeDText({
       (opacity - ref.current.material.opacity) * 0.1;
 
     // subtle float
-    ref.current.position.y =
-      position[1] + Math.sin(clock.elapsedTime * 3.1) * 0.015;
+    // ref.current.position.y =
+    //   position[1] + Math.sin(clock.elapsedTime * 3.1) * 0.015;
   });
 
   return (
