@@ -22,6 +22,7 @@ import { Boat } from "./Boat";
 import { Mountain } from "./Mountain";
 import { Shiva } from "./Shiva";
 import { ThreeDText, MultiLineText3D } from "./3dText";
+import { useRouter } from "next/router";
 
 export function SceneContent({
   setcurrSection,
@@ -32,6 +33,7 @@ export function SceneContent({
   const scroll = useScroll();
   const [sun, setSun] = useState();
   const [activeSection, setActiveSection] = useState(0);
+  const router = useRouter();
 
   // Camera keyframes state
   const [cameraShots, setCameraShots] = useState([
@@ -209,7 +211,7 @@ export function SceneContent({
           <group position={[0, -0.3, isMobile ? 13.4 : 8]} scale={0.1}>
             <mesh
               onClick={() => {
-                console.log("oo");
+                router.push("/Home");
               }}
               onPointerOver={(e) => {
                 document.body.style.cursor = "pointer";

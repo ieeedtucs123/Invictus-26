@@ -3,18 +3,35 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import Navbar from "@/components/NavBar/Navbar";
 import CommonLotus from "@/utils/commonLotus";
 import LandingFigure from "@/utils/landingFigure";
+import { LoaderProvider } from "@/contexts/LoaderContext";
+import { useLoader } from "@/contexts/LoaderContext";
+import Loader from "@/utils/loader";
 import "@/styles/globals.css";
 import { useRouter } from "next/router";
 import Script from "next/script";
 
+function DomReady() {
+  const { setDomReady } = useLoader();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDomReady(true);
+    }, 1000); // 1 second delay
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return null;
+}
+
 export default function App({ Component, pageProps }) {
   const [lotusStyle, setLotusStyle] = useState({});
   const [lotusClass, setLotusClass] = useState(
-    "top-0 left-0 w-[180px] opacity-0"
+    "top-0 left-0 w-[180px] opacity-0",
   );
   const [figureStyle, setFigureStyle] = useState({});
   const [figureClass, setFigureClass] = useState(
-    "top-0 left-0 w-[180px] opacity-0"
+    "top-0 left-0 w-[180px] opacity-0",
   );
   const router = useRouter();
 
@@ -44,7 +61,6 @@ export default function App({ Component, pageProps }) {
       setDisplayLogo(false);
     }
   }, [router.pathname]);
-      
 
   return (
     <>
@@ -52,23 +68,29 @@ export default function App({ Component, pageProps }) {
         src={`https://maps.googleapis.com/maps/api/js?key=${process.env.API_KEY}`}
         strategy="beforeInteractive"
       />
-    <AuthProvider>
-      
-      {router.pathname !== "/model" && (
-        <Navbar
-          className={`
+      <AuthProvider>
+        <LoaderProvider>
+          <DomReady />
+          <Loader />
+          {router.pathname !== "/model" && (
+            <Navbar
+              className={`
             fixed z-50
             transform transition-all duration-700 ease-in-out
-            ${displayNavbar
-              ? "translate-y-0 opacity-100 pointer-events-auto"
-              : "-translate-y-full opacity-0 pointer-events-none"}
-          `}/>)}
-      {router.pathname !== "/model" && (
-        <img
-        src="/logo.png"
-        alt="Invictus'26 Logo"
-        onClick={() => router.push('/Home')}
-        className={`
+            ${
+              displayNavbar
+                ? "translate-y-0 opacity-100 pointer-events-auto"
+                : "-translate-y-full opacity-0 pointer-events-none"
+            }
+          `}
+            />
+          )}
+          {router.pathname !== "/model" && (
+            <img
+              src="/logo.png"
+              alt="Invictus'26 Logo"
+              onClick={() => router.push("/")}
+              className={`
           fixed top-1 left-2 z-60
           w-[100px] md:w-[150px] cursor-pointer
           transform transition-all duration-700 ease-in-out
@@ -78,15 +100,28 @@ export default function App({ Component, pageProps }) {
           hover:scale-105
 
           ${displayLogo ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-full pointer-events-none"}
-        `}/>)}
-      {router.pathname === '/model' ? null : <CommonLotus className={lotusClass} style={lotusStyle} />}
-      {router.pathname === '/model' ? null : <LandingFigure className={figureClass} style={figureStyle} />}
+        `}
+            />
+          )}
+          {router.pathname === "/model" ? null : (
+            <CommonLotus className={lotusClass} style={lotusStyle} />
+          )}
+          {router.pathname === "/model" ? null : (
+            <LandingFigure className={figureClass} style={figureStyle} />
+          )}
 
-      <Component {...pageProps} setLotusClass={setLotusClass} setLotusStyle={setLotusStyle} setFigureClass={setFigureClass} 
-      setFigureStyle={setFigureStyle} setDisplayNavbar={setDisplayNavbar} displayLogo={displayLogo} 
-      setDisplayLogo={setDisplayLogo} />
-    </AuthProvider>
-
+          <Component
+            {...pageProps}
+            setLotusClass={setLotusClass}
+            setLotusStyle={setLotusStyle}
+            setFigureClass={setFigureClass}
+            setFigureStyle={setFigureStyle}
+            setDisplayNavbar={setDisplayNavbar}
+            displayLogo={displayLogo}
+            setDisplayLogo={setDisplayLogo}
+          />
+        </LoaderProvider>
+      </AuthProvider>
     </>
   );
 }
