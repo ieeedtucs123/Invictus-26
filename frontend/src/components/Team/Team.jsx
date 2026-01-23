@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react'
 import TeamCarousel from '@/utils/Team Carousel/TeamCarousel'
 
-export default function TeamComponent({ setLotusClass, setLotusStyle }) {
+export default function TeamComponent({ setLotusClass, setLotusStyle, setFigureClass, setFigureStyle }) {
 
   /* ---------------- MOVE GLOBAL LOTUS NEXT TO "TEAM" ---------------- */
   useEffect(() => {
@@ -30,11 +30,37 @@ export default function TeamComponent({ setLotusClass, setLotusStyle }) {
       transform: "translate(-50%, -50%)",
     });
 
-    setLotusClass(`absolute
-      w-[90px] md:w-[120px] lg:w-[150px]
-      opacity-80
+    setLotusClass(`fixed
+      w-[8vw]
+      opacity-100
+      pointer-events-none
+      z-[30]
+      transition-all duration-1000 ease-in-out
+
     `);
   }, [setLotusStyle, setLotusClass]);
+
+  useEffect(() => {
+    if (!setFigureClass || !setFigureStyle) return;
+  
+    setFigureStyle({
+      left: "0px",
+      bottom: "0px",
+      transform: "translate(10%, 10%)",
+    });
+  
+    setFigureClass(`
+      fixed
+      w-[120px]
+      md:w-[140px]
+      lg:w-[190px]
+      pointer-events-none
+      z-[30]
+      opacity-90
+      drop-shadow-[0_0_30px_rgba(255,215,138,0.4)]
+      transition-all duration-700 ease-out
+    `);
+  }, [setFigureClass, setFigureStyle]);
 
 
   return (
@@ -49,19 +75,6 @@ export default function TeamComponent({ setLotusClass, setLotusStyle }) {
           w-[400px] md:w-[500px] xl:w-[600px]
           bottom-0 right-0
           translate-x-[35%] translate-y-[35%]
-          brightness-125 saturate-125
-          transition-all duration-500 opacity-100
-        "
-      />
-
-      <img
-        src="/Team/peacock.webp"
-        alt="Decorative Peacock"
-        className="
-          fixed z-[10] pointer-events-none
-          w-[300px] md:w-[400px] xl:w-[550px]
-          bottom-0 left-0
-          translate-x-[-30%] translate-y-[15%]
           brightness-125 saturate-125
           transition-all duration-500 opacity-100
         "
@@ -92,7 +105,11 @@ export default function TeamComponent({ setLotusClass, setLotusStyle }) {
           {/* LOTUS ANCHOR — exact placement reference */}
           <span
             data-lotus-anchor
-            className=" absolute right-[-2.5rem] md:right-[-3.5rem] lg:right-[-4.5rem] top-1/2 -translate-y-1/2 w-0 h-0"
+            className='    absolute
+    right-[-4.8rem]    
+    top-1/2
+    -translate-y-1/2
+    w-1 h-1'
           />
         </div>
 
@@ -103,7 +120,7 @@ export default function TeamComponent({ setLotusClass, setLotusStyle }) {
         {/* LOTUS ANCHOR — mobile between heading & carousel */}
         <span
           data-lotus-anchor-mobile
-          className="block w-0 h-0 md:hidden"
+          className='fixed top-[20%] left-[30%]'
         />
 
       </div>

@@ -1,7 +1,7 @@
 import React from 'react'
 import Landing from '@/components/Landing/Landing'
-export default function Home({setLotusClass, setLotusStyle}) {
+export default function Home({setLotusClass, setLotusStyle, setFigureClass, setFigureStyle}) {
   return (
-    <Landing setLotusClass={setLotusClass} setLotusStyle={setLotusStyle}/>
+    <Landing setLotusClass={setLotusClass} setLotusStyle={setLotusStyle} setFigureClass={setFigureClass} setFigureStyle={setFigureStyle}/>
   )
 }
