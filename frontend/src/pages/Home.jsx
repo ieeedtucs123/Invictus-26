@@ -10,6 +10,9 @@ export default function Home({
   setFigureStyle,
   setLotusClass,
   setLotusStyle,
+  setDisplayNavbar, 
+  displayLogo, 
+  setDisplayLogo
 }) {
   const landingRef = useRef(null);
   const contentRef = useRef(null);
@@ -27,7 +30,7 @@ export default function Home({
     <>
       {/* LANDING */}
       <section ref={landingRef}>
-        <Landing />
+        <Landing setDisplayNavbar={setDisplayNavbar} displayLogo={displayLogo} setDisplayLogo={setDisplayLogo}/>
       </section>
 
       <section ref={contentRef}>
