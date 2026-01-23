@@ -5,7 +5,6 @@ import CommonLotus from "@/utils/commonLotus";
 import "@/styles/globals.css";
 import { useRouter } from "next/router";
 import Script from "next/script";
-import '../components/AboutUs/AboutusScroller.css';
 
 export default function App({ Component, pageProps }) {
   const [lotusStyle, setLotusStyle] = useState({});
@@ -16,17 +15,17 @@ export default function App({ Component, pageProps }) {
 
   return (
     <>
-    <Script
+      <Script
         src={`https://maps.googleapis.com/maps/api/js?key=${process.env.API_KEY}`}
         strategy="beforeInteractive"
       />
-    <AuthProvider>
-      
-      {router.pathname === '/model' ? null : <Navbar />}
-       {router.pathname === '/model' ? null : <CommonLotus className={lotusClass} style={lotusStyle} />}
+      <AuthProvider>
 
-      <Component {...pageProps} setLotusClass={setLotusClass} setLotusStyle={setLotusStyle} />
-    </AuthProvider>
+        {router.pathname === '/model' ? null : <Navbar />}
+        {router.pathname === '/model' ? null : <CommonLotus className={lotusClass} style={lotusStyle} />}
+
+        <Component {...pageProps} setLotusClass={setLotusClass} setLotusStyle={setLotusStyle} />
+      </AuthProvider>
 
     </>
   );

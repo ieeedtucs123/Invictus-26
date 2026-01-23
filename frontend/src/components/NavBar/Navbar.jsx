@@ -10,12 +10,12 @@ export default function Navbar() {
   //sections and routes
   const navItems = [
     { name: "Home", href: "/Home" },
+    { name: "About Us", href: "/AboutUs" },
     { name: "Events", href: "/Events" },
     { name: "Workshop", href: "/Workshops" },
     { name: "Team", href: "/Team" },
     { name: "Sponsor", href: "/Sponsors" },
-    { name: "Gallery", href: "/Gallery" },
-    { name: "About Us", href: "/AboutUs" } // Added About Us
+    { name: "Gallery", href: "/Gallery" }
   ];
 
   //hindi/sanskrit numeric characters
@@ -100,7 +100,7 @@ export default function Navbar() {
                 style={{
                   width: `${pillStyle.width}px`,
                   transform: `translateX(${pillStyle.left}px)`
-                }}/>
+                }} />
             )}
 
             {/* nav items */}
@@ -216,35 +216,35 @@ export default function Navbar() {
             text-left text-2xl uppercase tracking-[0.2em] font-bold
             [font-family:'Montserrat',sans-serif] transition-all duration-300
             ${activeIndex === authIndex
-              ? "text-[#D4AF37] translate-x-4 drop-shadow-[0_0_0.5rem_rgba(212,175,55,1)]"
-              : "text-white/40 hover:text-white hover:translate-x-2"
-            }
+                ? "text-[#D4AF37] translate-x-4 drop-shadow-[0_0_0.5rem_rgba(212,175,55,1)]"
+                : "text-white/40 hover:text-white hover:translate-x-2"
+              }
           `}>
             {user ? "PROFILE" : "LOGIN"}
           </button>
 
           {user && (
             <button
-                onClick={() => {
-                  logout();
-                  router.push("/login");
-                }}
-                className="ml-2 p-2 transition-colors duration-300 rounded-md hover:bg-[#D4AF37] group cursor-pointer"
-                title="Logout">
-                <LogOut size={30} strokeWidth={2.5} className="text-[#D4AF37]" />
-              </button>
+              onClick={() => {
+                logout();
+                router.push("/login");
+              }}
+              className="ml-2 p-2 transition-colors duration-300 rounded-md hover:bg-[#D4AF37] group cursor-pointer"
+              title="Logout">
+              <LogOut size={30} strokeWidth={2.5} className="text-[#D4AF37]" />
+            </button>
           )}
         </div>
 
         {/* placeholder for mobile menu bottom */}
         <div className=" border-t border-[#D4AF37]/20 pt-4">
-            <div className="flex text-[#D4AF37] text-[1rem] md:text-[0.8rem] items-center space-x-3 md:space-x-4">
-          <div className="flex flex-col border-r border-[#D4AF37] pr-3 md:pr-4 leading-tight">
-            <span className="font-bold uppercase tracking-tighter">Invictus(PH)</span>
-          </div>
-          <div className="flex flex-col leading-tight">
-            <span className="font-medium uppercase tracking-[0.2em]">2026</span>
-          </div>
+          <div className="flex text-[#D4AF37] text-[1rem] md:text-[0.8rem] items-center space-x-3 md:space-x-4">
+            <div className="flex flex-col border-r border-[#D4AF37] pr-3 md:pr-4 leading-tight">
+              <span className="font-bold uppercase tracking-tighter">Invictus(PH)</span>
+            </div>
+            <div className="flex flex-col leading-tight">
+              <span className="font-medium uppercase tracking-[0.2em]">2026</span>
+            </div>
           </div>
         </div>
       </div>
