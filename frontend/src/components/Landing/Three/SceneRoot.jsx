@@ -20,6 +20,7 @@ export default function SceneRoot({
   playTransition,
   onStartExplore,
   onReady,
+  setScrollOffset,
 }) {
   const { scene } = useThree();
 useEffect(() => {
@@ -46,6 +47,7 @@ useEffect(() => {
           setcurrSection={setcurrSection}
           playTransition={playTransition}
           onStartExplore={onStartExplore}
+          setScrollOffset={setScrollOffset}
         />
       </ScrollControls>
 
