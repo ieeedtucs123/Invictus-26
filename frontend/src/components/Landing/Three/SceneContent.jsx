@@ -203,7 +203,7 @@ export function SceneContent({
           />
           {/* 3D Button */}
           <group
-            position={[isMobile ? 28 : -1, 3.3, 4.3]}
+            position={isMobile ? [15.8, -0.9, 1.8] : [-1, 3.3, 4.3]}
             scale={1}
             rotation={[1, 1.8, -1]}
           >
@@ -233,7 +233,7 @@ export function SceneContent({
           <ThreeDText
             text="Events"
             size={0.3}
-            position={[isMobile ? 27.94 : -0.7, 3.2, 5]}
+            position={isMobile ? [16, -1, 2.5] : [-0.7, 3.2, 5]}
             rotation={[1, 1.8, -1]}
             section={1}
             activeSection={activeSection}
