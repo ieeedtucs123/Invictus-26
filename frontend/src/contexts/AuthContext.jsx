@@ -74,7 +74,7 @@ export function AuthProvider({ children }) {
         return { success: true };
       }
     } catch (error) {
-       setRegError(error.response?.data?.error || "Login failed");//adding ? in the response or field makes sure that 
+       setRegError(error.response?.data?.error || "Login failed");//adding ? in the response or field makes sure that code doesnot fails in case res does not exist then automatically update to "Login failed"
       console.log(error);
       
       return {

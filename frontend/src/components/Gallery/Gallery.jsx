@@ -33,17 +33,19 @@ const IMAGES = {
 /* ---------------- GRID CONFIG ---------------- */
 
 const GRID_CLASSES = [
-  "lg:col-span-3 sm:col-span-6 col-span-12 h-[16rem]",
-  "lg:col-span-6 sm:col-span-6 col-span-12 h-[20rem] lg:-mt-2",
-  "lg:col-span-3 sm:col-span-6 col-span-12 lg:row-span-2 h-[36rem] lg:-mt-4",
-  "lg:col-span-5 sm:col-span-6 col-span-12 h-[24rem] lg:-mt-4",
-  "lg:col-span-4 sm:col-span-6 col-span-12 h-[18rem] lg:-mt-2",
-  "lg:col-span-6 sm:col-span-6 col-span-12 h-[18rem] lg:-mt-3",
-  "lg:col-span-4 sm:col-span-6 col-span-12 h-[16rem]",
-  "lg:col-span-2 sm:col-span-12 col-span-12 h-[28rem] lg:-mt-6",
-  "lg:col-span-3 sm:col-span-6 col-span-12 h-[16rem] lg:-mt-4",
-  "lg:col-span-3 sm:col-span-6 col-span-12 h-[24rem] lg:-mt-3",
-  "lg:col-span-6 sm:col-span-12 col-span-12 h-[18rem] lg:-mt-2",
+  "lg:col-span-5 sm:col-span-12 col-span-12 h-[22rem]",
+  "lg:col-span-4 sm:col-span-6 col-span-12 h-[18rem]",
+  "lg:col-span-3 sm:col-span-6 col-span-12 h-[22rem]",
+
+  // ROW 2 
+  "lg:col-span-3 sm:col-span-6 col-span-12 h-[25rem]",
+  "lg:col-span-6 sm:col-span-12 col-span-12 h-[26rem]",
+  "lg:col-span-3 sm:col-span-6 col-span-12 h-[24rem]",
+
+  // ROW 3
+  "lg:col-span-4 sm:col-span-6 col-span-12 h-[21rem]",
+  "lg:col-span-4 sm:col-span-6 col-span-12 h-[21rem]",
+  "lg:col-span-4 sm:col-span-12 col-span-12 h-[24rem]",
 ];
 
 /* ---------------- COMPONENT ---------------- */
