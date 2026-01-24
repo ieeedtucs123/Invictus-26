@@ -1,46 +1,75 @@
 'use client'
-import React, { useEffect } from 'react'
-import { useState } from "react";
+import React, { useEffect, useRef, useState } from 'react'
 import SnackBar from "@/utils/snackBar";
+import { useRouter } from 'next/router';
 
-export default function Landing() {
+export default function Landing({ setDisplayNavbar, displayLogo, setDisplayLogo }) {
 
-    const [show, setShow] = useState(true);
-    const SNACKBAR_TIMEOUT = 10000;
+  const [show, setShow] = useState(true);
+  const wordArtRef = useRef(null);
+  const SNACKBAR_TIMEOUT = 10000;
+  const route = useRouter();
 
-    useEffect(() => {
-      if(localStorage.getItem("ModelSeen")){
-      const shown = localStorage.getItem("SnackbarShownLanding");
-      if(!shown){
-        setShow(true);
-        return;
-      }
-      const lastShown = Number(shown);
-        if(Date.now() - lastShown > SNACKBAR_TIMEOUT) {
-          localStorage.removeItem("ModelSeen");
-        }
-      }
-    }, [])
-
-    useEffect(() => {
-      if (typeof window === "undefined") return;
-
-      const shown = localStorage.getItem("SnackbarShownLanding");
-      if(!shown){
-        setShow(true);
-        return;
-      }
-      const lastShown = Number(shown);
-      // console.log(Date.now() - lastShown);
-      if (Date.now() - lastShown < SNACKBAR_TIMEOUT || localStorage.getItem("ModelSeen") ) {
-        setShow(false);
-      }
-    }, []);
-
-    const handleClose = () => {
-      setShow(false);
-      localStorage.setItem("SnackbarShownLanding",  Date.now().toString());
+  useEffect(() => {
+    if(localStorage.getItem("ModelSeen")){
+    const shown = localStorage.getItem("SnackbarShownLanding");
+    if(!shown){
+      setShow(true);
+      return;
     }
+    const lastShown = Number(shown);
+      if(Date.now() - lastShown > SNACKBAR_TIMEOUT) {
+        localStorage.removeItem("ModelSeen");
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const shown = localStorage.getItem("SnackbarShownLanding");
+    if(!shown){
+      setShow(true);
+      return;
+    }
+    const lastShown = Number(shown);
+    // console.log(Date.now() - lastShown);
+    if (Date.now() - lastShown < SNACKBAR_TIMEOUT || localStorage.getItem("ModelSeen") ) {
+      setShow(false);
+    }
+  }, []);
+
+  const handleClose = () => {
+    setShow(false);
+    localStorage.setItem("SnackbarShownLanding",  Date.now().toString());
+  }
+
+  useEffect(() => {
+    if (!wordArtRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const visible = entry.isIntersecting;
+
+        setDisplayNavbar(!visible);
+        setDisplayLogo(!visible);
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(wordArtRef.current);
+
+    //safety check in case observer fails
+    const rect = wordArtRef.current.getBoundingClientRect();
+    const outOfView = rect.bottom < 0 || rect.top > window.innerHeight;
+
+    if (outOfView) {
+      setDisplayNavbar(true);
+      setDisplayLogo(true);
+    }
+
+    return () => observer.disconnect();
+  }, [setDisplayNavbar, setDisplayLogo]);
 
   return (
     <>
@@ -49,14 +78,16 @@ export default function Landing() {
       {/* WORD ART */}
       <div className="relative z-10 px-4 w-full flex justify-center">
         <img
+          ref={wordArtRef}
           src="/wordArt.svg"
           alt="Invictus 26"
-          className="
+          className={`
             w-full max-w-[320px] md:max-w-[560px] lg:max-w-[680px]
             drop-shadow-[0_8px_30px_rgba(255,215,138,0.4)]
-            select-none
-            animate-float
-          "
+            select-none animate-float
+            transition-all duration-500 ease-in-out
+            ${displayLogo ? "opacity-0 scale-95" : "opacity-100 scale-100"}
+          `}
         />
       </div>
 
@@ -107,6 +138,7 @@ export default function Landing() {
         
         {/* JOIN GROUP - Darker Gold/Bronze Style */}
         <button
+        onClick={() => window.open('https://t.me/joinchat/Invictus26','_blank')}
           className="
             group relative
             w-full md:w-auto
@@ -132,6 +164,7 @@ export default function Landing() {
 
         {/* REGISTER - Lighter Cream/Gold Style */}
         <button
+        onClick={() => route.push('/login')}
           className="
             group relative
             w-full md:w-auto
