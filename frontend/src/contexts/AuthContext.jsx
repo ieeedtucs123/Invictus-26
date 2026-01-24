@@ -74,7 +74,7 @@ export function AuthProvider({ children }) {
         return { success: true };
       }
     } catch (error) {
-      setRegError(error.response.data.error || "Registration failed")
+       setRegError(error.response?.data?.error || "Login failed");//adding ? in the response or field makes sure that 
       console.log(error);
       
       return {
@@ -258,6 +258,7 @@ const logout = () => {
         getAdminEvents,
         loading,
         regError,
+        setRegError,
         logout,
         login,
         register,
