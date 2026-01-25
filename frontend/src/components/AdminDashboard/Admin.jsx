@@ -7,7 +7,7 @@ import { AuthContext } from '@/contexts/AuthContext';
 const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3004';
   
 export default function Admin({ setLotusClass, setLotusStyle, setFigureClass, setFigureStyle }) {
-  const { getAdminEvents,events, eventsLoading, eventsError } = useContext(AuthContext);
+  const { getAdminEvents, events, eventsLoading, eventsError } = useContext(AuthContext);
 
   const[eventsAll, setEvents] = useState([]);
   // State for UI Modals
@@ -174,7 +174,7 @@ export default function Admin({ setLotusClass, setLotusStyle, setFigureClass, se
     description: event.description,
     date: event.date,
     status: event.status,
-    isWorkshop: false,
+    isWorkshop: Boolean(event.isWorkshop),
     unstopRegLink: event.unstopLink,
     prizes: event.prizes || '',
     teamSize: event.maxTeamMembers,
@@ -228,6 +228,7 @@ export default function Admin({ setLotusClass, setLotusStyle, setFigureClass, se
 
       if (editingEvent) {
         // UPDATE Existing Event
+        // console.log(basicEventFields)
         const response = await fetch(`${API_BASE_URL}/events/${editingEvent.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` },
