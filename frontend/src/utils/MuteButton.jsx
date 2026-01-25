@@ -1,52 +1,40 @@
 import { Volume2, VolumeX } from "lucide-react";
 import { useAudio } from "@/contexts/AudioContext";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 export default function MuteButton() {
-  const { muted, setMuted, startAudio } = useAudio();
-  const startedRef = useRef(false);
+  const { muted, toggleMute, unlockAndPlay, unlocked } = useAudio();
 
   useEffect(() => {
-    const unlockAudio = () => {
-      if (startedRef.current) return;
-
-      startAudio();
-      startedRef.current = true;
-
-      // 🔥 Remove listeners after first interaction
-      window.removeEventListener("click", unlockAudio);
-      window.removeEventListener("touchstart", unlockAudio);
-      window.removeEventListener("keydown", unlockAudio);
+    const handler = () => {
+      unlockAndPlay();
     };
 
-    // ✅ Listen for ANY user interaction
-    window.addEventListener("click", unlockAudio, { once: true });
-    window.addEventListener("touchstart", unlockAudio, { once: true });
-    window.addEventListener("keydown", unlockAudio, { once: true });
+    // iOS needs touchstart
+    window.addEventListener("touchstart", handler, { once: true });
+    window.addEventListener("click", handler, { once: true });
 
     return () => {
-      window.removeEventListener("click", unlockAudio);
-      window.removeEventListener("touchstart", unlockAudio);
-      window.removeEventListener("keydown", unlockAudio);
+      window.removeEventListener("touchstart", handler);
+      window.removeEventListener("click", handler);
     };
-  }, [startAudio]);
+  }, [unlockAndPlay]);
 
   return (
     <button
-      onClick={() => setMuted((m) => !m)}
-      aria-label={muted ? "Unmute audio" : "Mute audio"}
+      onClick={() => {
+        unlockAndPlay();
+        toggleMute();
+      }}
       className="
         fixed top-6 left-6 z-[10000]
         w-9 h-9 rounded-full
         bg-black/50 backdrop-blur
         flex items-center justify-center
         text-white
-        hover:bg-black/70
-        transition
-        pointer-events-auto
       "
     >
-      {muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+      {muted || !unlocked ? <VolumeX size={18} /> : <Volume2 size={18} />}
     </button>
   );
 }
