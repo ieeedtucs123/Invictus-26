@@ -138,12 +138,6 @@ export function SceneContent({
       <ambientLight intensity={0.9} />
       <directionalLight position={[5, 10, 5]} intensity={1.2} />
 
-      {/* Temple Model */}
-      {/* <Model
-        ref={modelRef}
-        scale={0.055}
-        position={[0, -1, 0]}
-      /> */}
       <Model2
         ref={modelRef}
         scale={2.5}
@@ -158,15 +152,6 @@ export function SceneContent({
 
       {/* Water surface with reflections */}
       <Ocean position={[0, -2, 0]} />
-
-      {/* Fog around model */}
-      {/* <Fog position={[0, -1, 0]} /> */}
-
-      {/* Ground */}
-      {/* <MarbleGround /> */}
-
-      {/* Walls */}
-      {/* <Walls /> */}
 
       {/* Clouds */}
       <Clouds />
