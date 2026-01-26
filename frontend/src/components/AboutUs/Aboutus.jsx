@@ -142,10 +142,20 @@ const Scroller = ({ progressRef }) => {
 
   }, [texture, size, uniforms, camera]);
 
-  useFrame((state) => {
+  useFrame((state, delta) => {
     if (uniforms && uniforms.progress && progressRef) {
       uniforms.time.value = state.clock.getElapsedTime();
-      uniforms.progress.value = progressRef.current;
+
+      const target = progressRef.current;
+      const current = uniforms.progress.value;
+      const diff = target - current;
+
+      // Asymmetric speed: Unfold slower (lower factor), Fold faster (higher factor)
+      // Unfolding when target > current
+      const speed = diff > 0 ? 2.0 : 10.0;
+
+      // Frame-rate independent smoothing
+      uniforms.progress.value += (target - current) * speed * delta;
     }
   });
 
@@ -188,100 +198,66 @@ function useAnimatedNumber(target, duration = 2000, startAnimation = false) {
   return currentValue;
 }
 
-const Aboutus = ({ setLotusClass, setLotusStyle, setFigureClass, setFigureStyle }) => {
+const Aboutus = () => {
   const [showContent, setShowContent] = useState(false);
   const [textOpacity, setTextOpacity] = useState(0);
   const router = useRouter();
   const progress = useRef(0);
+  const sectionRef = useRef(null);
+
 
   // Stats numbers - animated
-  const footfallValue = useAnimatedNumber(20000, 1500, showContent);
-  const collegesValue = useAnimatedNumber(200, 1500, showContent);
-  const eventsValue = useAnimatedNumber(80, 1500, showContent);
+  const footfallValue = useAnimatedNumber(20000, 2700, showContent);
+  const collegesValue = useAnimatedNumber(200, 2700, showContent);
+  const eventsValue = useAnimatedNumber(80, 2700, showContent);
 
   useEffect(() => {
-    // Scroll animation
-    gsap.to(progress, {
-      delay: 0.5,
-      duration: 3.5,
-      current: 1,
-      ease: "power2.inOut",
-    });
+    const handleScroll = () => {
+      if (!sectionRef.current) return;
 
-    // Text reveal
-    gsap.to({}, {
-      delay: 1.6,
-      duration: 0.3,
-      onStart: () => {
-        let startTime = null;
-        const animateText = (timestamp) => {
-          if (!startTime) startTime = timestamp;
-          const elapsed = timestamp - startTime;
-          const p = Math.min(elapsed / 1500, 1);
-          setTextOpacity(Math.pow(p, 3));
-          if (p < 1) requestAnimationFrame(animateText);
-          else setTimeout(() => setShowContent(true), 300);
-        };
-        requestAnimationFrame(animateText);
+      const rect = sectionRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      //update text opacity
+      const fadeStart = windowHeight * 0.1;
+      const fadeEnd = windowHeight * 0.18;
+      let opacity = 0;
+      if (rect.top < fadeEnd) {
+        opacity = 1 - (rect.top - fadeStart) / (fadeEnd - fadeStart);
+        opacity = Math.min(Math.max(opacity, 0), 1);
       }
-    });
-  }, []);
+      setTextOpacity(opacity);
 
-  useEffect(() => {
-    if (!setLotusClass || !setLotusStyle) return;
-    const anchor = document.querySelector("[data-about-lotus-anchor]");
-    if (!anchor) return;
-    const parent = anchor.offsetParent;
-    if (!parent) return;
+      // Update progress for scroller effect
+      const start = windowHeight * 0.9;
+      const end = -rect.height;
 
-    const updateLotus = () => {
-      const anchorRect = anchor.getBoundingClientRect();
-      const parentRect = parent.getBoundingClientRect();
+      const rawProgress = (rect.top - start) / (end - start) * 2;
+      const clamped = Math.min(Math.max(rawProgress, 0), 1);
 
-      setLotusStyle({
-        left: anchorRect.left - parentRect.left + anchorRect.width + 120,
-        top: anchorRect.top - parentRect.top + anchorRect.height / 2,
-        transform: "translate(-50%, -50%)",
-      });
+      progress.current = clamped;
 
-      setLotusClass(`
-        absolute w-[80px] md:w-[110px] lg:w-[130px] opacity-80 transition-all duration-700 ease-in-out
-      `);
+      // Trigger text + stats once
+      if (clamped > 0.55 && !showContent) {
+        setShowContent(true);
+      }
     };
 
-    updateLotus();
-    window.addEventListener('resize', updateLotus);
-    return () => window.removeEventListener('resize', updateLotus);
-  }, [setLotusClass, setLotusStyle]);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
 
-  useEffect(() => {
-    if (!setFigureClass || !setFigureStyle) return;
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [showContent]);
 
-    setFigureStyle({
-      left: "-50px",
-      bottom: "-20px",
-      transform: "none",
-    });
 
-    setFigureClass('fixed !left-0 !bottom-0 w-[150px] md:w-[220px] lg:w-[280px] opacity-90 transition-all duration-700 ease-out pointer-events-none z-[30] drop-shadow-[0_0_30px_rgba(255,215,138,0.4)]');
-
-    return () => {
-      setFigureClass('opacity-0');
-      setFigureStyle({});
-    };
-  }, [setFigureClass, setFigureStyle]);
 
   return (
-    <main className="w-full min-h-screen relative overflow-x-hidden bg-transparent">
+    <main ref={sectionRef} className="w-full min-h-screen relative overflow-x-hidden bg-transparent">
       <div className="w-full flex flex-col items-center pb-10 px-4 pt-28">
 
         {/* TITLE */}
         <div className="flex justify-center w-full mb-0 relative">
           <div className="relative inline-flex items-center">
-            <div
-              data-about-lotus-anchor
-              className="absolute top-[90%] mt-15 ml-240 -translate-y-1/2 w-24 h-24 pointer-events-none"
-            />
+
             <h1 className="invictus-heading text-[3.8rem] md:text-[5.2rem] tracking-[0.1em] relative -mt-7 z-10 text-center py-[20px]">
               ABOUT US
             </h1>
@@ -289,7 +265,7 @@ const Aboutus = ({ setLotusClass, setLotusStyle, setFigureClass, setFigureStyle 
         </div>
 
         {/* SCROLLER AREA */}
-        <div id="scroller-area" className="relative mx-auto z-10 flex items-center justify-center -mt-10 w-[min(150vw,900px)] h-[min(75vh,500px)] bg-transparent">
+        <div id="scroller-area" className="relative md:mx-auto z-10 flex items-center justify-center -mt-10 md:-mt-10 w-[95vw] h-[60vw] max-h-[300px] md:max-h-none md:w-[min(150vw,900px)] md:h-[min(75vh,500px)] bg-transparent">
           <div className="absolute inset-0 pointer-events-none z-[5] w-full h-full bg-transparent overflow-hidden">
             <Canvas key={router.asPath} gl={{ antialias: true, alpha: true, premultipliedAlpha: false }}>
               <Scroller progressRef={progress} />
@@ -298,22 +274,22 @@ const Aboutus = ({ setLotusClass, setLotusStyle, setFigureClass, setFigureStyle 
 
           {/* Text Content Overlay */}
           <div
-            className="absolute inset-0 z-[100] flex items-start justify-center px-[22%] pt-[14%] -ml-[1%] pointer-events-none transition-opacity duration-[1200ms] ease-out"
+            className="absolute inset-0 z-100 flex items-center justify-center pt-0 md:pt-[16%] md:items-start px-[18%] md:px-[22%] -ml-[1%] pointer-events-none transition-opacity duration-300 ease-out"
             style={{ opacity: textOpacity }}
           >
-            <p className="invictus-subheading text-center leading-relaxed font-black italic !text-[#8B6914] !bg-none !bg-clip-border text-[clamp(1rem,1.4vw,1.8rem)] max-w-[450px] drop-shadow-[0_1px_1px_rgba(255,255,255,0.4)]">
+            <p className="invictus-text text-center leading-relaxed font-black italic text-[#312215] text-[0.6rem] min-[400px]:text-[0.7rem] md:text-[1.159rem] max-w-[450px] drop-shadow-[0_1px_1px_rgba(255,255,255,0.4)]">
               {aboutText}
             </p>
           </div>
         </div>
 
         {/* STATS */}
-        <div className={`flex flex-col items-center w-full z-10 relative -mt-8 transition-all duration-700 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          <div className="flex justify-center gap-20 mb-8 flex-wrap w-[90%] max-w-[1000px] items-center">
+        <div className={`flex flex-col items-center w-full z-10 relative mt-8 transition-all duration-700 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          <div className="flex flex-col md:flex-row justify-center gap-10 md:gap-20 mb-8 md:flex-wrap w-[90%] max-w-[1000px] items-center">
 
             {/* Footfall */}
             <div className="flex flex-col items-center min-w-[150px]">
-              <div className="invictus-heading text-[3.2rem] leading-none mb-1 text-center">
+              <div className="font-serif text-[#4d411b] text-[3.2rem] leading-none mb-1 text-center">
                 {footfallValue.toLocaleString()}+
               </div>
               <div className="flex gap-1 mb-2 text-4xl text-[#8B6914] drop-shadow-sm">
@@ -326,7 +302,7 @@ const Aboutus = ({ setLotusClass, setLotusStyle, setFigureClass, setFigureStyle 
 
             {/* Colleges */}
             <div className="flex flex-col items-center min-w-[150px]">
-              <div className="invictus-heading text-[3.2rem] leading-none mb-1 text-center">
+              <div className="font-serif text-[#4d411b] text-[3.2rem] leading-none mb-1 text-center">
                 {collegesValue.toLocaleString()}+
               </div>
               <div className="flex gap-1 mb-2 text-4xl text-[#8B6914] drop-shadow-sm">
@@ -339,7 +315,7 @@ const Aboutus = ({ setLotusClass, setLotusStyle, setFigureClass, setFigureStyle 
 
             {/* Events */}
             <div className="flex flex-col items-center min-w-[150px]">
-              <div className="invictus-heading text-[3.2rem] leading-none mb-1 text-center">
+              <div className="font-serif text-[#4d411b] text-[3.2rem] leading-none mb-1 text-center">
                 {eventsValue.toLocaleString()}+
               </div>
               <div className="flex gap-1 mb-2 text-4xl text-[#8B6914] drop-shadow-sm">
@@ -369,6 +345,8 @@ const Aboutus = ({ setLotusClass, setLotusStyle, setFigureClass, setFigureStyle 
         </div>
         <div className="h-[10vh]" />
       </div>
+      <div className="absolute bottom-0 h-1 w-full bg-linear-to-r from-transparent via-[#615030] to-transparent opacity-100" />
+
     </main>
   );
 };
