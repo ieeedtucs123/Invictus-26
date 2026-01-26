@@ -7,15 +7,7 @@ const Footer = ({}) => {
   return (
     <footer className="relative w-full border-t-[3px] border-[#D4AF37] shadow-[0_-4px_20px_rgba(212,175,55,0.15)] font-sans text-[#423212] overflow-hidden">
 
-      {/* ---------------- BACKGROUND LAYERS ---------------- */}
-      <div
-        className="absolute inset-0 z-0 opacity-30"
-        style={{
-          backgroundImage: "url('/backdrop.svg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      />
+
 
       <div className="absolute inset-0 z-0 bg-gradient-to-r from-[#68665f] via-[#FCEEB5] to-[#b4a97d] opacity-95" />
 
