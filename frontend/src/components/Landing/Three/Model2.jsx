@@ -9,8 +9,8 @@ export function Model2(props) {
       <mesh geometry={nodes.Cube.geometry} material={materials['Rose Gold Marble']} rotation={[Math.PI / 2, 0, 0]} />
       <group rotation={[Math.PI / 2, 0, 0]}>
         <mesh geometry={nodes.Cube_37_1.geometry} material={materials['Brushed Rose Gold']} />
-        <mesh geometry={nodes.Cube_37_2.geometry} material={materials['Material 3']} />
-        <mesh geometry={nodes.Cube_37_3.geometry} material={materials['Material 1']} />
+        {/* <mesh geometry={nodes.Cube_37_2.geometry} material={materials['Material 3']} />
+        <mesh geometry={nodes.Cube_37_3.geometry} material={materials['Material 1']} /> */}
       </group>
     </group>
   )

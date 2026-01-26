@@ -1,46 +1,44 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
-import {
-  Environment,
-  useScroll,
-} from "@react-three/drei";
+import { Environment, useScroll } from "@react-three/drei";
 import {
   EffectComposer,
   Bloom,
   Noise,
   Vignette,
-  GodRays,
 } from "@react-three/postprocessing";
-import { BlendFunction } from "postprocessing";
 import ShootingStarCursor from "./ShootingStarCursor";
 import * as THREE from "three";
-import { Model } from "./Model";
 import { Model2 } from "./Model2";
-import { MarbleGround } from "./MarbleGround";
-import { Walls } from "./Walls";
-import { Clouds } from "./Clouds";
 import { GradientSky } from "./GradientSky";
 import { Sun } from "./Sun";
 import { Ocean } from "./Ocean";
 import { Fog } from "./Fog";
-import { AnimatedTextSections } from "./AnimatedTextSections";
 import { Lotus } from "./Lotus";
 import { Birds } from "./Birds";
 import { Boat } from "./Boat";
 import { Mountain } from "./Mountain";
 import { Shiva } from "./Shiva";
 import { ThreeDText, MultiLineText3D } from "./3dText";
+import { useRouter } from "next/router";
+import { Clouds } from "./Clouds";
 
-export function SceneContent({ setcurrSection, playTransition, onStartExplore }) {
+export function SceneContent({
+  setcurrSection,
+  playTransition,
+  onStartExplore,
+  setScrollOffset,
+}) {
   const modelRef = useRef();
   const scroll = useScroll();
   const [sun, setSun] = useState();
   const [activeSection, setActiveSection] = useState(0);
+  const router = useRouter();
 
-  // Camera keyframes
-  const cameraShots = [
+  // Camera keyframes state
+  const [cameraShots, setCameraShots] = useState([
     {
       pos: new THREE.Vector3(4, 10, -13), // TOP VIEW
       lookAt: new THREE.Vector3(0, 0, 0),
@@ -53,41 +51,88 @@ export function SceneContent({ setcurrSection, playTransition, onStartExplore })
       pos: new THREE.Vector3(0, -0.2, 9), // FRONT VIEW
       lookAt: new THREE.Vector3(0, 0, 0),
     },
-  ];
+  ]);
 
+  const [isMobile, setIsMobile] = useState(false);
 
-useFrame((state) => {
-  const totalSections = cameraShots.length - 1;
-  const progress = scroll.offset * totalSections;
+  // Adjust camera positions for mobile devices
+  useEffect(() => {
+    const handleResize = () => {
+      const isMobile_ = window.innerWidth <= 768;
+      setIsMobile(isMobile_);
+      if (isMobile_) {
+        setCameraShots([
+          {
+            pos: new THREE.Vector3(5, 10, -30), // TOP VIEW - adjusted for mobile
+            lookAt: new THREE.Vector3(0, 0, 0),
+          },
+          {
+            pos: new THREE.Vector3(30, 0, 0), // SIDE VIEW - adjusted for mobile
+            lookAt: new THREE.Vector3(0, 2, 0),
+          },
+          {
+            pos: new THREE.Vector3(0, -0.2, 15), // FRONT VIEW - adjusted for mobile
+            lookAt: new THREE.Vector3(0, 0, 0),
+          },
+        ]);
+      } else {
+        setCameraShots([
+          {
+            pos: new THREE.Vector3(4, 10, -13), // TOP VIEW - desktop
+            lookAt: new THREE.Vector3(0, 0, 0),
+          },
+          {
+            pos: new THREE.Vector3(12, 0, 0), // SIDE VIEW - desktop
+            lookAt: new THREE.Vector3(2, 3, 0),
+          },
+          {
+            pos: new THREE.Vector3(0, -0.2, 9), // FRONT VIEW - desktop
+            lookAt: new THREE.Vector3(0, 0, 0),
+          },
+        ]);
+      }
+    };
 
-  const sectionIndex = Math.floor(progress);
-  const sectionT = progress % 1;
+    // Initial check
+    handleResize();
 
-  setActiveSection((prev) =>
-    prev !== sectionIndex ? sectionIndex : prev
-  );
+    // Add event listener for window resize
+    window.addEventListener("resize", handleResize);
 
-  setcurrSection((prev) =>
-    prev !== sectionIndex ? sectionIndex : prev
-  );
+    // Cleanup
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-  const current = cameraShots[sectionIndex];
-  const next = cameraShots[Math.min(sectionIndex + 1, totalSections)];
+  useFrame((state) => {
+    const totalSections = cameraShots.length - 1;
+    const progress = scroll.offset * totalSections;
 
-  state.camera.position.lerpVectors(current.pos, next.pos, sectionT);
+    const sectionIndex = Math.floor(progress);
+    const sectionT = progress % 1;
 
-  const lookAt = current.lookAt.clone().lerp(next.lookAt, sectionT);
-  state.camera.lookAt(lookAt);
+    setActiveSection((prev) => (prev !== sectionIndex ? sectionIndex : prev));
 
-  if (modelRef.current) {
-    modelRef.current.position.y = -1 - scroll.offset * 0.3;
-  }
-});
+    setcurrSection((prev) => (prev !== sectionIndex ? sectionIndex : prev));
 
+    if (setScrollOffset) {
+      setScrollOffset(scroll.offset);
+    }
+
+    const current = cameraShots[sectionIndex];
+    const next = cameraShots[Math.min(sectionIndex + 1, totalSections)];
+
+    state.camera.position.lerpVectors(current.pos, next.pos, sectionT);
+
+    const lookAt = current.lookAt.clone().lerp(next.lookAt, sectionT);
+    state.camera.lookAt(lookAt);
+
+    if (modelRef.current) {
+      modelRef.current.position.y = -1 - scroll.offset * 0.3;
+    }
+  });
 
   return (
     <>
-  
       {/* Lights */}
 
       <ambientLight intensity={0.9} />
@@ -124,7 +169,7 @@ useFrame((state) => {
       {/* <Walls /> */}
 
       {/* Clouds */}
-      {/* <Clouds /> */}
+      <Clouds />
 
       {/* Sky */}
       <GradientSky />
@@ -133,9 +178,9 @@ useFrame((state) => {
       {activeSection === 0 && (
         <ThreeDText
           text="Invictus '26"
-          size={1.9}
-          position={[0, 0, 12]}
-          rotation={[1,9.4,-0.1]}
+          size={isMobile ? 1.6 : 1.9}
+          position={isMobile ? [5, 7, 12] : [7, 0, 12]}
+          rotation={isMobile ? [0.5, 9.4, 0] : [1, 9.4, -0.1]}
           section={0}
           activeSection={activeSection}
           scroll={scroll}
@@ -143,33 +188,109 @@ useFrame((state) => {
       )}
 
       {activeSection === 1 && (
-        <MultiLineText3D
-        lines={[
-          "Invictus '26",
-          "brings back its plethora of events",
-          "with its theme based on Indian heritage",
-        ]}
-        position={[-4, 6, 4]}
-        rotation={[1, 1.8, -1]}
-        size={0.4}
-        section={1}
-        scroll={scroll}
-      />
+        <>
+          <MultiLineText3D
+            lines={[
+              "Invictus '26",
+              "brings back its plethora of events",
+              "with its theme based on Indian heritage",
+            ]}
+            position={[-3, 6, 6]}
+            rotation={[1, 1.8, -1]}
+            size={0.4}
+            section={1}
+            scroll={scroll}
+          />
+          {/* 3D Button */}
+          <group
+            position={[isMobile ? 28 : -1, 3.3, 4.3]}
+            scale={1}
+            rotation={[1, 1.8, -1]}
+          >
+            <mesh
+              onClick={() => {
+                router.push("/Events");
+              }}
+              onPointerOver={(e) => {
+                document.body.style.cursor = "pointer";
+                e.object.scale.set(1.1, 1.1, 1.1);
+              }}
+              onPointerOut={(e) => {
+                document.body.style.cursor = "default";
+                e.object.scale.set(1, 1, 1);
+              }}
+            >
+              <boxGeometry args={[2, 0.6, 0.3]} />
+              <meshStandardMaterial
+                color="#DAA06D"
+                metalness={0.5}
+                roughness={0.3}
+                emissive="#764ba2"
+                emissiveIntensity={0.3}
+              />
+            </mesh>
+          </group>
+          <ThreeDText
+            text="Events"
+            size={0.3}
+            position={[isMobile ? 27.94 : -0.7, 3.2, 5]}
+            rotation={[1, 1.8, -1]}
+            section={1}
+            activeSection={activeSection}
+            scroll={scroll}
+          />
+        </>
       )}
 
       {activeSection === 2 && (
-        <ThreeDText
-          text="Start Exploring"
-          size={0.03}
-          position={[-0.19, -0.2, 8]}
-          rotation={[0,0.11,0]}
-          section={2}
-          activeSection={activeSection}
-          scroll={scroll}
-          onStartExplore={onStartExplore}
-        />
-
+        <>
+          <ThreeDText
+            text="Start Exploring"
+            size={0.03}
+            position={[-0.19, -0.2, isMobile ? 13.4 : 8]}
+            rotation={[0, 0.11, 0]}
+            section={2}
+            activeSection={activeSection}
+            scroll={scroll}
+          />
+          {/* 3D Button */}
+          <group position={[0, -0.3, isMobile ? 13.4 : 8]} scale={0.1}>
+            <mesh
+              onClick={() => {
+                router.push("/Home");
+              }}
+              onPointerOver={(e) => {
+                document.body.style.cursor = "pointer";
+                e.object.scale.set(1.1, 1.1, 1.1);
+              }}
+              onPointerOut={(e) => {
+                document.body.style.cursor = "default";
+                e.object.scale.set(1, 1, 1);
+              }}
+            >
+              <boxGeometry args={[2, 0.6, 0.3]} />
+              <meshStandardMaterial
+                color="#DAA06D"
+                metalness={0.5}
+                roughness={0.3}
+                emissive="#764ba2"
+                emissiveIntensity={0.3}
+              />
+            </mesh>
+          </group>
+          <ThreeDText
+            text="Explore"
+            size={0.024}
+            position={[-0.08, -0.31, isMobile ? 13.4 : 8]}
+            rotation={[-0.1, 0.11, 0]}
+            section={2}
+            activeSection={activeSection}
+            scroll={scroll}
+          />
+        </>
       )}
+
+      <Fog position={[0, -1, 0]} />
 
       {/* Sun */}
       <Sun ref={sun} position={[-20, 15, -60]} />
@@ -181,40 +302,29 @@ useFrame((state) => {
       <Boat />
 
       {/* mountain */}
-      <Mountain position={[40,-4,-95]} scale={18} />
-      <Mountain position={[-60,-6,-100]} scale={15} />
+      <Mountain position={[40, -4, -95]} scale={18} />
+      <Mountain position={[-60, -6, -100]} scale={15} />
 
       {/* shiva */}
-      <Shiva position={[-70,-2,30]} scale={0.4} />
+      <Shiva position={[-70, -2, 30]} scale={0.4} />
 
       <Environment preset="sunset" />
-      <ShootingStarCursor />
 
-      {/* Animated Text Sections */}
-      {/* <AnimatedTextSections /> */}
+      {!isMobile && <ShootingStarCursor />}
 
       {/* Post-processing effects */}
       {!playTransition && (
-      <EffectComposer>
-        <Bloom
-          intensity={0.7}
-          luminanceThreshold={0.7}
-          luminanceSmoothing={2.9}
-        />
-
-        <Noise opacity={0.05} />
-
-        <Vignette eskil={false} offset={0.1} darkness={0.9} />
-        {/* {sun && (
-          <GodRays
-            sun={sunRef}
-            decay={0.9} // An illumination decay factor.
-            weight={0.1} // A light ray weight factor.
-            exposure={0.2} // A constant attenuation coefficient.
-            // blur={true} // Whether the god rays should be blurred to reduce artifacts.
+        <EffectComposer>
+          <Bloom
+            intensity={0.7}
+            luminanceThreshold={0.7}
+            luminanceSmoothing={2.9}
           />
-        )} */}
-      </EffectComposer>
+
+          <Noise opacity={0.05} />
+
+          <Vignette eskil={false} offset={0.1} darkness={0.9} />
+        </EffectComposer>
       )}
     </>
   );

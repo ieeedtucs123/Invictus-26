@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import { AuthContext } from "@/contexts/AuthContext";
 import { LogOut } from "lucide-react";
 
-export default function Navbar() {
-  const { user, logout } = useContext(AuthContext);
+export default function Navbar({ className = "" }) {
+  const { user, isAdmin, logout } = useContext(AuthContext);
   const router = useRouter();
 
   //sections and routes
@@ -28,29 +28,8 @@ export default function Navbar() {
   const itemsRef = useRef([]);
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  //syncing activeIndex with current route
-  useEffect(() => {
-    if (!router.isReady) return;
-
-    let index = navItems.findIndex(i => i.href === router.pathname);
-
-    if (
-      router.pathname === "/login" ||
-      router.pathname === "/Dashboard"
-    ) {
-      index = authIndex;
-    }
-
-    setActiveIndex(index);
-  }, [router.pathname, router.isReady]);
-
-  //handle pill animation
-  useEffect(() => {
-    if (!mounted) return;
+  //handling pill position and size
+  const updatePill = () => {
     if (activeIndex === -1) {
       setPillStyle({ width: 0, left: 0 });
       return;
@@ -63,7 +42,65 @@ export default function Navbar() {
         left: activeElement.offsetLeft,
       });
     }
+  };
+
+  useEffect(() => {
+    if (!open) return;
+
+    const handleScroll = () => { setOpen(false); };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [open]);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  //syncing activeIndex with current route
+  useEffect(() => {
+    if (!router.isReady) return;
+
+    let index = navItems.findIndex(i => i.href === router.pathname);
+
+    if (
+      router.pathname === "/login" ||
+      router.pathname === "/Dashboard" ||
+      router.pathname === "/Admin"
+    ) {
+      index = authIndex;
+    }
+
+    setActiveIndex(index);
+  }, [router.pathname, router.isReady]);
+
+  //handle pill animation
+  useEffect(() => {
+    if (!mounted) return;
+    updatePill();
   }, [activeIndex, mounted]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768 && open) { setOpen(false); }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [open]);
+
+  useEffect(() => {
+    if (!mounted) return;
+
+    const handleResize = () => { requestAnimationFrame(updatePill); };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [activeIndex, mounted]);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [router.pathname]);
 
   //helper to handle navigation
   const handleNavigation = (e, href) => {
@@ -74,23 +111,11 @@ export default function Navbar() {
 
   return (
     <div className="flex justify-center">
-      <nav className="fixed top-4 right-0 w-[85vw] z-[50] bg-transparent backdrop-blur-md text-black rounded-l-4xl rounded-r-2xl border-3 border-[#D4AF37] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.15)]">
-        <div className="max-w-7xl mx-auto px-5 py-3 flex items-center justify-between">
-
-          {/* placeholder for logo */}
-          <div
-            className="flex text-[#D4AF37] text-[1rem] md:text-[0.8rem] items-center space-x-3 md:space-x-4 cursor-pointer"
-            onClick={() => router.push('/')}
-          >
-            <div className="flex flex-col border-r border-[#D4AF37] pr-3 md:pr-4 leading-tight">
-              <span className="font-bold uppercase text-xl tracking-tighter">
-                Logo(PH)
-              </span>
-            </div>
-          </div>
+      <nav className={`${className} fixed top-4 right-0 w-auto md:w-fit z-[50] flex bg-transparent backdrop-blur-md text-black rounded-l-2xl rounded-r-2xl md:rounded-l-4xl border-3 border-[#D4AF37] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.15)]`}>
+        <div className="px-4 py-3 flex items-center">
 
           {/* desktop menu */}
-          <div className="hidden md:flex md:text-[0.67rem] items-center space-x-1 lg:space-x-4 xl:space-x-5 relative text-[0.75rem] lg:text-[0.9rem] xl:text-[1.1rem] uppercase tracking-wider">
+          <div className="hidden w-fit md:flex md:text-[0.67rem] items-center space-x-1 lg:space-x-4 xl:space-x-5 relative text-[0.75rem] lg:text-[0.9rem] xl:text-[1.1rem] uppercase tracking-wider">
 
             {/* selected option pill */}
             {mounted && activeIndex !== -1 && (
@@ -99,8 +124,7 @@ export default function Navbar() {
                 style={{
                   width: `${pillStyle.width}px`,
                   transform: `translateX(${pillStyle.left}px)`
-                }}/>
-            )}
+                }}/>)}
 
             {/* nav items */}
             {navItems.map(({ name, href }, index) => (
@@ -135,6 +159,8 @@ export default function Navbar() {
                   e.preventDefault();
                   if (user) {
                     router.push("/Dashboard");
+                  } else if (isAdmin) {   
+                    router.push("/Admin");
                   } else {
                     router.push("/login");
                   }
@@ -152,12 +178,24 @@ export default function Navbar() {
                     : "hover:text-[#D4AF37] hover:drop-shadow-[0_0_1rem_rgba(212,175,55,0.8)]"
                   }
                 `}>
-                {user ? "PROFILE" : "LOGIN"}
+                {user || isAdmin ? "PROFILE" : "LOGIN"} 
               </button>
             </div>
 
             {/* LOGOUT (NOT PART OF PILL) */}
             {user && (
+              <button
+                onClick={() => {
+                  logout();
+                  router.push("/login");
+                }}
+                className="ml-2 p-2 transition-colors duration-300 rounded-md hover:bg-[#D4AF37] group cursor-pointer"
+                title="Logout">
+                <LogOut size={20} strokeWidth={2.5} className="text-[#D4AF37] group-hover:text-white transition-colors duration-300" />
+              </button>
+            )}
+
+            {isAdmin && (
               <button
                 onClick={() => {
                   logout();
@@ -204,10 +242,11 @@ export default function Navbar() {
         ))}
 
         {/* mobile profile / logout */}
-        <div className="border-t border-[#D4AF37]/20 pt-4 space-x-20">
+        <div className="border-t border-[#D4AF37]/20 pt-4 flex justify-between space-x-20">
           <button
             onClick={() => {
               if (user) router.push("/Dashboard");
+              else if (isAdmin) router.push("/Admin");
               else router.push("/login");
               setOpen(false);
             }}
@@ -219,30 +258,42 @@ export default function Navbar() {
               : "text-white/40 hover:text-white hover:translate-x-2"
             }
           `}>
-            {user ? "PROFILE" : "LOGIN"}
+            {user || isAdmin ? "PROFILE" : "LOGIN"}
           </button>
 
           {user && (
             <button
-                onClick={() => {
-                  logout();
-                  router.push("/login");
-                }}
-                className="ml-2 p-2 transition-colors duration-300 rounded-md hover:bg-[#D4AF37] group cursor-pointer"
-                title="Logout">
-                <LogOut size={30} strokeWidth={2.5} className="text-[#D4AF37]" />
-              </button>
+              onClick={() => {
+                logout();
+                router.push("/login");
+              }}
+              className="transition-colors duration-300 rounded-md hover:bg-[#D4AF37] group"
+              title="Logout">
+              <LogOut size={30} strokeWidth={2.5} className="text-[#D4AF37]" />
+            </button>
+          )}
+
+          {isAdmin && ( 
+            <button
+              onClick={() => {
+                logout();
+                router.push("/login");
+              }}
+              className="transition-colors duration-300 rounded-md hover:bg-[#D4AF37] group"
+              title="Logout">
+              <LogOut size={30} strokeWidth={2.5} className="text-[#D4AF37]" />
+            </button>
           )}
         </div>
 
-        {/* placeholder for mobile menu bottom */}
+      {/* menu bottom text */}
         <div className=" border-t border-[#D4AF37]/20 pt-4">
-            <div className="flex text-[#D4AF37] text-[1rem] md:text-[0.8rem] items-center space-x-3 md:space-x-4">
-          <div className="flex flex-col border-r border-[#D4AF37] pr-3 md:pr-4 leading-tight">
-            <span className="font-bold uppercase tracking-tighter">Invictus(PH)</span>
+            <div className="flex text-[1.5rem] md:text-[1.2rem] items-center space-x-3 md:space-x-4">
+          <div className="flex flex-col border-r border-[#D4AF37] pr-2 md:pr-3 leading-tight">
+            <span className="invictus-heading font-bold uppercase tracking-[0.15em]">Invictus</span>
           </div>
           <div className="flex flex-col leading-tight">
-            <span className="font-medium uppercase tracking-[0.2em]">2026</span>
+            <span className="invictus-heading font-bold uppercase tracking-[0.1em]">2026</span>
           </div>
           </div>
         </div>

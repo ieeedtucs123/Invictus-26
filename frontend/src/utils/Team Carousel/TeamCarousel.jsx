@@ -37,20 +37,35 @@ const TeamCarousel = () => {
       </div>
 
       {/* controls */}
-      <div className="flex w-full justify-center space-x-8 mt-10">
-        <button onClick={prev}
-        className="p-3 rounded-full border-3 border-[#D4AF37] hover:border-white text-[#D4AF37] bg-white hover:bg-[#D4AF37] hover:text-white transition-all 
-        duration-300 group cursor-pointer hover:drop-shadow-[0_0_1rem_rgba(212,175,55,0.8)]">
-          <ChevronLeft className="w-8 h-8" strokeWidth={4} />
+      <div className="flex w-full justify-center mt-10">
+        <button
+          onClick={prev}
+          className="
+            h-25 w-25 rounded-full cursor-pointer
+            transition-all duration-200 ease-out
+            hover:scale-105
+            hover:drop-shadow-[0_0_2.5rem_rgba(212,175,55,0.95)]
+            hover:shadow-[0_0_4.5rem_0.15rem_rgba(212,175,55,0.45)]
+            relative overflow-hidden">
+          <div className="absolute inset-0 rounded-full bg-[url('/Team/button.webp')] bg-cover bg-center"/>
+          <span className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.15),transparent_70%)]
+          opacity-0 transition-opacity duration-200 hover:opacity-90"/>
         </button>
 
-        <button onClick={next}
-        className="p-3 rounded-full border-3 border-[#D4AF37] hover:border-white text-[#D4AF37] bg-white hover:bg-[#D4AF37] hover:text-white transition-all 
-        duration-300 group cursor-pointer hover:drop-shadow-[0_0_1rem_rgba(212,175,55,0.4)]">
-          <ChevronRight className="w-8 h-8" strokeWidth={4} />
+        <button
+          onClick={next}
+          className="
+            h-25 w-25 rounded-full cursor-pointer
+            transition-all duration-200 ease-out
+            hover:scale-105
+            hover:drop-shadow-[0_0_2.5rem_rgba(212,175,55,0.95)]
+            hover:shadow-[0_0_4.5rem_0.15rem_rgba(212,175,55,0.45)]
+            relative overflow-hidden">
+          <div className="absolute inset-0 rounded-full bg-[url('/Team/button.webp')] bg-cover bg-center scale-x-[-1]"/>
+          <span className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.15),transparent_70%)]
+          opacity-0 transition-opacity duration-200 hover:opacity-90"/>
         </button>
       </div>
-        
     </div>
   )
 }
