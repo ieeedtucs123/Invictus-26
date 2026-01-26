@@ -25,14 +25,33 @@ function ImageCard({ src }) {
 /* ---------------- CATEGORY IMAGES ---------------- */
 
 const IMAGES = {
+<<<<<<< HEAD
+  FUN: Array.from(
+    { length: 9 },
+    (_, i) => `/Gallery pics/cat1/cat1_${i + 1}.png`,
+  ),
+  CULTURAL: Array.from(
+    { length: 9 },
+    (_, i) => `/Gallery pics/cat2/cat2_${i + 1}.png`,
+  ),
+  WORKSHOP: Array.from(
+    { length: 9 },
+    (_, i) => `/Gallery pics/cat3/cat3_${i + 1}.png`,
+  ),
+=======
   FUN: Array.from({ length: 9 }, (_, i) => `/Gallery-pics/cat1/cat1_${i + 1}.jpeg`),
   CULTURAL: Array.from({ length: 9 }, (_, i) => `/Gallery-pics/cat2/cat2_${i + 1}.jpeg`),
   WORKSHOP: Array.from({ length: 9 }, (_, i) => `/Gallery-pics/cat3/cat3_${i + 1}.jpeg`),
+>>>>>>> main
 };
 
 /* ---------------- GRID CONFIG ---------------- */
 
 const GRID_CLASSES = [
+<<<<<<< HEAD
+  // ROW 1 
+=======
+>>>>>>> main
   "lg:col-span-5 sm:col-span-12 col-span-12 h-[22rem]",
   "lg:col-span-4 sm:col-span-6 col-span-12 h-[18rem]",
   "lg:col-span-3 sm:col-span-6 col-span-12 h-[22rem]",
@@ -105,7 +124,6 @@ export default function Gallery({ setLotusClass, setLotusStyle, setFigureClass, 
   return (
     <div className="relative w-full bg-transparent">
       <div className="max-w-[1600px] mx-auto">
-
         {/* HEADER */}
         <div
           className="
@@ -196,7 +214,11 @@ export default function Gallery({ setLotusClass, setLotusStyle, setFigureClass, 
 
         {/* GRID */}
         <div className="px-5 md:px-8">
-          <SwapyLayout id="swapy" className="w-full" config={{ swapMode: "hover" }}>
+          <SwapyLayout
+            id="swapy"
+            className="w-full"
+            config={{ swapMode: "hover" }}
+          >
             <div className="grid w-full grid-cols-12 gap-6 py-6">
               {IMAGES[category].map((src, index) => (
                 <SwapySlot
