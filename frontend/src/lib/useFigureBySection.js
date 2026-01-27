@@ -27,8 +27,8 @@ export function useFigureBySection({
 
         setLotusClass(`
         fixed
-        max-[380px]:bottom-[20%]
-        bottom-[22%]
+        max-[379px]:bottom-[20%]
+        bottom-[19%]
         md:bottom-[26%]
         w-[80px] md:w-[100px] lg:w-[110px]
         opacity-90
@@ -47,7 +47,7 @@ export function useFigureBySection({
         setFigureClass(`
           fixed bottom-0 opacity-93
           w-[12rem]
-          max-[380px]:w-[160px]
+          max-[390px]:w-[9rem]
           max-[400px]:w-[280px]
           md:w-[280px]
           lg:w-[17.625vw]
