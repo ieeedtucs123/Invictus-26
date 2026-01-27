@@ -91,7 +91,7 @@ export default function Landing({ setDisplayNavbar, displayLogo, setDisplayLogo 
         />
       </div>
 
-      {/* TAGLINE */}
+      {/* TAGLINE
       <h1
         className="
           mt-6 md:mt-4
@@ -107,10 +107,10 @@ export default function Landing({ setDisplayNavbar, displayLogo, setDisplayLogo 
         "
       >
         Technology, Threaded in Tradition
-      </h1>
+      </h1> */}
 
       {/* GOLD SEPARATOR */}
-      <div className="mt-4 h-[2px] w-[60%] md:w-[40%] bg-gradient-to-r from-transparent via-[#C5A059] to-transparent opacity-80" />
+      {/* <div className="mt-4 h-[2px] w-[60%] md:w-[40%] bg-gradient-to-r from-transparent via-[#C5A059] to-transparent opacity-80" /> */}
 
       {/* DATE */}
       <p
@@ -146,7 +146,7 @@ export default function Landing({ setDisplayNavbar, displayLogo, setDisplayLogo 
             rounded-full
             font-bold tracking-widest uppercase text-sm md:text-base
             text-[#FFEeb0]
-            
+            z-30
             bg-gradient-to-b from-[#8E6E24] via-[#684F16] to-[#45330B]
             border border-[#A88732]
             
@@ -175,7 +175,7 @@ export default function Landing({ setDisplayNavbar, displayLogo, setDisplayLogo 
             text-[#5C450E]
             bg-gradient-to-b from-[#FFFBEB] via-[#F3E3B6] to-[#D4AF37]
             border border-[#FDE68A]
-            
+            z-30
             shadow-[0_4px_20px_rgba(212,175,55,0.3),inset_0_1px_0_rgba(255,255,255,0.8)]
             
             transition-all duration-300 ease-out

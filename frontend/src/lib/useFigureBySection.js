@@ -19,8 +19,8 @@ export function useFigureBySection({
         if (!entry.isIntersecting) return;
 
         setLotusStyle({
-        left: "50%",
-        animation: "lotusFloat 5s ease-in-out infinite",
+        left: "49.5%",
+        animation: "lotusFloat 10s ease-in-out infinite",
         filter: "drop-shadow(0 0 22px rgba(255,215,138,0.65))",
         willChange: "transform",
         });
@@ -29,9 +29,9 @@ export function useFigureBySection({
         fixed
         max-[380px]:bottom-[20%]
         bottom-[22%]
-        md:bottom-[29%]
+        md:bottom-[26%]
         w-[80px] md:w-[100px] lg:w-[110px]
-        opacity-100
+        opacity-90
         pointer-events-none
         z-[30]
         transition-all duration-1000 ease-in-out
@@ -39,14 +39,14 @@ export function useFigureBySection({
         `);
 
         setFigureStyle({
-          left: "49%",
+          left: "49.5%",
           bottom: "0px",
           transform: "translateX(-50%)",
         });
 
         setFigureClass(`
-          fixed bottom-0
-          w-[240px]
+          fixed bottom-0 opacity-93
+          w-[15rem]
           max-[380px]:w-[160px]
           max-[400px]:w-[280px]
           md:w-[280px]
@@ -56,7 +56,7 @@ export function useFigureBySection({
           z-[20]
         `);
       },
-      { threshold: 0.6 }
+      { threshold: 1 }
     );
 
     const contentObserver = new IntersectionObserver(

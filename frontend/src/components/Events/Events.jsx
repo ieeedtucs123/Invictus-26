@@ -3,6 +3,7 @@ import React, { useState,useEffect } from 'react';
 import { Search, ChevronDown, Navigation, Router } from 'lucide-react';
 import CardComponent from './CardComponent';
 import SnackBar from "@/utils/snackBar";
+import { RefreshCw } from 'lucide-react';
 import { useRouter } from 'next/router';
 
 // Reusable Dropdown Component
@@ -176,6 +177,13 @@ export default function Events({setLotusClass, setLotusStyle, setFigureClass, se
                 setFilters((prev) => ({ ...prev, date }))
               }
             />
+
+            <div className='mt-2 border-[#C5A059] text-[#39362d]' onClick={() => {setFilters(((prev) => ({...prev,       
+                    search: "",
+                    mode: null,
+                    category: null,
+                    date: null,
+                    })))}}> <RefreshCw /></div>
         </div>
 
         {/* CARD CAROUSEL SECTION */}
