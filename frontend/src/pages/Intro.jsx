@@ -53,12 +53,13 @@ export default function Intro() {
       <button
         onClick={goToModel}
         className="
-          absolute top-6 right-6 z-[10000]
-          px-4 py-1.5
-          text-xs tracking-widest uppercase
+          absolute top-6 right-0 z-[10000]
+          px-4 py-1.5 w-60
+          invictus-text
+          font-[800]
+          text-xl tracking-widest uppercase
           text-white/80
-          hover:text-white
-          bg-black/40 backdrop-blur
+          hover:text-3xl hover:text-amber-500
           rounded-full
           transition
         "

@@ -212,3 +212,7 @@ body.cursor-hidden {
 .animate-fadeOut {
   animation: fadeOut 0.8s ease-out forwards;
 }
+
+.mix-blend-screen {
+  mix-blend-mode: screen;
+}
