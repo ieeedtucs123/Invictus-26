@@ -292,7 +292,7 @@ const Aboutus = () => {
               <div className="font-serif text-[#4d411b] text-[1.5rem] md:text-[3.2rem] leading-none mb-1 text-center">
                 {footfallValue.toLocaleString()}+
               </div>
-              <div className="flex gap-1 mb-2 text-2xl md:text-4xl text-[#8B6914] drop-shadow-sm">
+              <div className="flex gap-1 mb-2 text-2xl md:text-4xl text-[#654e13] drop-shadow-sm">
                 <i className="fa-solid fa-users"></i>
               </div>
               <div className="invictus-subheading font-bold text-[0.65rem] md:text-xl uppercase tracking-widest !text-[#675743ff] !bg-none !bg-clip-border mt-0 text-center">
@@ -305,7 +305,7 @@ const Aboutus = () => {
               <div className="font-serif text-[#4d411b] text-[1.5rem] md:text-[3.2rem] leading-none mb-1 text-center">
                 {collegesValue.toLocaleString()}+
               </div>
-              <div className="flex gap-1 mb-2 text-2xl md:text-4xl text-[#8B6914] drop-shadow-sm">
+              <div className="flex gap-1 mb-2 text-2xl md:text-4xl text-[#654e13] drop-shadow-sm">
                 <i className="fa-solid fa-building-columns"></i>
               </div>
               <div className="invictus-subheading font-bold text-[0.65rem] md:text-xl uppercase tracking-widest !text-[#675743ff] !bg-none !bg-clip-border mt-0 text-center">
@@ -318,7 +318,7 @@ const Aboutus = () => {
               <div className="font-serif text-[#4d411b] text-[1.5rem] md:text-[3.2rem] leading-none mb-1 text-center">
                 {eventsValue.toLocaleString()}+
               </div>
-              <div className="flex gap-1 mb-2 text-2xl md:text-4xl text-[#8B6914] drop-shadow-sm">
+              <div className="flex gap-1 mb-2 text-2xl md:text-4xl text-[#654e13] drop-shadow-sm">
                 <i className="fa-solid fa-calendar-check"></i>
               </div>
               <div className="invictus-subheading font-bold text-[0.65rem] md:text-xl uppercase tracking-widest !text-[#675743ff] !bg-none !bg-clip-border mt-0 text-center">
