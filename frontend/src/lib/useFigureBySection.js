@@ -46,7 +46,7 @@ export function useFigureBySection({
 
         setFigureClass(`
           fixed bottom-0 opacity-93
-          w-[15rem]
+          w-[12rem]
           max-[380px]:w-[160px]
           max-[400px]:w-[280px]
           md:w-[280px]
@@ -56,7 +56,7 @@ export function useFigureBySection({
           z-[20]
         `);
       },
-      { threshold: 1 }
+      { threshold: 0.87 }
     );
 
     const contentObserver = new IntersectionObserver(
