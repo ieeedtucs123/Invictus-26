@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 export default function Drawer({ event, onClose }) {
+  // 🔧 DEVELOPMENT MODE: Set to true to use mock data
+  const USE_MOCK_DATA = true;
+  
   const [loading, setLoading] = useState(false);
   const [soloEvent, setSoloEvent] = useState(false);
   const [teamMembers, setTeamMembers] = useState([]);
@@ -14,6 +17,38 @@ export default function Drawer({ event, onClose }) {
         setLoading(false);
         return;
     }
+    
+    if (USE_MOCK_DATA) {
+      // Mock team data for development
+      setLoading(true);
+      setTimeout(() => {
+        const mockTeamMembers = [
+          {
+            id: 1,
+            candidateName: "John Doe",
+            email: "john.doe@example.com",
+            memberStatus: "LEADER"
+          },
+          {
+            id: 2,
+            candidateName: "Jane Smith",
+            email: "jane.smith@example.com",
+            memberStatus: "MEMBER"
+          },
+          {
+            id: 3,
+            candidateName: "Mike Johnson",
+            email: "mike.johnson@example.com",
+            memberStatus: "MEMBER"
+          }
+        ];
+        setTeamMembers(mockTeamMembers);
+        setSoloEvent(false);
+        setLoading(false);
+      }, 1000); // Simulate API delay
+      return;
+    }
+    
     setLoading(true);
     const fetchTeamDetails = async () => {
       try {

@@ -1,32 +1,13 @@
-<<<<<<< HEAD
-import React, { useState, useEffect } from "react";
-import { Upload, Plus, X, Edit2, Trash2, Users, Calendar } from "lucide-react";
-=======
 import React, { useState, useEffect, useContext } from 'react';
 import { Upload, Plus, X, Edit2, Trash2, Users, Calendar } from 'lucide-react';
->>>>>>> main
 import Papa from "papaparse";
 import { AuthContext } from '@/contexts/AuthContext';
 
 // CONFIGURATION: Change this to your actual backend URL
-<<<<<<< HEAD
-const API_BASE_URL = "http://localhost:3004/api";
-
-export default function Admin({
-  setLotusClass,
-  setLotusStyle,
-  setFigureClass,
-  setFigureStyle,
-}) {
-  // State for Events
-  const [events, setEvents] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-=======
 const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3004';
   
 export default function Admin({ setLotusClass, setLotusStyle, setFigureClass, setFigureStyle }) {
   const { getAdminEvents, events, eventsLoading, eventsError } = useContext(AuthContext);
->>>>>>> main
 
   const[eventsAll, setEvents] = useState([]);
   // State for UI Modals
@@ -40,19 +21,6 @@ export default function Admin({ setLotusClass, setLotusStyle, setFigureClass, se
 
   // Form Data State
   const [formData, setFormData] = useState({
-<<<<<<< HEAD
-    eventPhoto: "",
-    eventName: "",
-    eventCategory: "",
-    eventMode: "offline",
-    description: "",
-    date: "",
-    status: "registrations_open",
-    isWorkshop: false,
-    unstopRegLink: "",
-    latitude: "",
-    longitude: "",
-=======
     eventPhoto: '',
     eventPhotoFile: null,
     eventName: '',
@@ -70,7 +38,6 @@ export default function Admin({ setLotusClass, setLotusStyle, setFigureClass, se
     contacts: [
     { name: "", phone: "" } 
   ],
->>>>>>> main
   });
 
   useEffect(() => {
@@ -115,19 +82,6 @@ export default function Admin({ setLotusClass, setLotusStyle, setFigureClass, se
   // --- 2. FORM HANDLING ---
   const resetForm = () => {
     setFormData({
-<<<<<<< HEAD
-      eventPhoto: "",
-      eventName: "",
-      eventCategory: "",
-      eventMode: "offline",
-      description: "",
-      date: "",
-      status: "registrations_open",
-      isWorkshop: false,
-      unstopRegLink: "",
-      latitude: "",
-      longitude: "",
-=======
       eventPhoto: '',
       eventName: '',
       eventCategory: '',
@@ -144,7 +98,6 @@ export default function Admin({ setLotusClass, setLotusStyle, setFigureClass, se
       contacts: [
         { name: "", phone: "" }
       ],
->>>>>>> main
     });
     setEditingEvent(null);
   };
@@ -163,11 +116,7 @@ export default function Admin({ setLotusClass, setLotusStyle, setFigureClass, se
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-<<<<<<< HEAD
-        setFormData((prev) => ({ ...prev, eventPhoto: reader.result }));
-=======
         setFormData(prev => ({ ...prev, eventPhoto: reader.result, eventPhotoFile: file}));
->>>>>>> main
       };
       reader.readAsDataURL(file);
     }
@@ -243,14 +192,9 @@ export default function Admin({ setLotusClass, setLotusStyle, setFigureClass, se
   const handleSubmit = async (e) => {
     e?.preventDefault();
 
-<<<<<<< HEAD
-    if (!formData.eventName || !formData.eventCategory || !formData.date) {
-      alert("Please fill in Required Fields");
-=======
    const error = validateForm();
     if (error) {
       alert(error);
->>>>>>> main
       return;
     }
 
@@ -284,29 +228,6 @@ export default function Admin({ setLotusClass, setLotusStyle, setFigureClass, se
 
       if (editingEvent) {
         // UPDATE Existing Event
-<<<<<<< HEAD
-        const response = await fetch(
-          `${API_BASE_URL}/events/${editingEvent._id}`,
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formData),
-          },
-        );
-
-        if (!response.ok) throw new Error("Update failed");
-        alert("Event updated successfully!");
-      } else {
-        // CREATE New Event
-        const response = await fetch(`${API_BASE_URL}/events`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        });
-
-        if (!response.ok) throw new Error("Creation failed");
-        alert("Event created successfully!");
-=======
         // console.log(basicEventFields)
         const response = await fetch(`${API_BASE_URL}/events/${editingEvent.id}`, {
           method: 'PUT',
@@ -352,7 +273,6 @@ export default function Admin({ setLotusClass, setLotusStyle, setFigureClass, se
         }
 
         alert('Event created successfully!');
->>>>>>> main
       }
 
       // Refresh list and close form
@@ -366,17 +286,6 @@ export default function Admin({ setLotusClass, setLotusStyle, setFigureClass, se
   };
 
   const handleDelete = async (eventId) => {
-<<<<<<< HEAD
-    if (window.confirm("Are you sure you want to delete this event?")) {
-      try {
-        const response = await fetch(`${API_BASE_URL}/events/${eventId}`, {
-          method: "DELETE",
-        });
-
-        if (!response.ok) throw new Error("Delete failed");
-
-        setEvents(events.filter((ev) => ev._id !== eventId));
-=======
     const adminToken = localStorage.getItem('adminToken');
     if (window.confirm('Are you sure you want to delete this event?')) {
       try {
@@ -389,7 +298,6 @@ export default function Admin({ setLotusClass, setLotusStyle, setFigureClass, se
         
         setEvents(events.filter(ev => ev._id !== eventId));
         fetchEvents();
->>>>>>> main
         alert("Event deleted.");
       } catch (error) {
         console.error(error);
@@ -404,20 +312,12 @@ export default function Admin({ setLotusClass, setLotusStyle, setFigureClass, se
   const viewRegistrations = async (eventId, eventName) => {
     setShowRegistrations(eventId); // Store current Event ID
     setCurrentEventName(eventName);
-<<<<<<< HEAD
-
-    try {
-      const response = await fetch(
-        `${API_BASE_URL}/events/${eventId}/registrations`,
-      );
-=======
     const adminToken = localStorage.getItem('adminToken');
     
     try {
       const response = await fetch(`${API_BASE_URL}/events/${eventId}/registrations`, {
         headers: {'Authorization': `Bearer ${adminToken}`}
       });
->>>>>>> main
       if (response.ok) {
         const data = await response.json();
         setSelectedEventRegs(data);
@@ -464,11 +364,6 @@ const normalizeMemberStatus = (raw) => {
 
   const handleCSVUpload = (e) => {
     const file = e.target.files[0];
-<<<<<<< HEAD
-    if (!file) return;
-
-    const eventId = showRegistrations;
-=======
     if (
       !file ||
       !file.name.toLowerCase().endsWith(".csv") ||
@@ -480,7 +375,6 @@ const normalizeMemberStatus = (raw) => {
     const adminToken = localStorage.getItem('adminToken');
     // Use current event ID stored in state
     const eventId = showRegistrations; 
->>>>>>> main
 
     Papa.parse(file, {
       header: true,
@@ -488,72 +382,6 @@ const normalizeMemberStatus = (raw) => {
 
       complete: async (results) => {
         try {
-<<<<<<< HEAD
-          if (results.errors.length > 0) {
-            throw results.errors;
-          }
-
-          const registrationsPayload = [];
-
-          results.data.forEach((row, index) => {
-            if (!row || Object.keys(row).length === 0) return;
-
-            const name = getValue(row, [
-              "Candidate's Name",
-              "Candidate Name",
-              "Name",
-              "name",
-            ]);
-
-            const email = getValue(row, [
-              "Candidate's Email",
-              "Candidate Email",
-              "Email",
-              "email",
-            ])?.toLowerCase();
-
-            const teamName = getValue(row, ["Team Name", "Team", "teamName"]);
-
-            const rawRole = getValue(row, [
-              "Candidate's Role",
-              "Role",
-              "Member Role",
-            ])?.toLowerCase();
-
-            if (!name || !email || !teamName) {
-              throw new Error(
-                `Row ${index + 2}: Name, Email or Team Name missing`,
-              );
-            }
-
-            if (rawRole !== "leader" && rawRole !== "member") {
-              throw new Error(
-                `Row ${index + 2}: Role must be Leader or Member`,
-              );
-            }
-
-            registrationsPayload.push({
-              name,
-              email,
-              teamName,
-              role: rawRole === "leader" ? "LEADER" : "MEMBER",
-              attendance: false,
-            });
-          });
-
-          const response = await fetch(
-            `${API_BASE_URL}/events/${eventId}/registrations/import`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                registrations: registrationsPayload,
-              }),
-            },
-          );
-
-          if (!response.ok) throw new Error("Import failed");
-=======
           console.log(results.data);
           // Normalize data structure for backend
           const registrationsPayload = results.data.map(row => ({
@@ -589,7 +417,6 @@ const normalizeMemberStatus = (raw) => {
             const err = await response.text();
             throw new Error(err || "Import failed");
           }
->>>>>>> main
 
           alert("CSV imported successfully");
           viewRegistrations(eventId, currentEventName);
@@ -736,32 +563,6 @@ const normalizeMemberStatus = (raw) => {
                     />
                   </div>
                   <div>
-<<<<<<< HEAD
-                    <label className="block text-[#8B6508] font-['Montserrat',sans-serif] font-bold mb-3">
-                      Event Category *
-                    </label>
-                    <input
-                      type="text"
-                      name="eventCategory"
-                      value={formData.eventCategory}
-                      onChange={handleInputChange}
-                      className="w-full bg-[#FFFBEB] border-2 border-[#C5A059] text-[#8B6508] rounded-lg px-4 py-3 focus:border-[#D4AF37] focus:outline-none transition-all font-['Montserrat',sans-serif]"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[#8B6508] font-['Montserrat',sans-serif] font-bold mb-3">
-                      Event Mode *
-                    </label>
-                    <select
-                      name="eventMode"
-                      value={formData.eventMode}
-                      onChange={handleInputChange}
-                      className="w-full bg-[#FFFBEB] border-2 border-[#C5A059] text-[#8B6508] rounded-lg px-4 py-3 focus:border-[#D4AF37] focus:outline-none transition-all font-['Montserrat',sans-serif]"
-                    >
-                      <option value="offline">Offline</option>
-                      <option value="online">Online</option>
-                      <option value="hybrid">Hybrid</option>
-=======
                     <label className="block text-[#8B6508] font-['Montserrat',sans-serif] font-bold mb-3">Event Category *</label>
                     <select name="eventCategory" value={formData.eventCategory} onChange={handleInputChange} className="w-full bg-[#FFFBEB] border-2 border-[#C5A059] text-[#8B6508] rounded-lg px-4 py-3 focus:border-[#D4AF37] focus:outline-none transition-all font-['Montserrat',sans-serif]">
                       <option value="TECH">TECH</option>
@@ -776,7 +577,6 @@ const normalizeMemberStatus = (raw) => {
                     <select name="eventMode" value={formData.eventMode} onChange={handleInputChange} className="w-full bg-[#FFFBEB] border-2 border-[#C5A059] text-[#8B6508] rounded-lg px-4 py-3 focus:border-[#D4AF37] focus:outline-none transition-all font-['Montserrat',sans-serif]">
                       <option value="OFFLINE">OFFLINE</option>
                       <option value="ONLINE">ONLINE</option>
->>>>>>> main
                     </select>
                   </div>
                   <div>
@@ -792,33 +592,11 @@ const normalizeMemberStatus = (raw) => {
                     />
                   </div>
                   <div>
-<<<<<<< HEAD
-                    <label className="block text-[#8B6508] font-['Montserrat',sans-serif] font-bold mb-3">
-                      Event Status *
-                    </label>
-                    <select
-                      name="status"
-                      value={formData.status}
-                      onChange={handleInputChange}
-                      className="w-full bg-[#FFFBEB] border-2 border-[#C5A059] text-[#8B6508] rounded-lg px-4 py-3 focus:border-[#D4AF37] focus:outline-none transition-all font-['Montserrat',sans-serif]"
-                    >
-                      <option value="registrations_open">
-                        Registrations Open
-                      </option>
-                      <option value="registrations_closed">
-                        Registrations Closed
-                      </option>
-                      <option value="upcoming">Upcoming</option>
-                      <option value="ongoing">Ongoing</option>
-                      <option value="completed">Completed</option>
-                      <option value="cancelled">Cancelled</option>
-=======
                     <label className="block text-[#8B6508] font-['Montserrat',sans-serif] font-bold mb-3">Event Status *</label>
                     <select name="status" value={formData.status} onChange={handleInputChange} className="w-full bg-[#FFFBEB] border-2 border-[#C5A059] text-[#8B6508] rounded-lg px-4 py-3 focus:border-[#D4AF37] focus:outline-none transition-all font-['Montserrat',sans-serif]">
                       <option value="ACTIVE">ACTIVE</option>
                       <option value="UPCOMING">UPCOMING</option>
                       <option value="COMPLETED">COMPLETED</option>
->>>>>>> main
                     </select>
                   </div>
                   <div className="flex items-center pt-8">
@@ -838,18 +616,6 @@ const normalizeMemberStatus = (raw) => {
                 </div>
 
                 <div>
-<<<<<<< HEAD
-                  <label className="block text-[#8B6508] font-['Montserrat',sans-serif] font-bold mb-3 text-lg">
-                    Description
-                  </label>
-                  <textarea
-                    name="description"
-                    value={formData.description}
-                    onChange={handleInputChange}
-                    rows="4"
-                    className="w-full bg-[#FFFBEB] border-2 border-[#C5A059] text-[#8B6508] rounded-lg px-4 py-3 focus:border-[#D4AF37] focus:outline-none transition-all font-['Montserrat',sans-serif]"
-                  />
-=======
                     <label className="block text-[#8B6508] font-['Montserrat',sans-serif] font-bold mb-3">Prizes *</label>
                     <input type="number" name="prizes" value={formData.prizes} onChange={handleInputChange} className="w-full bg-[#FFFBEB] border-2 border-[#C5A059] text-[#8B6508] rounded-lg px-4 py-3 focus:border-[#D4AF37] focus:outline-none transition-all font-['Montserrat',sans-serif]" />
                   </div>
@@ -917,7 +683,6 @@ const normalizeMemberStatus = (raw) => {
                 <div>
                   <label className="block text-[#8B6508] font-['Montserrat',sans-serif] font-bold mb-3 text-lg">Description</label>
                   <textarea name="description" value={formData.description} onChange={handleInputChange} rows="4" className="w-full bg-[#FFFBEB] border-2 border-[#C5A059] text-[#8B6508] rounded-lg px-4 py-3 focus:border-[#D4AF37] focus:outline-none transition-all font-['Montserrat',sans-serif]" />
->>>>>>> main
                 </div>
 
                 <div>
@@ -1071,47 +836,6 @@ const normalizeMemberStatus = (raw) => {
         )}
 
         {/* --- EVENTS GRID --- */}
-<<<<<<< HEAD
-        {isLoading ? (
-          <div className="text-center py-20">
-            <p className="text-[#8B6508] text-xl">Loading events...</p>
-          </div>
-        ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {events.map((event) => (
-              <div
-                key={event._id || event.id}
-                className="bg-white rounded-2xl shadow-xl overflow-hidden border-3 border-[#C5A059] hover:border-[#D4AF37] hover:shadow-2xl transition-all"
-              >
-                {event.eventPhoto && (
-                  <img
-                    src={event.eventPhoto}
-                    alt={event.eventName}
-                    className="w-full h-52 object-cover"
-                  />
-                )}
-                <div className="p-6">
-                  <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-2xl font-bold text-[#8B6508] font-['Montserrat',sans-serif]">
-                      {event.eventName}
-                    </h3>
-                    <span
-                      className={`px-4 py-1.5 rounded-full text-xs font-bold font-['Montserrat',sans-serif] ${
-                        event.status === "registrations_open"
-                          ? "bg-green-100 text-green-700 border-2 border-green-500"
-                          : event.status === "registrations_closed"
-                            ? "bg-red-100 text-red-700 border-2 border-red-500"
-                            : event.status === "upcoming"
-                              ? "bg-blue-100 text-blue-700 border-2 border-blue-500"
-                              : event.status === "ongoing"
-                                ? "bg-yellow-100 text-yellow-700 border-2 border-yellow-500"
-                                : "bg-gray-100 text-gray-700 border-2 border-gray-500"
-                      }`}
-                    >
-                      {event.status
-                        ? event.status.replace(/_/g, " ").toUpperCase()
-                        : "STATUS"}
-=======
         {eventsLoading ? (
           <div className="text-center py-20"><p className="text-[#8B6508] text-xl">Loading events...</p></div>
         ) : (
@@ -1132,50 +856,18 @@ const normalizeMemberStatus = (raw) => {
                       'bg-gray-100 text-gray-700 border-2 border-gray-500'
                     }`}>
                       {event.status ? event.status.replace(/_/g, ' ').toUpperCase() : 'STATUS'}
->>>>>>> main
                     </span>
                   </div>
 
                   <div className="space-y-2 text-sm text-[#8B6508]/80 mb-5 font-['Montserrat',sans-serif]">
-<<<<<<< HEAD
-                    <p>
-                      <strong className="text-[#8B6508]">Category:</strong>{" "}
-                      {event.eventCategory}
-                    </p>
-                    <p>
-                      <strong className="text-[#8B6508]">Mode:</strong>{" "}
-                      {event.eventMode}
-                    </p>
-                    <p>
-                      <strong className="text-[#8B6508]">Date:</strong>{" "}
-                      {event.date
-                        ? new Date(event.date).toLocaleString()
-                        : "TBD"}
-                    </p>
-                    {event.isWorkshop && (
-                      <span className="inline-block bg-[#FDF8E2] text-[#8B6508] px-3 py-1 rounded-lg text-xs font-bold border-2 border-[#C5A059] mt-2">
-                        Workshop
-                      </span>
-                    )}
-=======
                     <p><strong className="text-[#8B6508]">Category:</strong> {event.category}</p>
                     <p><strong className="text-[#8B6508]">Mode:</strong> {event.mode}</p>
                     <p><strong className="text-[#8B6508]">Date:</strong> {event.date ? new Date(event.date).toLocaleString() : 'TBD'}</p>
->>>>>>> main
                   </div>
 
                   <div className="flex gap-3">
                     <button
-<<<<<<< HEAD
-                      onClick={() =>
-                        viewRegistrations(
-                          event._id || event.id,
-                          event.eventName,
-                        )
-                      }
-=======
                       onClick={() => viewRegistrations(event._id || event.id, event.name)}
->>>>>>> main
                       className="flex-1 bg-gradient-to-b from-blue-500 to-blue-700 text-white px-4 py-3 rounded-lg flex items-center justify-center gap-2 hover:from-blue-600 hover:to-blue-800 transition-all text-sm font-semibold shadow-lg font-['Montserrat',sans-serif] border border-blue-600"
                     >
                       <Users size={18} />

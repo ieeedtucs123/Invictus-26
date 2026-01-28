@@ -25,33 +25,14 @@ function ImageCard({ src }) {
 /* ---------------- CATEGORY IMAGES ---------------- */
 
 const IMAGES = {
-<<<<<<< HEAD
-  FUN: Array.from(
-    { length: 9 },
-    (_, i) => `/Gallery pics/cat1/cat1_${i + 1}.png`,
-  ),
-  CULTURAL: Array.from(
-    { length: 9 },
-    (_, i) => `/Gallery pics/cat2/cat2_${i + 1}.png`,
-  ),
-  WORKSHOP: Array.from(
-    { length: 9 },
-    (_, i) => `/Gallery pics/cat3/cat3_${i + 1}.png`,
-  ),
-=======
   FUN: Array.from({ length: 9 }, (_, i) => `/Gallery-pics/cat1/cat1_${i + 1}.jpeg`),
   CULTURAL: Array.from({ length: 9 }, (_, i) => `/Gallery-pics/cat2/cat2_${i + 1}.jpeg`),
   WORKSHOP: Array.from({ length: 9 }, (_, i) => `/Gallery-pics/cat3/cat3_${i + 1}.jpeg`),
->>>>>>> main
 };
 
 /* ---------------- GRID CONFIG ---------------- */
 
 const GRID_CLASSES = [
-<<<<<<< HEAD
-  // ROW 1 
-=======
->>>>>>> main
   "lg:col-span-5 sm:col-span-12 col-span-12 h-[22rem]",
   "lg:col-span-4 sm:col-span-6 col-span-12 h-[18rem]",
   "lg:col-span-3 sm:col-span-6 col-span-12 h-[22rem]",
