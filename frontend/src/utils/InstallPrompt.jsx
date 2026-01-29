@@ -1,57 +1,69 @@
-'use client' // Required for Next.js App Router (if used), safe for Pages Router too
+'use client'
 
 import { useState, useEffect } from 'react'
 
 export default function InstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState(null)
   const [isIOS, setIsIOS] = useState(false)
+  const [isDismissed, setIsDismissed] = useState(false)
 
   useEffect(() => {
-    // 1. Check if user is on iOS (iPhone/iPad) because they don't support the install button
-    const isIosDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    setIsIOS(isIosDevice);
+    // 1. Check iOS
+    const isIosDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream
+    setIsIOS(isIosDevice)
 
-    // 2. Listen for the 'beforeinstallprompt' event (Android/Chrome)
+    // 2. Capture install event
     const handler = (e) => {
-      // Prevent the mini-infobar from appearing on mobile
       e.preventDefault()
-      // Stash the event so it can be triggered later.
       setDeferredPrompt(e)
     }
 
     window.addEventListener('beforeinstallprompt', handler)
-
     return () => window.removeEventListener('beforeinstallprompt', handler)
   }, [])
 
   const handleInstallClick = async () => {
     if (!deferredPrompt) return
-
-    // Show the install prompt
     deferredPrompt.prompt()
-
-    // Wait for the user to respond to the prompt
     const { outcome } = await deferredPrompt.userChoice
-    
     if (outcome === 'accepted') {
-      console.log('User accepted the install prompt')
-      setDeferredPrompt(null) // Hide the button
+      setDeferredPrompt(null)
     }
   }
 
-  // Render nothing if the app is already installed or the prompt isn't ready
+  const handleClose = () => {
+    setIsDismissed(true)
+  }
+
+  // Don't show if:
+  // 1. Already installed/not ready (deferredPrompt is null) AND not iOS
+  // 2. User manually closed it (isDismissed is true)
+  if (isDismissed) return null
   if (!deferredPrompt && !isIOS) return null
 
   return (
     <div style={styles.banner}>
+      {/* Close Button */}
+      <button onClick={handleClose} style={styles.closeButton} aria-label="Close">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
       <div style={styles.content}>
-        <p style={styles.text}>Install <strong>INVICTUS</strong> for the best experience!</p>
-        
-        {isIOS ? (
-          <p style={styles.iosText}>Tap <strong>Share</strong> and <strong>Add to Home Screen</strong></p>
-        ) : (
-          <button onClick={handleInstallClick} style={styles.button}>
-            Install Now
+        <div style={styles.textContainer}>
+          <p style={styles.title}>Install App</p>
+          <p style={styles.description}>
+            {isIOS 
+              ? "Tap 'Share' then 'Add to Home Screen' for the best experience."
+              : "Install INVICTUS for a better experience."}
+          </p>
+        </div>
+
+        {!isIOS && (
+          <button onClick={handleInstallClick} style={styles.installButton}>
+            Install
           </button>
         )}
       </div>
@@ -59,47 +71,75 @@ export default function InstallPrompt() {
   )
 }
 
-// Simple inline styles (replace with Tailwind or CSS modules if you prefer)
 const styles = {
   banner: {
     position: 'fixed',
-    bottom: '20px',
+    bottom: '24px',
     left: '50%',
     transform: 'translateX(-50%)',
-    backgroundColor: '#000000', // Black background
-    color: '#D4AF37',           // Gold text
-    padding: '16px',
-    borderRadius: '12px',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(5, 5, 5, 0.95)', // Deep black with slight transparency
+    backdropFilter: 'blur(10px)',            // Glass effect
+    border: '1px solid rgba(212, 175, 55, 0.3)', // Subtle Gold border
+    padding: '16px 20px',
+    borderRadius: '16px',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
     zIndex: 9999,
-    width: '90%',
-    maxWidth: '400px',
-    border: '1px solid #D4AF37',
+    width: 'calc(100% - 32px)', // Responsive width with margins
+    maxWidth: '380px',
+    display: 'flex',
+    flexDirection: 'column',
+    animation: 'fadeIn 0.5s ease-out',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: '12px',
+    right: '12px',
+    background: 'transparent',
+    border: 'none',
+    color: '#666', // Muted color for the X
+    cursor: 'pointer',
+    padding: '4px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transition: 'color 0.2s',
   },
   content: {
     display: 'flex',
-    flexDirection: 'column',
     alignItems: 'center',
-    textAlign: 'center',
-    gap: '10px',
+    justifyContent: 'space-between',
+    gap: '16px',
+    paddingRight: '12px', // Make room for close button visual balance
   },
-  text: {
-    margin: 0,
-    fontSize: '16px',
+  textContainer: {
+    flex: 1,
+    textAlign: 'left',
   },
-  iosText: {
-    margin: 0,
+  title: {
+    margin: '0 0 4px 0',
     fontSize: '14px',
-    opacity: 0.8,
+    fontWeight: '700',
+    color: '#D4AF37', // Gold title
+    letterSpacing: '0.5px',
+    textTransform: 'uppercase',
   },
-  button: {
-    backgroundColor: '#D4AF37', // Gold button
-    color: '#000000',           // Black text
+  description: {
+    margin: 0,
+    fontSize: '13px',
+    color: '#aaa', // Light gray text
+    lineHeight: '1.4',
+  },
+  installButton: {
+    backgroundColor: '#D4AF37',
+    color: '#000',
     border: 'none',
-    padding: '10px 20px',
-    borderRadius: '6px',
-    fontWeight: 'bold',
+    padding: '8px 16px',
+    borderRadius: '50px', // Pill shape
+    fontWeight: '600',
+    fontSize: '13px',
     cursor: 'pointer',
-    fontSize: '14px',
-  }
+    whiteSpace: 'nowrap',
+    transition: 'transform 0.1s',
+    boxShadow: '0 2px 8px rgba(212, 175, 55, 0.2)',
+  },
 }
