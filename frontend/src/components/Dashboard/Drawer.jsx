@@ -7,6 +7,7 @@ export default function Drawer({ event, onClose }) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    console.log(event);
     const cleanTeamName = event.teamName.trim();
     if (!event.teamName || event.teamName.trim() === "") {
       // SOLO EVENT — do NOT call backend

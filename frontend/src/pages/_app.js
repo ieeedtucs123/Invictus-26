@@ -25,6 +25,14 @@ function DomReady() {
 
 export default function App({ Component, pageProps }) {
 
+
+   useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+    }
+  }, [])
+
+  
   useEffect(() => {
     const handler = (event) => {
       const message =

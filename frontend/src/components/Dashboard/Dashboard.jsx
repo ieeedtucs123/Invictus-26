@@ -5,6 +5,7 @@ import MapModal from "./MapModal";
 import SnackBar from "@/utils/snackBar";
 import { AuthContext } from "@/contexts/AuthContext";
 import Drawer from "./Drawer"
+import Button from "@/utils/Button"
 
 export default function Dashboard({ setLotusClass, setLotusStyle }) {
   const [activeTab, setActiveTab] = useState("EVENTS");
@@ -15,10 +16,12 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
   const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3004';
   const { fetchUserEvents, loading, user , setLoading } = useContext(AuthContext);
   const [events, setEvents] = useState([]);
+  const [singleEvent, setSingleEvent] = useState([]);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const SNACKBAR_TIMEOUT_1 = process.env.SNACKBAR_TIMEOUT_ONE;;
   const SNACKBAR_TIMEOUT_2 = process.env.SNACKBAR_TIMEOUT_TWO;
-  function openDrawer() {
+
+  function openDrawer(event) {
+    setSingleEvent(event);
     setDrawerOpen(!drawerOpen);
   }
 
@@ -104,6 +107,7 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
       left: anchorRect.left - parentRect.left + anchorRect.width / 2,
       top: anchorRect.top - parentRect.top + anchorRect.height / 2,
       transform: "translate(-50%, -50%)",
+      position: "absolute",
     });
 
     setLotusClass(`
@@ -143,23 +147,23 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
                 invictus-heading
               "
             >
-              WELCOME BACK,
+              WELCOME BACK, {user ? user.split(" ")[0].toUpperCase() : "USER"}
             </h1>
-            <h1
+            {/* <h1
               className="
                 text-4xl sm:text-4xl md:text-6xl
                 invictus-heading
               "
             >
               {user ? user.split(" ")[0].toUpperCase() : "USER"}
-            </h1>
+            </h1> */}
 
             {/* 🌸 LOTUS ANCHOR */}
             <span
               data-lotus-anchor
               className="
                 absolute
-                right-[9.5rem] md:right-[27.5rem]
+                right-[9.5rem] md:right-[20.5rem]
                 top-40 -translate-y-1/2
                 w-0 h-0
               "
@@ -171,6 +175,7 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
               mt-4
               text-lg sm:text-xl md:text-2xl
               invictus-subheading
+              tracking-wide
             "
           >
             Your journey with Invictus — a path to innovation continues.
@@ -186,9 +191,10 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
               mt-6
               bg-[#b19965] text-white font-semibold
               rounded-lg px-5 py-2
+              invictus-text
               flex items-center gap-2
               border-2 border-[#b19965]
-              transition hover:bg-[#d4af37] active:scale-95
+              transition hover:bg-[#6b6140] active:scale-95
             "
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -209,6 +215,7 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
         >
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
             <span className="invictus-text font-bold text-lg">HOME</span>
+            <Button></Button>
             <button
               className="
                 invictus-text font-bold uppercase tracking-widest rounded-lg
@@ -262,9 +269,9 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
               style={{ border: "2px solid #e7d7b1" }}
             >
               <div>
-                <div className="invictus-text font-bold mb-2">{ev.event.name}</div>
-                <div className="flex gap-2 flex-wrap">
-                  <button className="bg-[#b19965] text-white rounded-lg px-4 py-1 font-semibold border-2 border-[#b19965] transition hover:bg-[#d4af37] active:scale-95"   onClick={() => {
+                <div className="invictus-text font-bold uppercase mb-2">{ev.event.name}</div>
+                <div className="flex gap-2 invictus-text flex-wrap">
+                  <button className="bg-[#b19965] text-white rounded-lg px-4 py-1 font-semibold border-2 border-[#6b6140] transition hover:bg-[#6b6140] active:scale-95"   onClick={() => {
                     if (
                       ev.event.latitude == null ||
                       ev.event.longitude == null
@@ -282,7 +289,7 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
                   }}>
                     VIEW VENUE ON MAP
                   </button>
-                  <button onClick={() => openDrawer(ev)} className="bg-[#b19965] text-white rounded-lg px-4 py-1 font-semibold border-2 border-[#b19965] transition hover:bg-[#d4af37] active:scale-95">
+                  <button onClick={() => openDrawer(ev)} className="bg-[#b19965] text-white rounded-lg px-4 py-1 font-semibold border-2 border-[#b19965] transition hover:bg-[#6b6140] active:scale-95">
                     EDIT TEAM {/* registration link redirect */}
                   </button>
                 </div>
@@ -290,7 +297,7 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
               <div className="invictus-text font-semibold">{ev.teamName == "" ? "Solo Event" : ev.teamName}</div>
              <div className="invictus-text font-semibold">{ev.attendace === false ? "Attended" : "Yet to Attend"}</div>   {/*member or leader will fetch from backend three things to fetch here event/workshops name user has registered for there member status and unstop registration link*/}
               {drawerOpen && (
-                <Drawer event={ev} onClose={openDrawer} />
+                <Drawer event={singleEvent} onClose={openDrawer} />
               )}
             </div>
 

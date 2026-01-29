@@ -13,7 +13,8 @@ export default function Document() {
           rel="stylesheet"
         />
         <link rel="preload" href="/intro/startVideo.mp4" as="video" />
-        <link rel="icon" href="/invictuslogo.png" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="/pwa-192x192.png" />
+        <link rel="manifest" href="/manifest.json" />
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
