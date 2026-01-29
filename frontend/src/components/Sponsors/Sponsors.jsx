@@ -268,10 +268,8 @@ export default function Sponsors({ setLotusClass, setLotusStyle, setFigureClass,
           SPONSORS
         </h1>
 
-        {/* <div className="w-[50vw] max-w-[600px] h-[2px] bg-[#4A90E2] shadow-[0_0_8px_#4A90E2] my-[1.5vh]" />
-
         <p className="
-            font-['Montserrat',sans-serif]
+            invictus-subheading
             text-[clamp(0.9rem,1.8vh,1.2rem)]
             font-semibold text-center
             max-w-[90vw] px-[10px]
@@ -281,7 +279,7 @@ export default function Sponsors({ setLotusClass, setLotusStyle, setFigureClass,
           Our valued partners who power Invictus by supporting innovation and excellence.
         </p>
 
-        <div className="mt-6 pointer-events-auto transition-all duration-300 transform">
+        {/* <div className="mt-6 pointer-events-auto transition-all duration-300 transform">
            <span className="px-6 py-2 rounded-full border border-[#C5A059] bg-[#FFFBEB] text-[#8B6508] font-bold text-sm tracking-widest shadow-sm">
              {activeSection}
            </span>
@@ -344,7 +342,7 @@ export default function Sponsors({ setLotusClass, setLotusStyle, setFigureClass,
           </h2>
           <div className="w-24 h-1 bg-[#C5A059] mx-auto rounded-full" />
           <p className="text-[#7A6C45] font-bold uppercase tracking-widest mt-4">
-            Stay tuned for amazing sponsors and partners supporting Invictus
+            Stay tuned
           </p>
         </div>
       </div>

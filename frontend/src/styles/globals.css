@@ -39,7 +39,7 @@
 
   
   .invictus-heading {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Orbitron', "serif";
     font-weight: 1000;
     background: linear-gradient(to bottom, #E2AA38, #473C24);
     -webkit-background-clip: text;
