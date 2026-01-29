@@ -10,6 +10,17 @@
 !.yarn/releases
 !.yarn/versions
 
+# .gitignore
+
+# PWA files
+sw.js
+public/sw.js
+public/sw.js.map
+public/workbox-*.js
+public/workbox-*.js.map
+public/worker-*.js
+public/fallback-*.js
+
 # testing
 /coverage
 

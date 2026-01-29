@@ -1,15 +1,39 @@
 /** @type {import('next').NextConfig} */
+import withPWAInit from '@ducanh2912/next-pwa'
 
-import withPWA from 'next-pwa'
-
-const nextConfig = withPWA({
+const withPWA = withPWAInit({
   dest: 'public',
   register: true,
   skipWaiting: true,
 
-  disable: process.env.NODE_ENV === 'development',
+  workboxOptions: {
+    // 1. IMPORT PUSH WORKER
+    importScripts: ['/push-worker.js'],
+    
+    // 2. THE FORCE FIX: Manually remove the ghost file from the manifest
+    manifestTransforms: [
+      async (manifestEntries) => {
+        const manifest = manifestEntries.filter((entry) => 
+          !entry.url.includes('dynamic-css-manifest.json') &&
+          !entry.url.includes('middleware-manifest.json')
+        );
+        return { manifest, warnings: [] };
+      },
+    ],
+  },
+
+  // 3. Keep buildExcludes as a backup
+  buildExcludes: [/middleware-manifest\.json$/, /dynamic-css-manifest\.json$/],
 
   runtimeCaching: [
+    {
+      urlPattern: ({ request }) => request.mode === 'navigate',
+      handler: 'NetworkFirst',
+      options: {
+        cacheName: 'pages-cache',
+        networkTimeoutSeconds: 3,
+      },
+    },
     {
       urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/i,
       handler: 'CacheFirst',
@@ -44,13 +68,10 @@ const nextConfig = withPWA({
       },
     },
   ],
-})({
-  reactCompiler: true,
-  reactStrictMode: true,
-  output: 'standalone',
-
-  // 🔑 THIS FIXES YOUR ERROR
-  turbopack: {},
 })
 
-export default nextConfig
+export default withPWA({
+  reactCompiler: true,
+  reactStrictMode: true,
+  // turbopack: {}, // Keep commented out
+})
