@@ -141,7 +141,7 @@ export default function Landing({ setDisplayNavbar, displayLogo, setDisplayLogo 
         
         {/* JOIN GROUP - Darker Gold/Bronze Style */}
         <button
-  onClick={() => window.open('https://t.me/joinchat/Invictus26','_blank')}
+  onClick={() => window.open('https://chat.whatsapp.com/HEIcKiF77zK5NxranQ9ML6?mode=gi_t','_blank')}
   className="
     group relative
     w-full md:w-auto
@@ -203,7 +203,7 @@ export default function Landing({ setDisplayNavbar, displayLogo, setDisplayLogo 
           actionText="No"
           onAction={() => {
             localStorage.setItem("ModelSeen", "true");
-            document.cookie = "seenModel=true; path=/; max-age=10";
+            document.cookie = "seenModel=true; path=/; max-age=345600";
             handleClose();
           }}
           onClose={() => handleClose()}

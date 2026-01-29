@@ -5,6 +5,7 @@ import { AuthContext } from '@/contexts/AuthContext';
 
 // CONFIGURATION: Change this to your actual backend URL
 const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3004';
+const IEEE_BACKEND = process.env.NEXT_PUBLIC_IEEE_BACKEND_URL
   
 export default function Admin({ setLotusClass, setLotusStyle, setFigureClass, setFigureStyle }) {
   const { getAdminEvents, events, eventsLoading, eventsError } = useContext(AuthContext);
@@ -14,6 +15,17 @@ export default function Admin({ setLotusClass, setLotusStyle, setFigureClass, se
   const [showEventForm, setShowEventForm] = useState(false);
   const [showRegistrations, setShowRegistrations] = useState(false); // Stores eventID or false
   const [editingEvent, setEditingEvent] = useState(null); // Stores full event object or null
+  // --- Notification State ---
+  const [notifTitle, setNotifTitle] = useState("");
+  const [notifMessage, setNotifMessage] = useState("");
+  const [notifSecret, setNotifSecret] = useState("");
+  const [notifLoading, setNotifLoading] = useState(false);
+  const [cooldownUntil, setCooldownUntil] = useState(() => {
+    if (typeof window === "undefined") return null;
+    const stored = localStorage.getItem("notifCooldownUntil");
+    return stored ? Number(stored) : null;
+  });
+
 
   // State for Registrations Data
   const [selectedEventRegs, setSelectedEventRegs] = useState([]);
@@ -40,9 +52,100 @@ export default function Admin({ setLotusClass, setLotusStyle, setFigureClass, se
   ],
   });
 
+const isInCooldown = cooldownUntil && Date.now() < cooldownUntil;
+
+const getRemainingCooldown = () => {
+  if (!cooldownUntil) return 0;
+  return Math.ceil((cooldownUntil - Date.now()) / 1000);
+};
+
+
+  const sendNotification = async () => {
+  if (!notifTitle.trim() || !notifMessage.trim()) {
+    alert("Title and message are required");
+    return;
+  }
+
+  if (!notifSecret.trim()) {
+    alert("Secret key is required");
+    return;
+  }
+
+  if (isInCooldown) {
+    alert("Please wait before sending another notification");
+    return;
+  }
+
+  try {
+    setNotifLoading(true);
+
+    const response = await fetch(`${IEEE_BACKEND}/subs/notify`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": notifSecret,
+      },
+      body: JSON.stringify({
+        title: notifTitle.trim(),
+        message: notifMessage.trim(),
+      }),
+    });
+
+    if (!response.ok) {
+      const err = await response.text();
+      throw new Error(err || "Failed to send notification");
+    }
+
+    alert("Notification sent successfully 🚀");
+
+    const until = Date.now() + 10 * 60 * 1000;
+    setCooldownUntil(until);
+    localStorage.setItem("notifCooldownUntil", String(until));
+
+    // Reset fields
+    setNotifTitle("");
+    setNotifMessage("");
+    setNotifSecret("");
+  } catch (err) {
+    console.error(err);
+    alert(err.message || "Failed to send notification");
+  } finally {
+    setNotifLoading(false);
+  }
+};
+
+useEffect(() => {
+  if (!cooldownUntil) return;
+
+  if (Date.now() >= cooldownUntil) {
+    setCooldownUntil(null);
+    localStorage.removeItem("notifCooldownUntil");
+  }
+}, [cooldownUntil]);
+
+useEffect(() => {
+  if (!cooldownUntil) return;
+
+  const interval = setInterval(() => {
+    if (Date.now() >= cooldownUntil) {
+      setCooldownUntil(null);
+      localStorage.removeItem("notifCooldownUntil");
+      clearInterval(interval);
+    }
+  }, 1000);
+
+  return () => clearInterval(interval);
+}, [cooldownUntil]);
+
+
+
+
   useEffect(() => {
     if (!setFigureClass || !setFigureStyle) return;
 
+    setLotusClass(
+      `hidden`
+    )
     setFigureStyle({
       left: "0px",
       bottom: "0px",
@@ -904,6 +1007,92 @@ const normalizeMemberStatus = (raw) => {
           </div>
         )}
       </div>
+
+        {/* --- ADMIN PUSH NOTIFICATION SECTION --- */}
+<div className="relative z-10 max-w-3xl mx-auto mt-24 mb-20 px-6">
+  <div className="bg-white rounded-2xl shadow-2xl border-4 border-[#C5A059] overflow-hidden">
+    
+    <div className="bg-gradient-to-b from-[#D4AF37] to-[#6E5B1D] text-white px-8 py-6">
+      <h2 className="text-3xl font-bold font-['Montserrat',sans-serif]">
+        Send Push Notification
+      </h2>
+      <p className="text-sm opacity-90 mt-1">
+        Broadcast updates to all subscribed users
+      </p>
+    </div>
+
+    <div className="p-8 space-y-6">
+      {/* Title */}
+      <div>
+        <label className="block text-[#8B6508] font-bold mb-2">
+          Notification Title
+        </label>
+        <input
+          type="text"
+          value={notifTitle}
+          onChange={(e) => setNotifTitle(e.target.value)}
+          className="w-full bg-[#FFFBEB] border-2 border-[#C5A059] rounded-lg px-4 py-3"
+          placeholder="Invictus Coming Soon"
+        />
+      </div>
+
+      {/* Message */}
+      <div>
+        <label className="block text-[#8B6508] font-bold mb-2">
+          Notification Message
+        </label>
+        <textarea
+          rows={3}
+          value={notifMessage}
+          onChange={(e) => setNotifMessage(e.target.value)}
+          className="w-full bg-[#FFFBEB] border-2 border-[#C5A059] rounded-lg px-4 py-3"
+          placeholder="Get Ready!"
+        />
+      </div>
+
+      {/* Secret Key */}
+      <div>
+        <label className="block text-[#8B6508] font-bold mb-2">
+          API Secret Key
+        </label>
+        <input
+          type="password"
+          value={notifSecret}
+          onChange={(e) => setNotifSecret(e.target.value)}
+          className="w-full bg-[#FFFBEB] border-2 border-[#C5A059] rounded-lg px-4 py-3"
+          placeholder="••••••••••"
+        />
+      </div>
+
+      {/* Cooldown Info */}
+      {isInCooldown && (
+        <p className="text-red-600 font-semibold">
+          ⏳ Cooldown active — wait {getRemainingCooldown()} seconds
+        </p>
+      )}
+
+      {/* Send Button */}
+      <button
+        onClick={sendNotification}
+        disabled={notifLoading || isInCooldown}
+        className={`w-full py-4 rounded-lg font-bold text-lg transition-all shadow-xl border
+          ${
+            notifLoading || isInCooldown
+              ? "bg-gray-400 border-gray-500 cursor-not-allowed"
+              : "bg-gradient-to-b from-purple-600 to-purple-800 border-purple-700 hover:from-purple-700 hover:to-purple-900"
+          } text-white`}
+      >
+        {notifLoading
+          ? "Sending..."
+          : isInCooldown
+          ? "Cooldown Active"
+          : "Send Notification"}
+      </button>
+    </div>
+  </div>
+</div>
+
+
     </div>
   );
 }
