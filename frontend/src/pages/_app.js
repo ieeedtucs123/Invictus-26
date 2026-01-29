@@ -13,6 +13,7 @@ import GlobalBirdCanvas from "@/components/Landing/Three/GlobalBirdCanvas";
 import InstallPrompt from "@/utils/InstallPrompt";
 import { useRouter } from "next/router";
 import Script from "next/script";
+import Head from "next/head";
 
 function DomReady() {
   const { setDomReady } = useLoader();
@@ -102,6 +103,10 @@ export default function App({ Component, pageProps }) {
         src={`https://maps.googleapis.com/maps/api/js?key=${process.env.API_KEY}`}
         strategy="beforeInteractive"
       />
+      <Head>
+        <title>Invictus'26</title>
+        <meta name="description" content="Invictus 2026 Technical Fest" />
+      </Head>
       <AuthProvider>
         <LoaderProvider>
           <AudioProvider>

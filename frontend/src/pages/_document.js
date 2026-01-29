@@ -13,6 +13,8 @@ export default function Document() {
           rel="stylesheet"
         />
         <link rel="preload" href="/intro/startVideo.mp4" as="video" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" href="/pwa-192x192.png" />
         <link rel="apple-touch-icon" href="/pwa-192x192.png" />
         <link rel="manifest" href="/manifest.json" />
         <link
@@ -20,7 +22,6 @@ export default function Document() {
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         />
       </Head>
-      <title>Invictus'26</title>
 
       <body className="antialiased">
         <Main />
