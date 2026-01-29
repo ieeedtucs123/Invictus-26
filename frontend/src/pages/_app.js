@@ -17,13 +17,39 @@ function DomReady() {
   const { setDomReady } = useLoader();
 
   useEffect(() => {
-      setDomReady(true);
+    setDomReady(true);
   }, []);
 
   return null;
 }
 
 export default function App({ Component, pageProps }) {
+
+  useEffect(() => {
+    const handler = (event) => {
+      const message =
+        event?.message ||
+        event?.reason?.message ||
+        "";
+
+      if (
+        message.includes("ChunkLoadError") ||
+        message.includes("Loading chunk") ||
+        message.includes("Failed to fetch")
+      ) {
+        window.location.replace("/Home"); 
+      }
+    };
+
+    window.addEventListener("error", handler);
+    window.addEventListener("unhandledrejection", handler);
+
+    return () => {
+      window.removeEventListener("error", handler);
+      window.removeEventListener("unhandledrejection", handler);
+    };
+  }, []);
+
   const [lotusStyle, setLotusStyle] = useState({});
   const [lotusClass, setLotusClass] = useState(
     "top-0 left-0 w-[180px] opacity-0",
@@ -70,28 +96,27 @@ export default function App({ Component, pageProps }) {
       <AuthProvider>
         <LoaderProvider>
           <AudioProvider>
-          <DomReady />
-          <Loader />
-          <MuteButton />
-          {router.pathname !== "/model" && (
-            <Navbar
-              className={`
+            <DomReady />
+            <Loader />
+            <MuteButton />
+            {router.pathname !== "/model" && (
+              <Navbar
+                className={`
             fixed z-50
             transform transition-all duration-700 ease-in-out
-            ${
-              displayNavbar
-                ? "translate-y-0 opacity-100 pointer-events-auto"
-                : "-translate-y-full opacity-0 pointer-events-none"
-            }
+            ${displayNavbar
+                    ? "translate-y-0 opacity-100 pointer-events-auto"
+                    : "-translate-y-full opacity-0 pointer-events-none"
+                  }
           `}
-            />
-          )}
-          {router.pathname !== "/model" && (
-            <img
-              src="/invictuslogo.svg"
-              alt="Invictus'26 Logo"
-              onClick={() => router.push("/")}
-              className={`
+              />
+            )}
+            {router.pathname !== "/model" && (
+              <img
+                src="/invictuslogo.svg"
+                alt="Invictus'26 Logo"
+                onClick={() => router.push("/")}
+                className={`
           fixed top-1 left-2 z-60
           w-[100px] md:w-[150px] cursor-pointer
           md:hidden
@@ -103,29 +128,29 @@ export default function App({ Component, pageProps }) {
 
           ${displayLogo ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-full pointer-events-none"}
         `}
+              />
+            )}
+            {router.pathname === "/model" ? null : (
+              <CommonLotus className={lotusClass} style={lotusStyle} />
+            )}
+            {router.pathname === "/model" ? null : (
+              <LandingFigure className={figureClass} style={figureStyle} />
+            )}
+
+            <GlobalBirdCanvas />
+
+            <Component
+              {...pageProps}
+              setLotusClass={setLotusClass}
+              setLotusStyle={setLotusStyle}
+              setFigureClass={setFigureClass}
+              setFigureStyle={setFigureStyle}
+              setDisplayNavbar={setDisplayNavbar}
+              displayLogo={displayLogo}
+              setDisplayLogo={setDisplayLogo}
             />
-          )}
-          {router.pathname === "/model" ? null : (
-            <CommonLotus className={lotusClass} style={lotusStyle} />
-          )}
-          {router.pathname === "/model" ? null : (
-            <LandingFigure className={figureClass} style={figureStyle} />
-          )}
-          
-          <GlobalBirdCanvas />
 
-          <Component
-            {...pageProps}
-            setLotusClass={setLotusClass}
-            setLotusStyle={setLotusStyle}
-            setFigureClass={setFigureClass}
-            setFigureStyle={setFigureStyle}
-            setDisplayNavbar={setDisplayNavbar}
-            displayLogo={displayLogo}
-            setDisplayLogo={setDisplayLogo}
-          />
 
-          
           </AudioProvider>
         </LoaderProvider>
       </AuthProvider>
