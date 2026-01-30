@@ -116,7 +116,7 @@ body::after { /* for adding a blur/darkness effect  */
 html,
 body {
   width: auto;
-  height:min-content;
+  height:210%;
   background: transparent;
 }
 

@@ -13,6 +13,8 @@ export default function Intro() {
   };
 
   useEffect(() => {
+    router.prefetch("/model");
+
     const video = videoRef.current;
     if (!video) return;
 
