@@ -100,7 +100,7 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <Script
-        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.API_KEY}`}
+        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.API_KEY}&loading=async`}
         strategy="beforeInteractive"
       />
       <Head>
