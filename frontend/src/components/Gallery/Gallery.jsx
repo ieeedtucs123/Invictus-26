@@ -1,210 +1,251 @@
 "use client";
-import { useMemo, useState } from "react";
-import { utils } from "swapy";
-import { SwapyItem, SwapyLayout, SwapySlot } from "@/component/ui/swapy";
-import styles from "./Gallery.module.css";
-export function ProjectViewsCard() {
+
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+
+import {
+  SwapyItem,
+  SwapyLayout,
+  SwapySlot,
+} from "@/components/Gallery/ui/swapy";
+
+/* ---------------- IMAGE CARD ---------------- */
+
+function ImageCard({ src }) {
   return (
-    <div className="bg-emerald-600 rounded-xl h-full p-6 flex flex-col justify-center items-center text-center shadow-md">
+    <div className="relative w-full h-full rounded-xl overflow-hidden border-[3px] border-[#d9b85c] shadow-[6px_6px_0_rgba(120,100,40,0.45)]">
+      <img
+        src={src}
+        alt=""
+        className="w-full h-full object-cover"
+        draggable={false}
+      />
     </div>
   );
 }
-export function NewUsersCard() {
-  return (
-    <div className="bg-gray-600 rounded-xl h-full p-6 flex flex-col justify-center shadow-md">
-    </div>
-  );
-}
-export function TeamCard() {
-  return (
-    <div className="bg-blue-100 rounded-xl p-6 h-full  flex flex-col justify-between relative overflow-hidden shadow-md">
-    </div>
-  );
-}
-export function AgencyCard() {
-  return (
-    <div className="bg-purple-300 rounded-xl h-full p-4 relative overflow-hidden shadow-md">
-    </div>
-  );
-}
-export function LogoCard() {
-  return (
-    <div className="bg-pink-200 rounded-xl h-full p-6 flex flex-col items-center justify-center shadow-md">
-    </div>
-  );
-}
-export function UserTrustCard() {
-  return (
-    <div className="bg-blue-600 rounded-xl h-full p-4 flex flex-col justify-center items-center text-white shadow-lg">
-    </div>
-  );
-}
-export function FontCard() {
-  return (
-    <div className="bg-yellow-200 rounded-xl h-full p-6 col-span-1 shadow-md">
-    </div>
-  );
-}
-export function DesignIndustryCard() {
-  return (
-    <div className="bg-emerald-600 text-yellow-200 rounded-xl h-full p-6 flex flex-col justify-between relative shadow-md">
-    </div>
-  );
-}
-export function CardBalanceCard() {
-  return (
-    <div className="bg-yellow-200 rounded-xl h-full p-6 shadow-lg">
-    </div>
-  );
-}
-const initialItems = [
-  {
-    id: "1",
-    title: "1",
-    widgets: <ProjectViewsCard />,
-    className: "lg:col-span-4 sm:col-span-7 col-span-12",
-  },
-  {
-    id: "2",
-    title: "2",
-    widgets: <NewUsersCard />,
-    className: "lg:col-span-3 sm:col-span-5 col-span-12",
-  },
-  {
-    id: "3",
-    title: "3",
-    widgets: <DesignIndustryCard />,
-    className: "lg:col-span-5 sm:col-span-5 col-span-12",
-  },
-  {
-    id: "4",
-    title: "4",
-    widgets: <TeamCard />,
-    className: "lg:col-span-5 sm:col-span-7 col-span-12",
-  },
-  {
-    id: "5",
-    title: "5",
-    widgets: <LogoCard />,
-    className: "lg:col-span-4 sm:col-span-6 col-span-12",
-  },
-  {
-    id: "6",
-    title: "6",
-    widgets: <FontCard />,
-    className: "lg:col-span-3 sm:col-span-6 col-span-12",
-  },
-  {
-    id: "7",
-    title: "7",
-    widgets: <AgencyCard />,
-    className: "lg:col-span-4 sm:col-span-5 col-span-12",
-  },
-  {
-    id: "8",
-    title: "8",
-    widgets: <UserTrustCard />,
-    className: "lg:col-span-4 sm:col-span-7 col-span-12",
-  },
-  {
-    id: "9",
-    title: "9",
-    widgets: <CardBalanceCard />,
-    className: "lg:col-span-4 sm:col-span-12 col-span-12",
-  },
+
+/* ---------------- CATEGORY IMAGES ---------------- */
+
+const IMAGES = {
+  FUN: Array.from({ length: 9 }, (_, i) => `/Gallery-pics/cat1/cat1_${i + 1}.jpeg`),
+  CULTURAL: Array.from({ length: 9 }, (_, i) => `/Gallery-pics/cat2/cat2_${i + 1}.jpeg`),
+  WORKSHOP: Array.from({ length: 9 }, (_, i) => `/Gallery-pics/cat3/cat3_${i + 1}.jpeg`),
+};
+
+/* ---------------- GRID CONFIG ---------------- */
+
+const GRID_CLASSES = [
+  "lg:col-span-5 sm:col-span-12 col-span-12 h-[22rem]",
+  "lg:col-span-4 sm:col-span-6 col-span-12 h-[18rem]",
+  "lg:col-span-3 sm:col-span-6 col-span-12 h-[22rem]",
+
+  // ROW 2 
+  "lg:col-span-3 sm:col-span-6 col-span-12 h-[25rem]",
+  "lg:col-span-6 sm:col-span-12 col-span-12 h-[26rem]",
+  "lg:col-span-3 sm:col-span-6 col-span-12 h-[24rem]",
+
+  // ROW 3
+  "lg:col-span-4 sm:col-span-6 col-span-12 h-[21rem]",
+  "lg:col-span-4 sm:col-span-6 col-span-12 h-[21rem]",
+  "lg:col-span-4 sm:col-span-12 col-span-12 h-[24rem]",
 ];
-function Gallery() {
+
+/* ---------------- COMPONENT ---------------- */
+
+export default function Gallery({ setLotusClass, setLotusStyle, setFigureClass, setFigureStyle }) {
   const [category, setCategory] = useState("FUN");
 
-  const categoryMap = {
-    FUN: initialItems,
-    CULTURAL: initialItems,
-    WORKSHOP: initialItems,
-  };
+  /* 🌸 LOTUS POSITION — RELATIVE TO GALLERY HEADING */
+  useEffect(() => {
+    if (!setLotusClass || !setLotusStyle) return;
 
-  const [slotItemMap, setSlotItemMap] = useState(
-    utils.initSlotItemMap(initialItems, "id")
-  );
-  const slottedItems = useMemo(
-    () => utils.toSlottedItems(initialItems, "id", slotItemMap),
-    [initialItems, slotItemMap]
-  );
+    const anchor = document.querySelector("[data-gallery-lotus-anchor]");
+    if (!anchor) return;
+
+    const parent = anchor.offsetParent;
+    if (!parent) return;
+
+    const anchorRect = anchor.getBoundingClientRect();
+    const parentRect = parent.getBoundingClientRect();
+
+    setLotusStyle({
+      left: anchorRect.left - parentRect.left + anchorRect.width / 2,
+      top: anchorRect.top - parentRect.top + anchorRect.height / 2,
+      transform: "translate(-50%, -50%)",
+    });
+
+    setLotusClass(`
+      absolute
+      w-[90px] md:w-[120px] lg:w-[150px]
+      opacity-80
+      transition-all duration-700 ease-in-out
+    `);
+  }, [setLotusClass, setLotusStyle]);
+
+  useEffect(() => {
+    if (!setFigureClass || !setFigureStyle) return;
+  
+    setFigureStyle({
+      left: "0px",
+      bottom: "0px",
+      transform: "translate(10%, 10%)",
+    });
+  
+    setFigureClass(`
+      fixed
+      w-[100px]
+        md:w-[120px]
+        lg:w-[175px]
+        pointer-events-none
+        z-[30]
+        opacity-60
+      drop-shadow-[0_0_30px_rgba(255,215,138,0.4)]
+      transition-all duration-700 ease-out
+    `);
+  }, [setFigureClass, setFigureStyle]);
+
   return (
-  <div className={styles.galleryBackground}>
-    <div className={styles.galleryWrapper}>
+    <div className="relative w-full bg-transparent">
+      <div className="max-w-[1600px] mx-auto">
 
-      {/* HEADER */}
-      <div className={styles.galleryHeader}>
+        {/* HEADER */}
+      <motion.div
+  initial={{ opacity: 0, y: 40 }}
+  whileInView={{ opacity: 1, y: 0 }}
+ 
+  transition={{ duration: 0.8 }}
+  className="
+    flex flex-col md:flex-row justify-between items-start
+    gap-10
+    mt-[90px] md:mt-[120px]
+    mb-10
+    px-5 md:px-10
+    pt-5
+  "
+>
+          {/* TITLE BLOCK */}
+          <div className="max-w-full md:max-w-[70%] relative">
+           <motion.h1
+  initial={{ scale: 0.9, opacity: 0 }}
+  whileInView={{ scale: 1, opacity: 1 }}
+  
+  transition={{ delay: 0.2, duration: 0.5 }}
+  className="text-[48px] md:text-[72px] lg:text-[96px] invictus-heading"
+>
+  GALLERY
+</motion.h1>
 
-        {/* LEFT SIDE */}
-        <div className={styles.titleBlock}>
-          <h1 className={`${styles.galleryTitle} invictus-heading`}>GALLERY</h1>
-          <p className={`${styles.galleryCaption} invictus-subheading`}>
-            Moments that capture the energy, innovation, and unforgettable
-            experiences of Invictus.
-          </p>
-        </div>
+            {/* 🌸 LOTUS ANCHOR */}
+            <span
+              data-gallery-lotus-anchor
+              className="
+                absolute
+                right-[2rem] md:right-[3.5rem] lg:right-[4.5rem]
+                top-5/6
+                -translate-y-1/2
+                w-0 h-0
+              "
+            />
 
-        {/* RIGHT SIDE – VIEW GLANCES */}
-        <div className={styles.categoryBox}>
-          <div className={styles.categoryHeader}>
-            <span className={styles.categoryLabel}>VIEW GLANCES</span>
-            <span className={styles.chevron}>⌄</span>
+         <motion.p
+  initial={{ opacity: 0 }}
+  whileInView={{ opacity: 1 }}
+
+  transition={{ delay: 0.3, duration: 0.6 }}
+  className="
+    mt-4 md:mt-[18px]
+    invictus-subheading
+    text-[20px] md:text-[24px]
+  "
+>
+              Moments that capture the energy, innovation, and unforgettable
+              experiences of Invictus.
+            </motion.p>
           </div>
 
-          <div className={styles.categoryDivider} />
+          {/* CATEGORY BOX */}
+         <motion.div
+  initial={{ opacity: 0, x: 30 }}
+  whileInView={{ opacity: 1, x: 0 }}
+ 
+  transition={{ delay: 0.35, duration: 0.6 }}
+  className="
+    w-full md:w-[290px] mt-5
+    bg-[#f6f2d9]
+    border-[3px] border-[#d9b85c]
+    rounded-[10px]
+    px-4 pt-3 pb-4
+    shadow-[6px_6px_0_rgba(120,100,40,0.45)]
+  "
+>
+            <div className="flex justify-between items-center">
+              <span className="font-[Montserrat] text-[18px] tracking-[2px] font-semibold text-[#8f8457]">
+                VIEW GLANCES
+              </span>
+              <span className="text-[16px] font-bold text-[#8f8457]">⌄</span>
+            </div>
 
-          <div className={`${styles.categoryList} invictus-subheading`}>
-            {["FUN", "CULTURAL", "WORKSHOP"].map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setCategory(cat)}
-                className={`${styles.categoryItem} ${
-                  category === cat ? styles.activeCategory : ""
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </div>
+            <div className="h-[2px] bg-[#d9b85c] my-[10px]" />
 
-      </div>
-
-      {/* SWAPY GRID */}
-      <div className={styles.swapyWrapper}>
-        <SwapyLayout
-          id="swapy"
-          className="w-full"
-          config={{ swapMode: "hover" }}
-          onSwap={(event) => {
-            console.log("Swap detected!", event.newSlotItemMap.asArray);
-          }}
-        >
-          <div className="grid w-full grid-cols-12 gap-6 py-6">
-            {slottedItems.map(({ slotId, itemId }) => {
-              const item = initialItems.find((i) => i.id === itemId);
-              return (
-                <SwapySlot
-                  key={slotId}
-                  id={slotId}
-                  className={`rounded-xl h-64 ${item?.className}`}
+            <div className="flex flex-col gap-2.5">
+              {["FUN", "CULTURAL", "WORKSHOP"].map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setCategory(cat)}
+                  className={`
+                    text-left text-[16px] tracking-[1px]
+                    px-3 py-1.5 rounded-md transition-all
+                    ${
+                      category === cat
+                        ? "bg-[linear-gradient(180deg,rgba(225,200,125,0.95),rgba(190,160,80,0.95))] text-[#6d5b1f] font-semibold"
+                        : "text-[#9b8a3d]"
+                    }
+                  `}
                 >
-                  <SwapyItem
-                    id={itemId}
-                    className="relative rounded-xl w-full h-full"
-                  >
-                    {item?.widgets}
-                  </SwapyItem>
-                </SwapySlot>
-              );
-            })}
-          </div>
-        </SwapyLayout>
-      </div>
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        </motion.div>
 
+        {/* GRID */}
+        <div className="px-5 md:px-8">
+          <SwapyLayout id="swapy" className="w-full" config={{ swapMode: "hover" }}>
+          <motion.div
+  initial="hidden"
+  whileInView="show"
+  
+  variants={{
+    hidden: {},
+    show: {
+      transition: { staggerChildren: 0.08 }
+    }
+  }}
+  className="grid w-full grid-cols-12 gap-6 py-6"
+>
+              {IMAGES[category].map((src, index) => (
+             <motion.div
+  key={index}
+  variants={{
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  }}
+  transition={{ duration: 0.35 }}
+  whileHover={{ scale: 1.02 }}
+  className={GRID_CLASSES[index]}
+>
+  <SwapySlot id={`slot-${index}`} className="w-full h-full">
+    <SwapyItem id={`item-${index}`} className="w-full h-full">
+      <ImageCard src={src} />
+    </SwapyItem>
+  </SwapySlot>
+</motion.div>
+              ))}
+            </motion.div>
+          </SwapyLayout>
+        </div>
+      </div>
     </div>
-  </div>
-);
+  );
 }
-export default Gallery;

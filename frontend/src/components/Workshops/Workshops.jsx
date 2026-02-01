@@ -1,0 +1,73 @@
+'use client';
+import React, { useState, useEffect } from 'react';
+import CardComponent from '../Events/CardComponent';
+import { motion } from "framer-motion";
+export default function Workshops({setLotusClass, setLotusStyle, setFigureClass, setFigureStyle}) {
+
+  useEffect(() => {
+    if (!setFigureClass || !setFigureStyle) return;
+  
+    setFigureStyle({
+      left: "0px",
+      bottom: "0px",
+      transform: "translate(10%, 10%)",
+    });
+  
+    setFigureClass(`
+      fixed
+      w-[100px]
+        md:w-[120px]
+        lg:w-[175px]
+        pointer-events-none
+        z-[30]
+        opacity-60
+      drop-shadow-[0_0_30px_rgba(255,215,138,0.4)]
+      transition-all duration-700 ease-out
+    `);
+  }, [setFigureClass, setFigureStyle]);
+
+    const [filters, setFilters] = useState({
+          tag: "Workshop",
+    });
+
+  return (
+    <div 
+      className=" w-full relative overflow-x-hidden "
+
+    >
+      <div className="container mx-auto px-4 pt-10 flex flex-col items-center relative z-10">
+        
+       <motion.h1
+  initial={{ opacity: 0, y: 40 }}
+ whileInView={{ opacity: 1 ,y: 0, scale: 1 }}
+  transition={{ duration: 0.8 }}
+  className="invictus-heading pt-12 mb-5  text-[3rem] lg:text-[7rem]"
+>
+  WORKSHOPS
+</motion.h1>
+
+
+         <motion.div
+  initial={{ opacity: 0, y:40 }}
+  whileInView={{ opacity: 1 ,y: 0, scale: 1  }}
+  transition={{  duration: 0.6 }}
+  className="invictus-subheading pb-15 text-[0.8em] md:text-[1.1em]"
+>
+  The passionate minds and dedicated leaders driving Invictus forward.
+</motion.div>
+        {/* CARD CAROUSEL SECTION */}
+       <motion.div
+  initial={{ opacity: 0, scale: 0.97 }}
+  whileInView={{ opacity: 1, y:0,scale: 1 }}
+  transition={{ delay: 0.35, duration: 0.6 }}
+  whileHover={{ y: -6 }}
+  className="w-full max-w-6xl"
+>
+
+           <CardComponent filters={filters} setLotusClass={setLotusClass} setLotusStyle={setLotusStyle}/>
+        </motion.div>
+
+      </div>
+    </div>
+  );
+}

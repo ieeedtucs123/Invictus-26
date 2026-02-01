@@ -1,6 +1,22 @@
 @import "tailwindcss";
 @tailwind utilities;
-@import "tw-animate-css";
+/* @import "tw-animate-css"; */
+
+.three-wrapper {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: transparent;
+  isolation: isolate;
+}
+
+.three-wrapper * {
+  box-sizing: content-box;
+  color: initial;
+  font-family: initial;
+}
+
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -9,6 +25,19 @@
   }
 
   @layer utilities {
+@keyframes lotusFloat {
+  0% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(calc(-50% + 3px)) translateY(-4px);
+  }
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+  
   .invictus-heading {
     font-family: 'Orbitron', sans-serif;
     font-weight: 1000;
@@ -18,7 +47,7 @@
     color: transparent;
     opacity: 0.9;
     filter: brightness(1.05) saturate(1.15);
-    filter: drop-shadow(8px 8px 2px rgba(0,0,0,0.25));
+    filter: drop-shadow(4px 4px 2px rgba(0,0,0,0.25));
     -webkit-text-stroke: 1px rgba(255, 217, 138, 1);
     line-height: 1.1;
     display: block;
@@ -27,7 +56,7 @@
     .invictus-subheading {
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
-    background: linear-gradient(to bottom, #D4AF37, #6E5B1D);
+    background: linear-gradient(to bottom, #a69153, #6E5B1D);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -35,20 +64,155 @@
     filter: brightness(1.05) saturate(1.15);
     margin-top: 0.5rem;
   }
+
+  .invictus-text {
+    font-family: 'Orbitron';
+    opacity: 0.92;
+    filter: brightness(1.05) saturate(1.15);
+    /* filter: drop-shadow(4px 4px 1px rgba(0,0,0,0.25)); */
+    /* line-height: 1.7; */
+    /* letter-spacing: 0.83px; */
+  }
+
+  .invictus-outline-text {
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.85);
+  text-shadow:
+    0 1px 2px rgba(0,0,0,0.35),
+    0 0 10px rgba(255,215,138,0.4);
+}
+
+@media (max-width: 768px) {
+  .invictus-outline-text {
+    -webkit-text-stroke: 0;
+    text-shadow:     
+    0 1px 2px rgba(0,0,0,0.35),
+    0 0 10px rgba(255,215,138,0.4);;
+  }
 }
 
 }
-html, body {
-  height:fit-content;
-  margin: 0;
+
 }
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  background-image: url(/backdrop.png);
+body::before { 
+/* using before to add background image because want bg image to stay at one place */
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("/backdrop.png");
   background-repeat: no-repeat;
   background-size: cover;
-  min-height: 100vh;
+  background-position: center;
+  z-index: -1;
+}
+body::after { /* for adding a blur/darkness effect  */
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.20);
+  z-index: -1;
+}
+
+html,
+body {
+  width: auto;
+  height:min-content;
+  background: transparent;
 }
 
 
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--background);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+.spinner {
+  border: 8px solid var(--foreground);
+  border-top: 8px solid transparent;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+} 
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Firefox */
+/* * {
+  scrollbar-width: thin;
+
+  scrollbar-color: rgba(180, 180, 180, 0.6) transparent;
+} */
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Hover effect */
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(69, 69, 69, 0.9),
+    rgba(0, 0, 0, 0.9)
+  );
+}
+
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+      180deg,
+      rgba(247, 169, 106, 0.726),
+      rgb(0, 0, 0)
+    );
+  }
+}
+
+body.cursor-hidden {
+  cursor: none;
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+.animate-slideUp {
+  animation: slideInFromLeft 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.animate-fadeOut {
+  animation: fadeOut 0.8s ease-out forwards;
+}
+
+.mix-blend-screen {
+  mix-blend-mode: screen;
+}

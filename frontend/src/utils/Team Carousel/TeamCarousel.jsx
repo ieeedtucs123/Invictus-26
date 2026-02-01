@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import CarouselCard from './CarouselCard'
-import TeamInfo from './TeamInfo.json'    //helper for team details. using dummy data atm
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import TeamInfo from './TeamInfo.json'    //helper for team details
 
 const TeamCarousel = () => {
   const [active, setActive] = useState(0)
@@ -37,20 +36,33 @@ const TeamCarousel = () => {
       </div>
 
       {/* controls */}
-      <div className="flex w-full justify-center space-x-8 mt-10">
-        <button onClick={prev}
-        className="p-3 rounded-full border-3 border-[#D4AF37] hover:border-white text-[#D4AF37] bg-white hover:bg-[#D4AF37] hover:text-white transition-all 
-        duration-300 group cursor-pointer hover:drop-shadow-[0_0_1rem_rgba(212,175,55,0.8)]">
-          <ChevronLeft className="w-8 h-8" strokeWidth={4} />
+      <div className="flex w-full justify-center mt-12 gap-5">
+        <button
+          onClick={prev}
+          className="
+            cursor-pointer
+            w-12 h-12 rounded-full 
+            border border-[#C5A059] text-[#C5A059] 
+            bg-white/80 hover:bg-[#C5A059] hover:text-white 
+            transition-all shadow-lg flex items-center justify-center
+          "
+        >
+          ←
         </button>
 
-        <button onClick={next}
-        className="p-3 rounded-full border-3 border-[#D4AF37] hover:border-white text-[#D4AF37] bg-white hover:bg-[#D4AF37] hover:text-white transition-all 
-        duration-300 group cursor-pointer hover:drop-shadow-[0_0_1rem_rgba(212,175,55,0.4)]">
-          <ChevronRight className="w-8 h-8" strokeWidth={4} />
+        <button
+          onClick={next}
+          className="
+            cursor-pointer
+            w-12 h-12 rounded-full 
+            border border-[#C5A059] text-[#C5A059] 
+            bg-white/80 hover:bg-[#C5A059] hover:text-white 
+            transition-all shadow-lg flex items-center justify-center
+          "
+        >
+          →
         </button>
       </div>
-        
     </div>
   )
 }

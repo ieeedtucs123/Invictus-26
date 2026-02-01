@@ -1,14 +1,31 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext,useEffect, useState } from 'react';
 import { AuthContext } from '@/contexts/AuthContext';
 import { Eye,EyeOff } from 'lucide-react';
+import { useRouter } from "next/router";
+import { motion } from "framer-motion";
 
-export default function Authpage() {
-  const { login, register, Adminlogin } = useContext(AuthContext);
-  const backend_URL = "http://localhost:3004/";  
+export default function Authpage({setLotusClass, setLotusStyle, setFigureClass, setFigureStyle}) {
+  const { user, isAdmin, authLoading, login, register, Adminlogin, loading, regError, setRegError } = useContext(AuthContext);
+  const backend_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   const [isLogin, setIsLogin] = useState(true);
   const [eyeToggle, setEyeToggle] = useState(false);
   const [errors, setErrors] = useState({});
   const [isAdminLogin, setIsAdminLogin] = useState(false);
+  const router = useRouter();
+
+useEffect(() => {
+  if (authLoading) return;
+
+  if (isAdmin) {
+    router.replace("/Admin");
+    return;
+  }
+
+  if (user) {
+    router.replace("/Dashboard");
+  }
+}, [user, isAdmin, authLoading, router]);
+
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -16,8 +33,83 @@ export default function Authpage() {
     email: '',
     password: '',
     confirmPassword: '',
-    agreedToTerms: false
+    // agreedToTerms: false
   });
+  
+  useEffect(() => {
+    if (regError) {
+      showErrors({
+        server: regError,
+      });
+    }
+    return () => { setRegError(null); };
+  }, [loading]);
+
+
+  useEffect(() => {
+      if (!setLotusClass) return
+      setLotusStyle({})
+  
+      setLotusClass(`absolute
+        top-3/4 left-1/2
+        -translate-x-1/2 -translate-y-1/2
+        w-[160px]
+        opacity-80
+        z-999
+        transition-all duration-700 ease-in-out
+      `)
+  
+      const timeout = setTimeout(() => {
+        setLotusClass(`absolute
+          top-3/4 left-1/2
+          -translate-x-1/2 -translate-y-1/2
+          w-[160px]
+          opacity-0
+          
+          -z-999
+          transition-all duration-500 ease-in-out
+        `)
+      }, 500)
+  
+      return () => clearTimeout(timeout)
+    }, [setLotusClass, setLotusStyle])
+
+    useEffect(() => {
+      if (!setFigureClass || !setFigureStyle) return;
+    
+      setFigureStyle({
+        left: "0px",
+        bottom: "0px",
+        transform: "translate(10%, 10%)",
+      });
+    
+      setFigureClass(`
+        fixed
+        w-[120px]
+        md:w-[140px]
+        lg:w-[190px]
+        pointer-events-none
+        z-[30]
+        opacity-90
+        drop-shadow-[0_0_30px_rgba(255,215,138,0.4)]
+        transition-all duration-700 ease-out
+      `)
+
+      const timeout = setTimeout(() => {
+        setFigureClass(`fixed
+        w-[120px]
+        md:w-[140px]
+        lg:w-[190px]
+        pointer-events-none
+        z-[30]
+        opacity-0
+        drop-shadow-[0_0_30px_rgba(255,215,138,0.4)]
+        transition-all duration-700 ease-out
+        `)
+      }, 500)
+  
+      return () => clearTimeout(timeout)
+    }, [setFigureClass, setFigureStyle]);
   
   React.useEffect(() => {
     const link = document.createElement('link');
@@ -42,17 +134,18 @@ export default function Authpage() {
   }
 
   if (!isLogin) {
-    if (!formData.fullName.trim()) {
+    if (!formData.fullName.trim() || formData.fullName.length > 30) {
       newErrors.fullName = "Full name is required";
+      if(formData.fullName.length > 30) newErrors.fullName = "Name should be less than 30 letters";
     }
 
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match";
     }
 
-    if (!formData.agreedToTerms) {
-      newErrors.agreedToTerms = "You must agree to the terms";
-    }
+    // if (!formData.agreedToTerms) {
+    //   newErrors.agreedToTerms = "You must agree to the terms";
+    // }
   }
 
   if (Object.keys(newErrors).length > 0) {
@@ -86,11 +179,24 @@ const handleSubmit = async (e) => {
       return;
     }
 
-    await Adminlogin({
+    if (!formData.userName.trim() || formData.userName.length > 30) {
+      showErrors({ admin: "username too long" });
+      return;
+    }
+
+    if (!formData.password.trim() || formData.password.length > 30) {
+      showErrors({ admin: "password too long" });
+      return;
+    }
+
+    try {
+      await Adminlogin({
       username: formData.userName,
       password: formData.password,
-      role: "admin",
     });
+    } catch (error) {
+      console.log(error);
+    }
 
     return;
   }
@@ -103,12 +209,21 @@ const handleSubmit = async (e) => {
         email: formData.email,
         password: formData.password,
       });
+      return;
     } else {
-      await register({
-        fullName: formData.fullName,
+    const result = await register({
+      name: formData.fullName,
+      email: formData.email,
+      password: formData.password,
+    });
+
+    if (result?.success) {
+      await login({
         email: formData.email,
         password: formData.password,
       });
+}
+
     }
   } catch (err) {
     console.error(err);
@@ -125,7 +240,7 @@ const handleSubmit = async (e) => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = `${backend_URL}auth/google`;
+    window.location.href = `${backend_URL}/auth/google`;
   };
 
   return (
@@ -143,7 +258,13 @@ const handleSubmit = async (e) => {
         ></div>
         
         <div className="w-full max-w-md relative z-10 my-auto">
-          <div className="border-2 bg-black p-4 md:p-6 shadow-2xl" style={{ borderColor: '#FFD98ACC' }}>
+         <motion.div
+  initial={{ opacity: 0, y: 40, scale: 0.97 }}
+  animate={{ opacity: 1, y: 0, scale: 1 }}
+  transition={{ duration: 0.7, ease: "easeOut" }}
+  className="border-2 bg-black p-4 md:p-6 shadow-2xl"
+  style={{ borderColor: '#FFD98ACC' }}
+>
             {/* Header */}
             <h1 className="text-2xl md:text-3xl font-bold mb-1" style={{ color: '#FFFFFF' }}>
               {isLogin ? "Welcome Back" : "Create Account"}
@@ -267,7 +388,7 @@ const handleSubmit = async (e) => {
                     style={{ filter: 'brightness(0) saturate(100%) invert(78%) sepia(61%) saturate(466%) hue-rotate(359deg) brightness(104%) contrast(101%)' }} 
                   />
                   <input
-                    type="password"
+                    type = {eyeToggle ? "text" : "password"}
                     name="confirmPassword"
                     placeholder="Confirm Password"
                     value={formData.confirmPassword}
@@ -301,7 +422,7 @@ const handleSubmit = async (e) => {
               )}
 
               {/* Terms Checkbox - Only for Register */}
-              {!isLogin && (
+              {/* {!isLogin && (
                 <label className="flex items-start gap-3 text-sm cursor-pointer" style={{ color: '#FFD98A' }}>
                   <input
                     type="checkbox"
@@ -318,25 +439,38 @@ const handleSubmit = async (e) => {
 
                   <span>I agree to the terms of service and privacy policy</span>
                 </label>
-              )}
+              )} */}
 
               {/* Submit Button */}
               {errors.admin && (
                 <p className="text-xs text-red-400 text-center mb-1">
                   {errors.admin}
                 </p>
-              )}
+                )}
+                {errors.server && (
+                  <p className="text-xs text-red-400 text-center mb-1">
+                    {errors.server}
+                  </p>
+                )}
               <button
                 type="button"
                 onClick={handleSubmit}
-                className="w-full font-semibold py-2.5 bg-[#FFD98A] hover:bg-[#917d53] cursor-pointer tracking-wider uppercase text-sm"
+                className={`w-full font-semibold py-2.5 bg-[#FFD98A] hover:bg-[#917d53] cursor-pointer tracking-wider uppercase text-sm 
+                    ${loading ? "opacity-70 cursor-not-allowed" : "cursor-pointer hover:bg-[#917d53]"}  ` }
                 style={{ 
                   color: '#000000',
                   border: '2px solid #FFD98A'
                 }}
               >
 
-                {isLogin ? "LOGIN" : "REGISTER"}
+              {loading ? (
+                <>
+                  <span className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
+                  {isLogin ? "LOGGING IN" : "REGISTERING"}
+                </>
+              ) : (
+                isLogin ? "LOGIN" : "REGISTER"
+              )}
               </button>
 
               {/* Divider */}
@@ -371,7 +505,7 @@ const handleSubmit = async (e) => {
               onClick={() => setIsLogin(v => !v)}
               className={`w-full text-xs pt-1.5 text-[#FFD98A] relative
                         after:absolute after:left-1/2 after:-bottom-0.5
-                        after:h-[1px] after:w-0 after:bg-[#FFD98A]
+                        after:h-px after:w-0 after:bg-[#FFD98A]
                         after:transition-all after:duration-300
                         after:-translate-x-1/2 hover:after:w-[70%] cursor-pointer ${isAdminLogin ? "hidden" : ""} `}
             >
@@ -393,7 +527,7 @@ const handleSubmit = async (e) => {
                 </button>
               </p>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
 
