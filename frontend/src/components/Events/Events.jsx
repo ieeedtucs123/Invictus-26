@@ -72,7 +72,7 @@ const SearchInput = ({ value, onChange }) => {
 
 export default function Events({setLotusClass, setLotusStyle, setFigureClass, setFigureStyle}) {
     const [show, setShow] = useState(true);
-    const SNACKBAR_TIMEOUT = Number(process.env.SNACKBAR_TIMEOUT_TWO);
+    const SNACKBAR_TIMEOUT = Number(process.env.NEXT_PUBLIC_SNACKBAR_TIMEOUT_ONE);
     const router = useRouter();
     const [filters, setFilters] = useState({
       search: "",
@@ -92,6 +92,8 @@ export default function Events({setLotusClass, setLotusStyle, setFigureClass, se
       }
       const lastShown = Number(shown);
       // console.log(Date.now() - lastShown);
+      // console.log(SNACKBAR_TIMEOUT);
+      
       if (Date.now() - lastShown < SNACKBAR_TIMEOUT || localStorage.getItem("ModelSeen") ) {
         setShow(false);
       }

@@ -9,8 +9,8 @@ export default function Landing({ setDisplayNavbar, displayLogo, setDisplayLogo 
 
   const [show, setShow] = useState(true);
   const wordArtRef = useRef(null);
-  const SNACKBAR_TIMEOUT_1 = Number(process.env.SNACKBAR_TIMEOUT_ONE);//for cross
-  const SNACKBAR_TIMEOUT_2 = Number(process.env.SNACKBAR_TIMEOUT_TWO);//for no
+  const SNACKBAR_TIMEOUT_1 = Number(process.env.NEXT_PUBLIC_SNACKBAR_TIMEOUT_ONE);//for cross
+  const SNACKBAR_TIMEOUT_2 = Number(process.env.NEXT_PUBLIC_SNACKBAR_TIMEOUT_TWO);//for no
   const route = useRouter();
 
   useEffect(() => {

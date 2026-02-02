@@ -120,7 +120,7 @@ export default function Navbar({ className = "" }) {
 
             {/* logo + word art */}
             <div className="hidden md:flex relative z-10 items-center cursor-pointer select-none">
-              <Image onClick={() => router.push("/")} src="/invictuslogo.svg" alt="Logo" width={70} height={50} priority
+              <Image onClick={() => localStorage.getItem("ModelSeen") ? router.push("/Home") : router.push("/")} src="/invictuslogo.svg" alt="Logo" width={70} height={50} priority
               className="w-[80px] sm:w-[10px] md:w-[50px] lg:w-[60px]  xl:w-[75px] h-auto object-contain mr-2"/>
             </div>
 

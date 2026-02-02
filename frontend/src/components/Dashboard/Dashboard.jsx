@@ -20,7 +20,7 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
   const [events, setEvents] = useState([]);
   const [singleEvent, setSingleEvent] = useState([]);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const SNACKBAR_TIMEOUT_2 = Number(process.env.SNACKBAR_TIMEOUT_TWO);
+  const SNACKBAR_TIMEOUT_1 = Number(process.env.NEXT_PUBLIC_SNACKBAR_TIMEOUT_ONE);
 
   function openDrawer(event) {
     setSingleEvent(event);
@@ -44,7 +44,7 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
 
       const lastShown = Number(shown);
 
-      if (Date.now() - lastShown < SNACKBAR_TIMEOUT_2 || localStorage.getItem("ModelSeen") ) {
+      if (Date.now() - lastShown < SNACKBAR_TIMEOUT_1 ) {
         setShow(false);
       }
     }, []);
