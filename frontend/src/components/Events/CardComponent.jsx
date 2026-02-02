@@ -168,7 +168,7 @@ useEffect(() => {
           </h2>
           <div className="w-24 h-1 border-[#a69153] mx-auto rounded-full" />
           <p className="text-[#7A6C45] font-bold uppercase tracking-widest mt-4">
-            Stay tuned for amazing events
+            Stay tuned for amazing Events/Workshops
           </p>
         </div>
       </div>
