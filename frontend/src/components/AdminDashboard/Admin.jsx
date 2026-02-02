@@ -173,7 +173,7 @@ useEffect(() => {
   const fetchEvents = async () => {
     try {
       await getAdminEvents();
-      console.log(events);
+      // console.log(events);
       setEvents(events);
     } catch (error) {
       console.error("Error fetching events:", error);
@@ -359,7 +359,7 @@ useEffect(() => {
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` },
           body: JSON.stringify(basicEventFields)
         });
-        console.log(response);
+        // console.log(response);
         if (!response.ok) throw new Error("Creation failed");
 
         const data = await response.json();

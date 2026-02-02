@@ -80,7 +80,7 @@ export default function CardComponent({ filters, setLotusClass, setLotusStyle })
 
   const handleEventClick = (event) => {
   setSelectedEvent(event);
-  console.log(event);
+  // console.log(event);
   setDrawerOpen(true);
 };
 
@@ -169,6 +169,22 @@ useEffect(() => {
           <div className="w-24 h-1 bg-[#C5A059] mx-auto rounded-full" />
           <p className="text-[#7A6C45] font-bold uppercase tracking-widest mt-4">
             Stay tuned for amazing events
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  if(eventsError){
+    return (
+      <div className="w-full py-20 flex flex-col items-center justify-center min-h-[400px]">
+        <div className="text-center space-y-4 p-8 border-4 border-[#C5A059] rounded-2xl bg-[#FFF8E7] shadow-xl">
+          <h2 className="text-[#C5A059] text-4xl md:text-7xl font-bold font-serif tracking-widest">
+            Unable to fetch Events
+          </h2>
+          <div className="w-24 h-1 bg-[#C5A059] mx-auto rounded-full" />
+          <p className="text-[#7A6C45] font-bold uppercase tracking-widest mt-4">
+            Try reloading the page!
           </p>
         </div>
       </div>

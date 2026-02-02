@@ -71,7 +71,7 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
 
         const userData = await userRes.json();
         const data = await fetchUserEvents(token, userData.email);
-        console.log(data);
+        // console.log(data);
         setEvents(data);
 
       } catch (error) {
@@ -87,7 +87,7 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
     }, []);
 
     useEffect(() => {
-  console.log("Events state updated:", events);
+  // console.log("Events state updated:", events);
 }, [events]);
 
   /* 🌸 POSITION LOTUS NEXT TO WELCOME TEXT */
