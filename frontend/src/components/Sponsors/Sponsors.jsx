@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
+import { motion } from "framer-motion";
 
 /* ---------------- 1. SPONSOR FRAME (YOUR STYLING) ---------------- */
 
@@ -264,9 +265,15 @@ export default function Sponsors({ setLotusClass, setLotusStyle, setFigureClass,
     <div className="w-screen h-screen flex flex-col items-center relative overflow-hidden bg-white/10">
       <div className="absolute top-0 left-0 w-full z-20 flex flex-col items-center pt-[4vh] pb-8 pointer-events-none">
         
-        <h1 className="invictus-heading mt-18 text-[3.7rem] lg:text-[7rem] leading-none drop-shadow-sm">
-          SPONSORS
-        </h1>
+       <motion.h1
+  initial={{ opacity: 0, y: 40, scale: 0.95 }}
+  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+  
+  transition={{ duration: 0.7, ease: "easeOut" }}
+  className="invictus-heading mt-18 text-[3.7rem] lg:text-[7rem] leading-none drop-shadow-sm"
+>
+  SPONSORS
+</motion.h1>
 
         <p className="
             invictus-subheading

@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect } from 'react'
 import TeamCarousel from '@/utils/Team Carousel/TeamCarousel'
+import { motion } from "framer-motion";
 
 export default function TeamComponent({ setLotusClass, setLotusStyle, setFigureClass, setFigureStyle }) {
 
@@ -65,12 +66,24 @@ export default function TeamComponent({ setLotusClass, setLotusStyle, setFigureC
 
   return (
     <>
-      <div className="px-6 mt-22 lg:pt-8 md:pt-4 md:pl-10 text-center md:text-left">
+     <motion.div
+  initial={{ opacity: 0, y: 40 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  
+  transition={{ duration: 0.8 }}
+  className="px-6 mt-22 lg:pt-8 md:pt-4 md:pl-10 text-center md:text-left"
+>
 
         <div className="relative inline-block">
-          <span className="invictus-heading mr-2 text-[3.7rem] lg:text-[7rem]">
-            TEAM
-          </span>
+          <motion.span
+  initial={{ scale: 0.9 }}
+  whileInView={{ scale: 1 }}
+  
+  transition={{ delay: 0.2, duration: 0.5 }}
+  className="invictus-heading mr-2 text-[3.7rem] lg:text-[7rem]"
+>
+  TEAM
+</motion.span>
 
           <span
             data-lotus-anchor
@@ -83,20 +96,32 @@ export default function TeamComponent({ setLotusClass, setLotusStyle, setFigureC
           />
         </div>
 
-        <div className="invictus-subheading text-[0.8em] md:text-[1.1em]">
-          The passionate minds and dedicated leaders driving Invictus forward.
-        </div>
+       <motion.div
+  initial={{ opacity: 0 }}
+  whileInView={{ opacity: 1 }}
+
+  transition={{ delay: 0.3, duration: 0.6 }}
+  className="invictus-subheading text-[0.8em] md:text-[1.1em]"
+>
+  The passionate minds and dedicated leaders driving Invictus forward.
+</motion.div>
 
         <span
           data-lotus-anchor-mobile
           className='absolute top-[25%] left-[30%]'
         />
 
-      </div>
+      </motion.div>
 
-      <div className="relative w-full flex justify-center items-center overflow-hidden">
-        <TeamCarousel />
-      </div>
+     <motion.div
+  initial={{ opacity: 0, y: 30 }}
+  whileInView={{ opacity: 1, y: 0 }}
+ 
+  transition={{ delay: 0.4, duration: 0.7 }}
+  className="relative w-full flex justify-center items-center overflow-hidden"
+>
+  <TeamCarousel />
+</motion.div>
     </>
   )
 }
