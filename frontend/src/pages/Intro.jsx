@@ -55,7 +55,7 @@ export default function Intro() {
       <button
         onClick={goToModel}
         className="
-          absolute top-6 right-0 z-[10000]
+          absolute top-6 -right-10 md:right-0 z-[10000]
           px-4 py-1.5 w-60
           invictus-text
           font-[800]

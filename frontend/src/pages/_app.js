@@ -129,7 +129,7 @@ export default function App({ Component, pageProps }) {
               <img
                 src="/invictuslogo.svg"
                 alt="Invictus'26 Logo"
-                onClick={() => router.push("/")}
+                onClick={() => localStorage.getItem("ModelSeen") ? router.push("/Home") : router.push("/")}
                 className={`
           fixed top-1 left-2 z-60
           w-[100px] md:w-[150px] cursor-pointer

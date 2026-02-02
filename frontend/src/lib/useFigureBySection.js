@@ -27,6 +27,8 @@ export function useFigureBySection({
 
         setLotusClass(`
         fixed
+        max-[390px]:bottom-[19%]
+        max-[400px]:bottom-[28%]
         bottom-[19%]
         md:bottom-[26%]
         w-[80px] md:w-[100px] lg:w-[110px]
@@ -63,15 +65,18 @@ export function useFigureBySection({
         if (!entry.isIntersecting) return;
         
         setLotusClass(`
-        opacity-0    
+        opacity-0  w-[80px] md:w-[100px] lg:w-[110px]
+        transition-all duration-250 ease-out  
         `)
 
-        setLotusStyle({})
+        setLotusStyle({
+          left: "50%",
+        })
 
         setFigureStyle({
           left: "0px",
           bottom: "0px",
-          transform: "translate(10%, 10%)",
+          transform: "translate(1%, 1%)",
         });
 
         setFigureClass(`

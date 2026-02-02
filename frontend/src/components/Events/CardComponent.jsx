@@ -19,32 +19,34 @@ const EventCard = ({ title, image, isActive, onClick }) => {
         relative bg-white transition-all duration-500 ease-in-out
         w-[279px] h-[377px]
         rounded-2xl
-        border-4 border-[#C5A059]
+        border-4 border-[#a69153]
         flex flex-col items-center p-4
         shadow-[6px_10px_4px_rgba(0,0,0,0.25)]
         ${isActive ? 'scale-100 md:scale-110 z-20' : 'scale-90 z-10'}
+
+        
       `}
     >
       <div className="absolute inset-2 border-2 border-[#C5A059]/50 rounded-xl pointer-events-none" />
 
       <div className="z-10 mt-4 text-center">
-        <h3 className="text-[#C5A059] font-bold text-2xl uppercase tracking-widest font-serif">
+        <h3 className="text-[#624f2c] invictus-text text-2xl uppercase tracking-widest font-[800]">
           {title || 'EVENT NAME'}
         </h3>
       </div>
 
-      <div className="z-10 w-full h-[30%] flex-1 my-3 border-2 border-[#C5A059]/30 bg-[#FFF8E7] rounded-lg flex items-center justify-center p-4">
+      <div className="z-10 w-full h-[30%] flex-1 my-3 border-2 border-[#C5A059]/30 bg-[#FFF8E7] rounded-lg flex items-center justify-center p-1">
         <div className="w-full h-full overflow-hidden rounded-lg flex items-center justify-center">
           <img
             src={image || "/backdrop.png"}
             alt={title}
-            className="w-full h-full object-contain"
+            className="w-full h-full"
           />
         </div>
       </div>
 
       {isActive && (
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center ">
           <img
             src="/lotus.svg"
             alt="Lotus Decoration"
@@ -53,7 +55,7 @@ const EventCard = ({ title, image, isActive, onClick }) => {
         </div>
       )}
 
-      <button className="z-10 w-[90%] py-3 mb-2 bg-gradient-to-r from-[#FAEAB1] to-[#C5A059] text-white font-bold rounded-full shadow-md hover:shadow-lg transform transition hover:-translate-y-0.5 uppercase tracking-widest text-sm border border-[#C5A059]">
+      <button className="z-10 w-[90%] py-3 mb-2 border-[#4a3a1d] border-[2px] invictus-text bg-gradient-to-b from-[#e0c465d2] to-[#937c2f] brightness-115 text-white font-bold rounded-full shadow-md hover:shadow-lg transform transition hover:-translate-y-0.5 uppercase tracking-widest text-sm border border-[#C5A059]">
         Register Now
       </button>
     </div>
@@ -80,7 +82,7 @@ export default function CardComponent({ filters, setLotusClass, setLotusStyle })
 
   const handleEventClick = (event) => {
   setSelectedEvent(event);
-  console.log(event);
+  // console.log(event);
   setDrawerOpen(true);
 };
 
@@ -150,8 +152,6 @@ useEffect(() => {
       const index = api.selectedScrollSnap();
       setCurrent(index);
     }
-
-    update()
     api.on('select', update)
   }, [api, events])
 
@@ -162,13 +162,29 @@ useEffect(() => {
   if (!events || events.length === 0) {
     return (
       <div className="w-full py-20 flex flex-col items-center justify-center min-h-[400px]">
+        <div className="text-center space-y-4 p-8 border-4 border-[#a69153] rounded-2xl bg-[#FFF8E7] shadow-xl">
+          <h2 className="text-[#C5A059] text-4xl md:text-7xl font-bold font-serif tracking-widest invictus-heading">
+            COMING SOON
+          </h2>
+          <div className="w-24 h-1 border-[#a69153] mx-auto rounded-full" />
+          <p className="text-[#7A6C45] font-bold uppercase tracking-widest mt-4">
+            Stay tuned for amazing Events/Workshops
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  if(eventsError){
+    return (
+      <div className="w-full py-20 flex flex-col items-center justify-center min-h-[400px]">
         <div className="text-center space-y-4 p-8 border-4 border-[#C5A059] rounded-2xl bg-[#FFF8E7] shadow-xl">
           <h2 className="text-[#C5A059] text-4xl md:text-7xl font-bold font-serif tracking-widest">
-            COMING SOON
+            Unable to fetch Events
           </h2>
           <div className="w-24 h-1 bg-[#C5A059] mx-auto rounded-full" />
           <p className="text-[#7A6C45] font-bold uppercase tracking-widest mt-4">
-            Stay tuned for amazing events
+            Try reloading the page!
           </p>
         </div>
       </div>

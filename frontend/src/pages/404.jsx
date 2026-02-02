@@ -1,42 +1,87 @@
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router';
 
 export default function Custom404() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-black text-[#D4AF37]">
-      <div className="flex flex-col items-center text-center px-6">
+    <div className="min-h-screen w-full overflow-hidden bg-[#0f1011] font-['Montserrat'] flex items-center justify-center">
+      
+      {/* WRAPPER - Controlled width for large screens, flex-col on mobile */}
+      <main className="container mx-auto px-6 flex flex-col-reverse lg:flex-row items-center justify-between gap-12 lg:gap-0 h-full max-w-7xl">
+        
+        {/* LEFT SECTION: CONTENT & WHEEL */}
+        <section className="relative flex-1 flex flex-col items-center justify-center text-center py-10 lg:py-0">
+          
+          {/* ROTATING BACKGROUND WHEEL */}
+          <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
+            <img
+              src="/wheel.svg"
+              alt=""
+              className="w-[300px] h-[300px] md:w-[600px] md:h-[600px] lg:w-[800px] lg:h-[800px] animate-spin-slow invert object-contain"
+            />
+          </div>
 
-        {/* 404 */}
-        <h1
-          className="text-[96px] font-bold leading-none"
-          style={{ WebkitTextStroke: "2px #D4AF37", color: "transparent" }}
-        >
-          404
-        </h1>
+          {/* TEXT CONTENT */}
+          <div className="relative z-10 flex flex-col items-center">
+            <h1 className="font-['Orbitron'] text-7xl md:text-9xl font-extrabold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-[#D4AF37] to-[#8a6d1d] drop-shadow-2xl">
+              404
+            </h1>
+            
+            <h2 className="mt-4 text-[#F6F1D4] text-xl md:text-2xl font-bold uppercase tracking-[0.2em]">
+              Lost in the Void
+            </h2>
+            
+            <p className="mt-4 text-[#F6F1D4]/60 text-sm md:text-base max-w-xs md:max-w-md leading-relaxed italic">
+              The page you seek has ascended or never existed.
+            </p>
 
-        {/* subtitle */}
-        <h2 className="mt-4 text-xl text-[#F6F1D4] font-semibold">
-          oops! page not found
-        </h2>
+            <button
+              onClick={() => router.push('/')}
+              className="mt-10 px-10 py-3 bg-transparent border-2 border-[#D4AF37] rounded-full text-[#D4AF37] font-bold text-lg uppercase tracking-widest transition-all duration-500 hover:bg-[#D4AF37] hover:text-[#0f1011] hover:shadow-[0_0_30px_rgba(212,175,55,0.4)]"
+            >
+              Return Home
+            </button>
+          </div>
+        </section>
 
-        {/* description */}
-        <p className="mt-3 max-w-md text-sm text-[#F6F1D4] opacity-80">
-          The page you’re looking for doesn’t exist or was moved.
-        </p>
+        {/* RIGHT SECTION: THE BEAM & FIGURE */}
+        <section className="relative flex-1 flex flex-col items-center justify-end h-[50vh] lg:h-[80vh] w-full">
+          
+          <div className="relative w-full max-w-[400px] h-full flex flex-col items-center">
+            
+            {/* HOVERING BEAM EFFECT */}
+            <div 
+              className="absolute top-0 w-full h-[90%] z-0"
+              style={{
+                background: 'linear-gradient(to bottom, rgba(212,175,55,0.6) 0%, rgba(212,175,55,0.05) 80%, transparent 100%)',
+                clipPath: 'polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%)'
+              }}
+            />
 
-        {/* action */}
-        <button
-          onClick={() => router.push("/")}
-          className="mt-8 px-8 py-3 border-2 border-[#D4AF37] rounded-lg
-                     text-[#D4AF37] font-semibold
-                     transition-all duration-300
-                     hover:bg-[#D4AF37]/10 hover:scale-105"
-        >
-          Go Home
-        </button>
+            {/* GLOWING BASE */}
+            <div className="absolute bottom-0 w-[80%] h-12 bg-[#D4AF37] rounded-[100%] blur-3xl opacity-40 z-10" />
 
-      </div>
+            {/* FIGURE IMAGE */}
+            <img
+              src="/figure.png"
+              alt="Ascended Figure"
+              className="relative z-20 w-auto h-[80%] lg:h-[90%] object-contain drop-shadow-[0_0_15px_rgba(212,175,55,0.3)]"
+            />
+          </div>
+        </section>
+
+      </main>
+
+      {/* TAILWIND CUSTOM ANIMATION & UTILITIES */}
+      <style jsx global>{`
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+          animation: spin-slow 20s linear infinite;
+        }
+      `}</style>
     </div>
   );
 }

@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+
 import {
   SwapyItem,
   SwapyLayout,
@@ -75,7 +77,7 @@ export default function Gallery({ setLotusClass, setLotusStyle, setFigureClass, 
 
     setLotusClass(`
       absolute
-      w-[0px] md:w-[120px] lg:w-[150px]
+      w-[50px] md:w-[120px] lg:w-[150px]
       opacity-80
       transition-all duration-700 ease-in-out
     `);
@@ -107,62 +109,75 @@ export default function Gallery({ setLotusClass, setLotusStyle, setFigureClass, 
     <div className="relative w-full bg-transparent">
       <div className="max-w-[1600px] mx-auto">
         {/* HEADER */}
-        <div
-          className="
-            flex flex-col md:flex-row justify-between items-start
-            gap-10
-            mt-[90px] md:mt-[120px]
-            mb-10
-            px-5 md:px-10
-            pt-5
-          "
-        >
+      <motion.div
+  initial={{ opacity: 0, y: 40 }}
+  whileInView={{ opacity: 1, y: 0 }}
+ 
+  transition={{ duration: 0.8 }}
+  className="
+    flex flex-col md:flex-row justify-between items-start
+    gap-10
+    mt-[90px] md:mt-[120px]
+    mb-10
+    px-5 md:px-10
+    pt-5
+  "
+>
           {/* TITLE BLOCK */}
           <div className="max-w-full md:max-w-[70%] relative">
-            <h1
-              className="
-                text-[48px] md:text-[72px] lg:text-[96px]
-                invictus-heading
-              "
-            >
-              GALLERY
-            </h1>
+           <motion.h1
+  initial={{ scale: 0.9, opacity: 0 }}
+  whileInView={{ scale: 1, opacity: 1 }}
+  
+  transition={{ delay: 0.2, duration: 0.5 }}
+  className="text-[48px] md:text-[72px] lg:text-[96px] invictus-heading"
+>
+  GALLERY
+</motion.h1>
 
             {/* 🌸 LOTUS ANCHOR */}
             <span
               data-gallery-lotus-anchor
               className="
                 absolute
-                right-[2rem] md:right-[2.5rem] lg:right-[11.5rem]
-                top-[140%]
+                 max-[400px]:right-[0rem] right-[2rem] md:right-[2.5rem] lg:right-[11.5rem]
+                 max-[400px]:top-[88%] top-[95%] md:top-[110%]
                 -translate-y-1/2
                 w-1 h-1
               "
             />
 
-            <p
-              className="
-                mt-4 md:mt-[18px]
-                invictus-subheading
-                text-[15px] md:text-[20px]
-              "
-            >
+         <motion.p
+  initial={{ opacity: 0 }}
+  whileInView={{ opacity: 1 }}
+
+  transition={{ delay: 0.3, duration: 0.6 }}
+  className="
+    mt-4 md:mt-[18px]
+    invictus-subheading
+    text-[20px] md:text-[24px]
+  "
+>
               Moments that capture the energy, innovation, and unforgettable
               experiences of Invictus.
-            </p>
+            </motion.p>
           </div>
 
           {/* CATEGORY BOX */}
-          <div
-            className="
-              w-full md:w-[290px] mt-5
-              bg-[#f6f2d9]
-              border-[3px] border-[#d9b85c]
-              rounded-[10px]
-              px-4 pt-3 pb-4
-              shadow-[6px_6px_0_rgba(120,100,40,0.45)]
-            "
-          >
+         <motion.div
+  initial={{ opacity: 0, x: 30 }}
+  whileInView={{ opacity: 1, x: 0 }}
+ 
+  transition={{ delay: 0.35, duration: 0.6 }}
+  className="
+    w-full md:w-[290px] mt-5
+    bg-[#f6f2d9]
+    border-[3px] border-[#d9b85c]
+    rounded-[10px]
+    px-4 pt-3 pb-4
+    shadow-[6px_6px_0_rgba(120,100,40,0.45)]
+  "
+>
             <div className="flex justify-between items-center">
               <span className="font-[Montserrat] text-[18px] tracking-[2px] font-semibold text-[#8f8457]">
                 VIEW GLANCES
@@ -191,29 +206,43 @@ export default function Gallery({ setLotusClass, setLotusStyle, setFigureClass, 
                 </button>
               ))}
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* GRID */}
         <div className="px-5 md:px-8">
-          <SwapyLayout
-            id="swapy"
-            className="w-full"
-            config={{ swapMode: "hover" }}
-          >
-            <div className="grid w-full grid-cols-12 gap-6 py-6">
+          <SwapyLayout id="swapy" className="w-full" config={{ swapMode: "hover" }}>
+          <motion.div
+  initial="hidden"
+  whileInView="show"
+  
+  variants={{
+    hidden: {},
+    show: {
+      transition: { staggerChildren: 0.08 }
+    }
+  }}
+  className="grid w-full grid-cols-12 gap-6 py-6"
+>
               {IMAGES[category].map((src, index) => (
-                <SwapySlot
-                  key={index}
-                  id={`slot-${index}`}
-                  className={GRID_CLASSES[index]}
-                >
-                  <SwapyItem id={`item-${index}`} className="w-full h-full">
-                    <ImageCard src={src} />
-                  </SwapyItem>
-                </SwapySlot>
+             <motion.div
+  key={index}
+  variants={{
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  }}
+  transition={{ duration: 0.35 }}
+  whileHover={{ scale: 1.02 }}
+  className={GRID_CLASSES[index]}
+>
+  <SwapySlot id={`slot-${index}`} className="w-full h-full">
+    <SwapyItem id={`item-${index}`} className="w-full h-full">
+      <ImageCard src={src} />
+    </SwapyItem>
+  </SwapySlot>
+</motion.div>
               ))}
-            </div>
+            </motion.div>
           </SwapyLayout>
         </div>
       </div>

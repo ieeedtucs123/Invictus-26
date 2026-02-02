@@ -5,6 +5,8 @@ import MapModal from "./MapModal";
 import SnackBar from "@/utils/snackBar";
 import { AuthContext } from "@/contexts/AuthContext";
 import Drawer from "./Drawer"
+import { motion } from "framer-motion";
+
 import Button from "@/utils/Button"
 
 export default function Dashboard({ setLotusClass, setLotusStyle }) {
@@ -18,7 +20,7 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
   const [events, setEvents] = useState([]);
   const [singleEvent, setSingleEvent] = useState([]);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const SNACKBAR_TIMEOUT_2 = process.env.SNACKBAR_TIMEOUT_TWO;
+  const SNACKBAR_TIMEOUT_1 = Number(process.env.NEXT_PUBLIC_SNACKBAR_TIMEOUT_ONE);
 
   function openDrawer(event) {
     setSingleEvent(event);
@@ -42,7 +44,7 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
 
       const lastShown = Number(shown);
 
-      if (Date.now() - lastShown < SNACKBAR_TIMEOUT_2 || localStorage.getItem("ModelSeen") ) {
+      if (Date.now() - lastShown < SNACKBAR_TIMEOUT_1 ) {
         setShow(false);
       }
     }, []);
@@ -71,7 +73,7 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
 
         const userData = await userRes.json();
         const data = await fetchUserEvents(token, userData.email);
-        console.log(data);
+        // console.log(data);
         setEvents(data);
 
       } catch (error) {
@@ -87,7 +89,7 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
     }, []);
 
     useEffect(() => {
-  console.log("Events state updated:", events);
+  // console.log("Events state updated:", events);
 }, [events]);
 
   /* 🌸 POSITION LOTUS NEXT TO WELCOME TEXT */
@@ -122,41 +124,40 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
     <>
     <div className="relative mt-20 font-montserrat text-[#7c6a3c] pt-28 pb-16 px-4 md:px-10">
       
-      <div className="mt-4 hidden lg:block
-          absolute top-14 right-8
-          w-[400px] h-[240px]
-          bg-[#f9f6ef]/70
-          border-4 border-[#b19965]
-          rounded-xl z-10"
-          style={{ boxShadow: "0 2px 12px rgba(191,161,74,0.12)" }}
-          >
+     <motion.div
+  initial={{ opacity: 0, x: 30 }}
+  animate={{ opacity: 1, x: 0 }}
+  transition={{ delay: 0.3, duration: 0.6 }}
+  className="mt-4 hidden lg:block absolute top-14 right-8 w-[400px] h-[240px] bg-[#f9f6ef]/70 border-4 border-[#b19965] rounded-xl z-10"
+  style={{ boxShadow: "0 2px 12px rgba(191,161,74,0.12)" }}
+>
         <MapPreview center={DTU_LOCATIONS.DTU} />
 
-      </div>
+      </motion.div>
 
       {/* MAIN CONTENT */}
       <div className="max-w-7xl mx-auto">
 
         {/* WELCOME SECTION */}
-        <div className="mt-8">
+       <motion.div
+  initial={{ opacity: 0, y: 40 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.7 }}
+  className="mt-8"
+>
 
           <div className="relative inline-block">
-            <h1
-              className="
-                text-4xl sm:text-4xl md:text-6xl
-                invictus-heading
-              "
-            >
+          <motion.h1
+  initial={{ scale: 0.95, opacity: 0 }}
+  animate={{ scale: 1, opacity: 1 }}
+  transition={{ delay: 0.15, duration: 0.5 }}
+  className="text-4xl sm:text-4xl md:text-6xl invictus-heading"
+>
+ 
+
+
               WELCOME BACK, {user ? user.split(" ")[0].toUpperCase() : "USER"}
-            </h1>
-            {/* <h1
-              className="
-                text-4xl sm:text-4xl md:text-6xl
-                invictus-heading
-              "
-            >
-              {user ? user.split(" ")[0].toUpperCase() : "USER"}
-            </h1> */}
+          </motion.h1>
 
             {/* 🌸 LOTUS ANCHOR */}
             <span
@@ -170,16 +171,14 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
             />
           </div>
 
-          <p
-            className="
-              mt-4
-              text-lg sm:text-xl md:text-2xl
-              invictus-subheading
-              tracking-wide
-            "
-          >
+         <motion.p
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ delay: 0.25, duration: 0.6 }}
+  className="mt-4 text-lg sm:text-xl md:text-2xl invictus-subheading"
+>
             Your journey with Invictus — a path to innovation continues.
-          </p>
+          </motion.p>
 
           <button
             type="button"
@@ -202,17 +201,15 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
             </svg>
             Open Map
           </button>
-        </div>
+        </motion.div>
 
         {/* DASHBOARD CARD */}
-        <div
-          className="
-            mt-12
-            rounded-2xl p-4 sm:p-6
-            bg-white/80
-            border-[3px] border-[#b19965]
-          "
-        >
+      <motion.div
+  initial={{ opacity: 0, y: 30 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.35, duration: 0.7 }}
+  className="mt-12 rounded-2xl p-4 sm:p-6 bg-white/80 border-[3px] border-[#b19965]"
+>
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
             <span className="invictus-text font-bold text-lg">HOME</span>
             <Button></Button>
@@ -242,10 +239,10 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
               <div>
                 <div className="invictus-text font-bold mb-2 opacity-50">No events registered</div>
                 <div className="flex gap-2 flex-wrap">
-                  <button disabled className="bg-gray-300 text-gray-500 rounded-lg px-4 py-1 font-semibold border-2 border-gray-300 cursor-not-allowed">
+                  <button disabled className="bg-gray-300 invictus-text text-gray-500 rounded-lg px-4 py-1 font-semibold border-2 border-gray-300 cursor-not-allowed">
                     VIEW VENUE ON MAP
                   </button>
-                  <button disabled className="bg-gray-300 text-gray-500 rounded-lg px-4 py-1 font-semibold border-2 border-gray-300 cursor-not-allowed">
+                  <button disabled className="bg-gray-300 invictus-text text-gray-500 rounded-lg px-4 py-1 font-semibold border-2 border-gray-300 cursor-not-allowed">
                     EDIT TEAM
                   </button>
                 </div>
@@ -257,17 +254,17 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
 
           {/* EVENT LIST */}
           {events.map((ev, idx) => (
-            <div
-              key={idx}
-              className="
-                flex flex-col sm:flex-row
-                sm:items-center sm:justify-between
-                gap-4
-                border rounded-xl p-4 mb-4
-                bg-[#f9f6ef]
-              "
-              style={{ border: "2px solid #e7d7b1" }}
-            >
+          <motion.div
+  key={idx}
+  variants={{
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  }}
+  whileHover={{ scale: 1.01 }}
+  transition={{ duration: 0.3 }}
+  className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border rounded-xl p-4 mb-4 bg-[#f9f6ef]"
+  style={{ border: "2px solid #e7d7b1" }}
+>
               <div>
                 <div className="invictus-text font-bold uppercase mb-2">{ev.event.name}</div>
                 <div className="flex gap-2 invictus-text flex-wrap">
@@ -296,16 +293,17 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
               </div>
               <div className="invictus-text font-semibold">{ev.teamName == "" ? "Solo Event" : ev.teamName}</div>
              <div className="invictus-text font-semibold">{ev.attendace === false ? "Attended" : "Yet to Attend"}</div>   {/*member or leader will fetch from backend three things to fetch here event/workshops name user has registered for there member status and unstop registration link*/}
-              {drawerOpen && (
-                <Drawer event={singleEvent} onClose={openDrawer} />
-              )}
-            </div>
 
+            </motion.div>
           
           ))}
-        </div>
+        </motion.div>
       </div>
     </div>
+
+       {drawerOpen && (
+          <Drawer event={singleEvent} onClose={openDrawer} />
+        )}
 
               <MapModal
       open={mapOpen}

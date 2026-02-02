@@ -12,9 +12,9 @@ export default function Navbar({ className = "" }) {
   const navItems = [
     { name: "Home", href: "/Home" },
     { name: "Events", href: "/Events" },
-    { name: "Workshop", href: "/Workshops" },
+    { name: "Workshops", href: "/Workshops" },
     { name: "Team", href: "/Team" },
-    { name: "Sponsor", href: "/Sponsors" },
+    { name: "Sponsors", href: "/Sponsors" },
     { name: "Gallery", href: "/Gallery" }
   ];
 
@@ -120,7 +120,7 @@ export default function Navbar({ className = "" }) {
 
             {/* logo + word art */}
             <div className="hidden md:flex relative z-10 items-center cursor-pointer select-none">
-              <Image onClick={() => router.push("/")} src="/invictuslogo.svg" alt="Logo" width={70} height={50} priority
+              <Image onClick={() => localStorage.getItem("ModelSeen") ? router.push("/Home") : router.push("/")} src="/invictuslogo.svg" alt="Logo" width={70} height={50} priority
               className="w-[80px] sm:w-[10px] md:w-[50px] lg:w-[60px]  xl:w-[75px] h-auto object-contain mr-2"/>
             </div>
 
