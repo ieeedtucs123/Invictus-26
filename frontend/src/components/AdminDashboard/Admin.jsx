@@ -423,6 +423,7 @@ useEffect(() => {
       });
       if (response.ok) {
         const data = await response.json();
+        // console.log(data);
         setSelectedEventRegs(data);
       } else {
         setSelectedEventRegs([]); // Reset if empty or error
@@ -456,14 +457,14 @@ const normalizeMemberStatus = (raw) => {
 
   // Upload CSV to Backend
 
-  const getValue = (row, keys) => {
-    for (const key of keys) {
-      if (row[key] && String(row[key]).trim() !== "") {
-        return String(row[key]).trim();
-      }
-    }
-    return null;
-  };
+  // const getValue = (row, keys) => {
+  //   for (const key of keys) {
+  //     if (row[key] && String(row[key]).trim() !== "") {
+  //       return String(row[key]).trim();
+  //     }
+  //   }
+  //   return null;
+  // };
 
   const handleCSVUpload = (e) => {
     const file = e.target.files[0];
@@ -537,8 +538,10 @@ const normalizeMemberStatus = (raw) => {
   };
 
   // Toggle Attendance (Send request to backend)
-  const toggleAttendance = async (regId, currentStatus) => {
+  const toggleAttendance = async (regId, eventId, currentStatus) => {
+    setNotifLoading(true);
     try {
+      
       // Optimistic UI Update
       setSelectedEventRegs((prev) =>
         prev.map((reg) =>
@@ -546,11 +549,13 @@ const normalizeMemberStatus = (raw) => {
         ),
       );
 
+      const adminToken = localStorage.getItem('adminToken');
+
       const response = await fetch(
-        `${API_BASE_URL}/registrations/${regId}/attendance`,
+        `${API_BASE_URL}/events/${eventId}/${regId}/attendance`,
         {
           method: "PATCH",
-          headers: { "Content-Type": "application/json" },
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` },
           body: JSON.stringify({ attendance: !currentStatus }),
         },
       );
@@ -559,13 +564,22 @@ const normalizeMemberStatus = (raw) => {
         // Revert if failed
         setSelectedEventRegs((prev) =>
           prev.map((reg) =>
-            reg._id === regId ? { ...reg, attendance: currentStatus } : reg,
+            reg.id === regId ? { ...reg, attendance: currentStatus } : reg,
           ),
         );
         alert("Failed to update attendance on server");
+      }else{
+        const data = await response.json();
+        setSelectedEventRegs((prev) =>
+          prev.map((reg) =>
+            reg.id === regId ? { ...reg, attendance: data.attendance } : reg,
+          ),
+        );
       }
     } catch (error) {
       console.error(error);
+    }finally{
+      setNotifLoading(false);
     }
   };
 
@@ -858,8 +872,8 @@ const normalizeMemberStatus = (raw) => {
 
         {/* --- REGISTRATIONS MODAL --- */}
         {showRegistrations && (
-          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden border-4 border-[#C5A059]">
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 max-[500px]:w-full p-4">
+            <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden overflow-x-auto border-4 border-[#C5A059]">
               {/* Modal Header */}
               <div className="bg-gradient-to-b from-[#D4AF37] to-[#6E5B1D] text-white px-8 py-6 flex justify-between items-center">
                 <h2 className="font-['Montserrat',sans-serif] text-3xl font-bold flex items-center gap-3">
@@ -886,7 +900,7 @@ const normalizeMemberStatus = (raw) => {
                       setShowRegistrations(false);
                       setSelectedEventRegs([]);
                     }}
-                    className="bg-white/20 hover:bg-white/40 p-2 rounded-full transition-all"
+                    className="bg-black/20 hover:bg-white/40 p-2 rounded-full transition-all"
                   >
                     <X size={24} color="white" />
                   </button>
@@ -894,7 +908,7 @@ const normalizeMemberStatus = (raw) => {
               </div>
 
               {/* Registration List */}
-              <div className="p-8 overflow-y-auto max-h-[calc(90vh-120px)]">
+              <div className="p-8 overflow-y-auto overflow-x-auto max-h-[calc(90vh-120px)]">
                 <div className="space-y-4">
                   {selectedEventRegs.map((reg) => (
                     <div
@@ -903,26 +917,27 @@ const normalizeMemberStatus = (raw) => {
                     >
                       <div>
                         <p className="font-bold text-[#8B6508] text-lg font-['Montserrat',sans-serif]">
-                          {reg.name}
+                          {reg.candidateName}
                         </p>
                         <p className="text-sm text-[#8B6508]/70 mt-1 font-['Montserrat',sans-serif]">
                           {reg.email}
                         </p>
                         <p className="text-xs text-[#8B6508]/50 mt-1">
-                          {reg.college}
+                          {reg.memberStatus}
                         </p>
                       </div>
                       <label className="flex items-center gap-3 cursor-pointer bg-white px-5 py-3 rounded-lg border-2 border-[#C5A059] hover:border-[#D4AF37] transition-all">
                         <input
+                          disabled={notifLoading}
                           type="checkbox"
                           checked={reg.attendance}
                           onChange={() =>
-                            toggleAttendance(reg._id || reg.id, reg.attendance)
+                            toggleAttendance(reg._id || reg.id, reg.eventId, reg.attendance)
                           }
                           className="w-6 h-6 text-[#D4AF37] border-[#C5A059] rounded focus:ring-[#D4AF37]"
                         />
                         <span className="text-[#8B6508] font-['Montserrat',sans-serif] font-bold">
-                          {reg.attendance ? "Present" : "Absent"}
+                          { notifLoading ? "Loading" : reg.attendance ? "Present" : "Absent"}
                         </span>
                       </label>
                     </div>
@@ -1009,7 +1024,7 @@ const normalizeMemberStatus = (raw) => {
       </div>
 
         {/* --- ADMIN PUSH NOTIFICATION SECTION --- */}
-<div className="relative z-10 max-w-3xl mx-auto mt-24 mb-20 px-6">
+<div className="relative z-1 max-w-3xl mx-auto mt-24 mb-20 px-6">
   <div className="bg-white rounded-2xl shadow-2xl border-4 border-[#C5A059] overflow-hidden">
     
     <div className="bg-gradient-to-b from-[#D4AF37] to-[#6E5B1D] text-white px-8 py-6">

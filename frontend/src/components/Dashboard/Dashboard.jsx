@@ -20,7 +20,7 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
   const [events, setEvents] = useState([]);
   const [singleEvent, setSingleEvent] = useState([]);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const SNACKBAR_TIMEOUT_2 = process.env.SNACKBAR_TIMEOUT_TWO;
+  const SNACKBAR_TIMEOUT_2 = Number(process.env.SNACKBAR_TIMEOUT_TWO);
 
   function openDrawer(event) {
     setSingleEvent(event);
@@ -239,10 +239,10 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
               <div>
                 <div className="invictus-text font-bold mb-2 opacity-50">No events registered</div>
                 <div className="flex gap-2 flex-wrap">
-                  <button disabled className="bg-gray-300 text-gray-500 rounded-lg px-4 py-1 font-semibold border-2 border-gray-300 cursor-not-allowed">
+                  <button disabled className="bg-gray-300 invictus-text text-gray-500 rounded-lg px-4 py-1 font-semibold border-2 border-gray-300 cursor-not-allowed">
                     VIEW VENUE ON MAP
                   </button>
-                  <button disabled className="bg-gray-300 text-gray-500 rounded-lg px-4 py-1 font-semibold border-2 border-gray-300 cursor-not-allowed">
+                  <button disabled className="bg-gray-300 invictus-text text-gray-500 rounded-lg px-4 py-1 font-semibold border-2 border-gray-300 cursor-not-allowed">
                     EDIT TEAM
                   </button>
                 </div>
@@ -293,16 +293,17 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
               </div>
               <div className="invictus-text font-semibold">{ev.teamName == "" ? "Solo Event" : ev.teamName}</div>
              <div className="invictus-text font-semibold">{ev.attendace === false ? "Attended" : "Yet to Attend"}</div>   {/*member or leader will fetch from backend three things to fetch here event/workshops name user has registered for there member status and unstop registration link*/}
-              {drawerOpen && (
-                <Drawer event={singleEvent} onClose={openDrawer} />
-              )}
-            </motion.div>
 
+            </motion.div>
           
           ))}
         </motion.div>
       </div>
     </div>
+
+       {drawerOpen && (
+          <Drawer event={singleEvent} onClose={openDrawer} />
+        )}
 
               <MapModal
       open={mapOpen}

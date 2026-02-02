@@ -77,7 +77,7 @@ export default function Gallery({ setLotusClass, setLotusStyle, setFigureClass, 
 
     setLotusClass(`
       absolute
-      w-[0px] md:w-[120px] lg:w-[150px]
+      w-[50px] md:w-[120px] lg:w-[150px]
       opacity-80
       transition-all duration-700 ease-in-out
     `);
@@ -140,8 +140,8 @@ export default function Gallery({ setLotusClass, setLotusStyle, setFigureClass, 
               data-gallery-lotus-anchor
               className="
                 absolute
-                right-[2rem] md:right-[2.5rem] lg:right-[11.5rem]
-                top-[140%]
+                 max-[400px]:right-[0rem] right-[2rem] md:right-[2.5rem] lg:right-[11.5rem]
+                 max-[400px]:top-[88%] top-[95%] md:top-[110%]
                 -translate-y-1/2
                 w-1 h-1
               "

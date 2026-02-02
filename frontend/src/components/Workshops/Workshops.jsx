@@ -51,9 +51,9 @@ export default function Workshops({setLotusClass, setLotusStyle, setFigureClass,
   initial={{ opacity: 0, y:40 }}
   whileInView={{ opacity: 1 ,y: 0, scale: 1  }}
   transition={{  duration: 0.6 }}
-  className="invictus-subheading pb-15 text-[0.8em] md:text-[1.1em]"
+  className="invictus-subheading pb-15 text-[0.8em] md:text-[1.2em]"
 >
-  The passionate minds and dedicated leaders driving Invictus forward.
+  Exciting Workshops across multiple domains, promoting maximum learning.
 </motion.div>
         {/* CARD CAROUSEL SECTION */}
        <motion.div

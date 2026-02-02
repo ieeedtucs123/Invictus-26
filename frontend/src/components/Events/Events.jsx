@@ -72,7 +72,7 @@ const SearchInput = ({ value, onChange }) => {
 
 export default function Events({setLotusClass, setLotusStyle, setFigureClass, setFigureStyle}) {
     const [show, setShow] = useState(true);
-    const SNACKBAR_TIMEOUT = process.env.SNACKBAR_TIMEOUT_TWO;
+    const SNACKBAR_TIMEOUT = Number(process.env.SNACKBAR_TIMEOUT_TWO);
     const router = useRouter();
     const [filters, setFilters] = useState({
       search: "",
@@ -214,7 +214,7 @@ export default function Events({setLotusClass, setLotusStyle, setFigureClass, se
    whileInView={{ opacity: 1, scale: 1 }}
   transition={{ delay: 0.6, duration: 0.6 }}
   whileHover={{ y: -8 }}
-  className="w-full max-w-6xl  rounded-4xl transition-all duration-300 hover:bg-gradient-to-l from-white/40 via-transparent to-white/40 hover:shadow-amber-100 hover:shadow-2xl"
+  className="w-full max-w-6xl  rounded-4xl transition-all duration-300  hover:shadow-amber-100 hover:shadow-2xl"
 >
           <CardComponent filters={filters} setLotusClass={setLotusClass} setLotusStyle={setLotusStyle}/>
         </motion.div>

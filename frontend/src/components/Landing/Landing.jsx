@@ -9,8 +9,8 @@ export default function Landing({ setDisplayNavbar, displayLogo, setDisplayLogo 
 
   const [show, setShow] = useState(true);
   const wordArtRef = useRef(null);
-  const SNACKBAR_TIMEOUT_1 = process.env.SNACKBAR_TIMEOUT_ONE;//for cross
-  const SNACKBAR_TIMEOUT_2 = process.env.SNACKBAR_TIMEOUT_TWO;//for no
+  const SNACKBAR_TIMEOUT_1 = Number(process.env.SNACKBAR_TIMEOUT_ONE);//for cross
+  const SNACKBAR_TIMEOUT_2 = Number(process.env.SNACKBAR_TIMEOUT_TWO);//for no
   const route = useRouter();
 
   useEffect(() => {
@@ -130,31 +130,15 @@ export default function Landing({ setDisplayNavbar, displayLogo, setDisplayLogo 
     [text-shadow:_-1px_-1px_0_#8B6914,1px_-1px_0_#8B6914,-1px_1px_0_#8B6914,1px_1px_0_#8B6914,-2px_0_0_#8B6914,2px_0_0_#8B6914,0_-2px_0_#8B6914,0_2px_0_#8B6914]
   "
 >
-          9-11
-          <sup className="text-[0.5em] ml-1 text-[#FFF6E0]">TH</sup>
-          <span className="ml-3">FEB'26</span>
-        </motion.p>
-        <p
-          className="
-            mt-4
-            text-center
-            text-3xl md:text-6xl
-            font-bold
-            tracking-[0.15em]
-            text-[#FFF6E0]
-            font-['Orbitron']
-            relative z-10
-            [text-shadow:_-1px_-1px_0_#8B6914,1px_-1px_0_#8B6914,-1px_1px_0_#8B6914,1px_1px_0_#8B6914,-2px_0_0_#8B6914,2px_0_0_#8B6914,0_-2px_0_#8B6914,0_2px_0_#8B6914]
-          "
-        >
-          27
+27
           <sup className="text-[0.5em] ml-1 text-[#FFF6E0]">TH</sup>
           <span className="ml-3">FEB - 1
           </span>
               <sup className="text-[0.5em] ml-1 text-[#FFF6E0]">st</sup>
               <span className="ml-3">MAR
           </span>
-        </p>
+        </motion.p>
+
 
         {/* BUTTONS */}
      <motion.div

@@ -30,7 +30,7 @@ const EventCard = ({ title, image, isActive, onClick }) => {
       <div className="absolute inset-2 border-2 border-[#C5A059]/50 rounded-xl pointer-events-none" />
 
       <div className="z-10 mt-4 text-center">
-        <h3 className="text-[#C5A059] font-bold text-2xl uppercase tracking-widest font-serif">
+        <h3 className="text-[#624f2c] invictus-text text-2xl uppercase tracking-widest font-[800]">
           {title || 'EVENT NAME'}
         </h3>
       </div>
@@ -55,7 +55,7 @@ const EventCard = ({ title, image, isActive, onClick }) => {
         </div>
       )}
 
-      <button className="z-10 w-[90%] py-3 mb-2 bg-gradient-to-b from-[#e0c465d2] to-[#937c2f] brightness-115 text-white font-bold rounded-full shadow-md hover:shadow-lg transform transition hover:-translate-y-0.5 uppercase tracking-widest text-sm border border-[#C5A059]">
+      <button className="z-10 w-[90%] py-3 mb-2 border-[#4a3a1d] border-[2px] invictus-text bg-gradient-to-b from-[#e0c465d2] to-[#937c2f] brightness-115 text-white font-bold rounded-full shadow-md hover:shadow-lg transform transition hover:-translate-y-0.5 uppercase tracking-widest text-sm border border-[#C5A059]">
         Register Now
       </button>
     </div>

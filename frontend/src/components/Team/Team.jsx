@@ -90,7 +90,7 @@ export default function TeamComponent({ setLotusClass, setLotusStyle, setFigureC
             className=' 
             absolute
             right-[-4.8rem]    
-            top-1/2
+            top-[30%]
             -translate-y-1/2
             w-1 h-1'
           />
@@ -108,7 +108,7 @@ export default function TeamComponent({ setLotusClass, setLotusStyle, setFigureC
 
         <span
           data-lotus-anchor-mobile
-          className='absolute top-[25%] left-[30%]'
+          className='absolute top-[50%] left-[30%]'
         />
 
       </motion.div>
