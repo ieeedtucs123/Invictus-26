@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import faqs from "./faqs.json";
+import { motion } from "framer-motion";
 
 export default function FAQ() {
   const [open, setOpen] = useState([0]);
@@ -19,24 +20,47 @@ export default function FAQ() {
       <div className="relative z-10 max-w-4xl mx-auto">
         
         {/* TITLE */}
-        <h1 className="text-center text-4xl md:text-6xl font-extrabold tracking-widest mb-12 drop-shadow-lg">
+       <motion.h1
+  initial={{ opacity: 0, y: 30 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  
+  transition={{ duration: 0.7 }}
+  className="text-center text-4xl md:text-6xl font-extrabold tracking-widest mb-12 drop-shadow-lg"
+>
           <span className="invictus-heading text-5xl md:text-7xl ">
             FREQUENTLY ASKED QUESTIONS
           </span>
-        </h1>
+        </motion.h1>
 
-        <div className="space-y-4">
+       <motion.div
+  initial="hidden"
+  whileInView="show"
+  
+  variants={{
+    hidden: {},
+    show: {
+      transition: { staggerChildren: 0.12 }
+    }
+  }}
+  className="space-y-4"
+>
           {faqs.map((item, i) => {
             const isOpen = open.includes(i);
 
             return (
-              <div 
-                key={i} 
-                className={`
-                  rounded-xl border transition-all duration-300 ease-in-out
-                  ${isOpen ? 'border-[#D4AF37] shadow-[0_0_25px_rgba(212,175,55,0.3)]' : 'border-[#6E5616] hover:border-[#D4AF37]/60'}
-                `}
-              >
+              <motion.div
+  key={i}
+  variants={{
+    hidden: { opacity: 0, y: 25 },
+    show: { opacity: 1, y: 0 }
+  }}
+  whileHover={{ scale: 1.01 }}
+  transition={{ duration: 0.35 }}
+  className={`
+    rounded-xl border transition-all duration-300 ease-in-out
+    ${isOpen ? 'border-[#D4AF37] shadow-[0_0_25px_rgba(212,175,55,0.3)]' : 'border-[#6E5616] hover:border-[#D4AF37]/60'}
+  `}
+>
                 
                 {/* --- QUESTION HEADER --- */}
                 <div
@@ -85,10 +109,10 @@ export default function FAQ() {
                   </p>
                 </div>
 
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </div>
   );

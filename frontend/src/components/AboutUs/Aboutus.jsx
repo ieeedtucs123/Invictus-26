@@ -4,6 +4,7 @@ import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
 import gsap from "gsap";
+import { motion } from "framer-motion";
 
 const scrollerImg = "/scroller.png";
 
@@ -258,14 +259,29 @@ const Aboutus = () => {
         <div className="flex justify-center w-full mb-0 relative">
           <div className="relative inline-flex items-center">
 
-            <h1 className="invictus-heading text-[1.8rem] min-[350px]:text-[2.5rem] sm:text-[3.8rem] md:text-[6.1rem] relative -mt-7 z-10 text-center py-[20px] w-full px-2">
-              ABOUT US
-            </h1>
+          <motion.h1
+  initial={{ opacity: 0, y: 40 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  
+  transition={{ duration: 0.8 }}
+  className="invictus-heading text-[1.8rem] min-[350px]:text-[2.5rem] sm:text-[3.8rem] md:text-[5.9rem] relative -mt-7 z-10 text-center py-[20px] w-full px-2"
+>
+  ABOUT US
+</motion.h1>
+
           </div>
         </div>
 
         {/* SCROLLER AREA */}
-        <div id="scroller-area" className="relative md:mx-auto z-10 flex items-center justify-center -mt-10 md:-mt-10 w-[95vw] h-[60vw] max-h-[300px] md:max-h-none md:w-[min(150vw,900px)] md:h-[min(75vh,500px)] bg-transparent">
+      <motion.div
+  initial={{ opacity: 0 }}
+  whileInView={{ opacity: 1 }}
+ 
+  transition={{ duration: 1 }}
+  id="scroller-area"
+  className="relative md:mx-auto z-10 flex items-center justify-center -mt-10 md:-mt-10 w-[95vw] h-[60vw] max-h-[300px] md:max-h-none md:w-[min(150vw,900px)] md:h-[min(75vh,500px)] bg-transparent"
+>
+
           <div className="absolute inset-0 pointer-events-none z-[5] w-full h-full bg-transparent overflow-hidden">
             <Canvas key={router.asPath} gl={{ antialias: true, alpha: true, premultipliedAlpha: false }}>
               <Scroller progressRef={progress} />
@@ -281,10 +297,15 @@ const Aboutus = () => {
               {aboutText}
             </p>
           </div>
-        </div>
+        </motion.div>
 
         {/* STATS */}
-        <div className={`flex flex-col items-center w-full z-10 relative mt-8 transition-all duration-700 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        <motion.div
+  initial={{ opacity: 0, y: 30 }}
+  whileInView={{opacity:1 }}
+  transition={{ duration: 0.7 }}
+  className="flex flex-col items-center w-full z-10 relative mt-8"
+>
           <div className="flex flex-row justify-center md:justify-center gap-2 md:gap-20 mb-8 w-[98%] md:w-[90%] max-w-[1000px] items-start md:items-center">
 
             {/* Footfall */}
@@ -328,7 +349,12 @@ const Aboutus = () => {
           </div>
 
           {/* BUTTONS */}
-          <div className="flex gap-9 md:gap-20 justify-center md:mt-3 flex-wrap relative z-[50]">
+          <motion.div
+  initial={{ opacity: 0, y: 20 }}
+  animate={showContent ? { opacity: 1, y: 0 } : {}}
+  transition={{ delay: 0.2, duration: 0.6 }}
+  className="flex gap-9 md:gap-20 justify-center md:mt-3 flex-wrap relative z-[50]"
+>
             <button
               className="invictus-text font-bold text-lg px-12 py-4 rounded-full transition-all duration-500 ease-out hover:scale-105 active:scale-95 bg-gradient-to-br from-[#785a10] to-[#3a2a05] hover:from-[#E6C575] hover:to-[#B8860B] text-[#FFE5B4] hover:text-[#4A3728] border border-[#FFE5B4]/30 hover:border-[#F4C430] shadow-[0_0_25px_rgba(255,229,180,0.15)] hover:shadow-[0_0_60px_rgba(244,196,48,0.6)] flex items-center justify-center tracking-wide backdrop-blur-sm"
               onClick={() => router.push("/Gallery")}
@@ -341,8 +367,8 @@ const Aboutus = () => {
             >
               View Events
             </button>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
         <div className="h-[10vh]" />
       </div>
       <div className="absolute bottom-0 h-1 w-full bg-linear-to-r from-transparent via-[#615030] to-transparent opacity-100" />

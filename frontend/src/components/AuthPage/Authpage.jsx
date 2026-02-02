@@ -2,7 +2,7 @@ import React, { useContext,useEffect, useState } from 'react';
 import { AuthContext } from '@/contexts/AuthContext';
 import { Eye,EyeOff } from 'lucide-react';
 import { useRouter } from "next/router";
-
+import { motion } from "framer-motion";
 
 export default function Authpage({setLotusClass, setLotusStyle, setFigureClass, setFigureStyle}) {
   const { user, isAdmin, authLoading, login, register, Adminlogin, loading, regError, setRegError } = useContext(AuthContext);
@@ -258,7 +258,13 @@ const handleSubmit = async (e) => {
         ></div>
         
         <div className="w-full max-w-md relative z-10 my-auto">
-          <div className="border-2 bg-black p-4 md:p-6 shadow-2xl" style={{ borderColor: '#FFD98ACC' }}>
+         <motion.div
+  initial={{ opacity: 0, y: 40, scale: 0.97 }}
+  animate={{ opacity: 1, y: 0, scale: 1 }}
+  transition={{ duration: 0.7, ease: "easeOut" }}
+  className="border-2 bg-black p-4 md:p-6 shadow-2xl"
+  style={{ borderColor: '#FFD98ACC' }}
+>
             {/* Header */}
             <h1 className="text-2xl md:text-3xl font-bold mb-1" style={{ color: '#FFFFFF' }}>
               {isLogin ? "Welcome Back" : "Create Account"}
@@ -521,7 +527,7 @@ const handleSubmit = async (e) => {
                 </button>
               </p>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
 

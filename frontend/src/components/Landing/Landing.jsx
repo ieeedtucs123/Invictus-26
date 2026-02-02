@@ -2,6 +2,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import SnackBar from "@/utils/snackBar";
 import { useRouter } from 'next/router';
+import { motion } from "framer-motion";
+
 
 export default function Landing({ setDisplayNavbar, displayLogo, setDisplayLogo }) {
 
@@ -78,18 +80,20 @@ export default function Landing({ setDisplayNavbar, displayLogo, setDisplayLogo 
 
       {/* WORD ART */}
       <div className="relative z-10 px-4 w-full flex justify-center">
-        <img
-          ref={wordArtRef}
-          src="/wordArt.svg"
-          alt="Invictus 26"
-          className={`
-            w-full max-w-[320px] md:max-w-[560px] lg:max-w-[680px]
-            drop-shadow-[0_8px_30px_rgba(255,215,138,0.4)]
-            select-none animate-float
-            transition-all duration-500 ease-in-out
-            ${displayLogo ? "opacity-0 scale-95" : "opacity-100 scale-100"}
-          `}
-        />
+       <motion.img
+  ref={wordArtRef}
+  src="/wordArt.svg"
+  alt="Invictus 26"
+  initial={{ opacity: 0, y: 20 }}
+   whileInView={{ opacity:1,y:0 }}
+  transition={{ duration: 0.8 }}
+  className={`
+    w-full max-w-[320px] md:max-w-[560px] lg:max-w-[680px]
+    drop-shadow-[0_8px_30px_rgba(255,215,138,0.4)]
+    select-none animate-float
+    transition-all duration-500 ease-in-out
+  `}
+/>
       </div>
 
       {/* TAGLINE
@@ -114,6 +118,22 @@ export default function Landing({ setDisplayNavbar, displayLogo, setDisplayLogo 
       {/* <div className="mt-4 h-[2px] w-[60%] md:w-[40%] bg-gradient-to-r from-transparent via-[#C5A059] to-transparent opacity-80" /> */}
 
       {/* DATE */}
+  <motion.p
+  initial={{ opacity: 0, y: 20 }}
+   whileInView={{ opacity: 1, y:0 }}
+  transition={{  duration: 0.8 }}
+  className="
+    mt-4 text-center text-3xl md:text-6xl
+    font-bold tracking-[0.15em]
+    text-[#FFF6E0] font-['Orbitron']
+    relative z-10
+    [text-shadow:_-1px_-1px_0_#8B6914,1px_-1px_0_#8B6914,-1px_1px_0_#8B6914,1px_1px_0_#8B6914,-2px_0_0_#8B6914,2px_0_0_#8B6914,0_-2px_0_#8B6914,0_2px_0_#8B6914]
+  "
+>
+          9-11
+          <sup className="text-[0.5em] ml-1 text-[#FFF6E0]">TH</sup>
+          <span className="ml-3">FEB'26</span>
+        </motion.p>
         <p
           className="
             mt-4
@@ -137,7 +157,12 @@ export default function Landing({ setDisplayNavbar, displayLogo, setDisplayLogo 
         </p>
 
         {/* BUTTONS */}
-      <div className="flex flex-col md:flex-row gap-4 md:gap-24 mt-10 md:mt-12 w-full px-8 md:px-0 justify-center items-center">
+     <motion.div
+  initial={{ opacity: 0, y: 30 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{  duration: 0.8 }}
+  className="flex flex-col md:flex-row gap-4 md:gap-24 mt-10 md:mt-12 w-full px-8 md:px-0 justify-center items-center"
+>
         
         {/* JOIN GROUP - Darker Gold/Bronze Style */}
         <button
@@ -194,7 +219,7 @@ export default function Landing({ setDisplayNavbar, displayLogo, setDisplayLogo 
   <span className="relative z-10">Register</span>
 </button>
 
-      </div>
+      </motion.div>
 
       {/* SNACKBAR */}
       {show && (
