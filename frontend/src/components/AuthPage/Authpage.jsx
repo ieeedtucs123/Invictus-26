@@ -267,7 +267,7 @@ const handleSubmit = async (e) => {
               {isLogin ? "Login to your account" : "Register your account"}
             </p>
             <p className="text-xs md:text-sm mb-4 md:mb-6" style={{ color: '#FFFFFF' }}>
-              To continue your journey to Invictus'26
+              {isLogin ? "To continue your journey at Invictus'26" : "To begin your journey to Invictus'26"}
             </p>
 
             {/* Form */}

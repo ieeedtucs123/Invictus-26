@@ -12,9 +12,9 @@ export default function Navbar({ className = "" }) {
   const navItems = [
     { name: "Home", href: "/Home" },
     { name: "Events", href: "/Events" },
-    { name: "Workshop", href: "/Workshops" },
+    { name: "Workshops", href: "/Workshops" },
     { name: "Team", href: "/Team" },
-    { name: "Sponsor", href: "/Sponsors" },
+    { name: "Sponsors", href: "/Sponsors" },
     { name: "Gallery", href: "/Gallery" }
   ];
 
