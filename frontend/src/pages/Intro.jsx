@@ -13,6 +13,8 @@ export default function Intro() {
   };
 
   useEffect(() => {
+    router.prefetch("/model");
+
     const video = videoRef.current;
     if (!video) return;
 
@@ -43,7 +45,7 @@ export default function Intro() {
         muted
         playsInline
         preload="auto"
-        className={`w-full h-full object-cover transition-opacity duration-700 ${
+        className={`w-full h-full object-contain transition-opacity duration-700 ${
           ready ? "opacity-100" : "opacity-0"
         }`}
         onEnded={goToModel}

@@ -7,6 +7,7 @@ import { AuthContext } from "@/contexts/AuthContext";
 import Drawer from "./Drawer"
 import { motion } from "framer-motion";
 
+import Button from "@/utils/Button"
 
 export default function Dashboard({ setLotusClass, setLotusStyle }) {
   const [activeTab, setActiveTab] = useState("EVENTS");
@@ -17,12 +18,14 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
   const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3004';
   const { fetchUserEvents, loading, user , setLoading } = useContext(AuthContext);
   const [events, setEvents] = useState([]);
+  const [singleEvent, setSingleEvent] = useState([]);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const SNACKBAR_TIMEOUT = 5000;
+  const SNACKBAR_TIMEOUT_2 = process.env.SNACKBAR_TIMEOUT_TWO;
 
-  function openDrawer() {
-  setDrawerOpen(!drawerOpen);
-}
+  function openDrawer(event) {
+    setSingleEvent(event);
+    setDrawerOpen(!drawerOpen);
+  }
 
     useEffect(() => {
       if (typeof window === "undefined") return;
@@ -41,7 +44,7 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
 
       const lastShown = Number(shown);
 
-      if (Date.now() - lastShown < SNACKBAR_TIMEOUT || localStorage.getItem("ModelSeen") ) {
+      if (Date.now() - lastShown < SNACKBAR_TIMEOUT_2 || localStorage.getItem("ModelSeen") ) {
         setShow(false);
       }
     }, []);
@@ -106,6 +109,7 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
       left: anchorRect.left - parentRect.left + anchorRect.width / 2,
       top: anchorRect.top - parentRect.top + anchorRect.height / 2,
       transform: "translate(-50%, -50%)",
+      position: "absolute",
     });
 
     setLotusClass(`
@@ -160,7 +164,7 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
               data-lotus-anchor
               className="
                 absolute
-                right-[9.5rem] md:right-[27.5rem]
+                right-[9.5rem] md:right-[20.5rem]
                 top-40 -translate-y-1/2
                 w-0 h-0
               "
@@ -186,9 +190,10 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
               mt-6
               bg-[#b19965] text-white font-semibold
               rounded-lg px-5 py-2
+              invictus-text
               flex items-center gap-2
               border-2 border-[#b19965]
-              transition hover:bg-[#d4af37] active:scale-95
+              transition hover:bg-[#6b6140] active:scale-95
             "
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -206,10 +211,11 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
   className="mt-12 rounded-2xl p-4 sm:p-6 bg-white/80 border-[3px] border-[#b19965]"
 >
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
-            <span className="font-bold text-[#b19965] text-lg">HOME</span>
+            <span className="invictus-text font-bold text-lg">HOME</span>
+            <Button></Button>
             <button
               className="
-                text-[#7A6C45] font-bold uppercase tracking-widest rounded-lg
+                invictus-text font-bold uppercase tracking-widest rounded-lg
                 px-4 py-1
                 border-2 border-[#b19965]
                 transition hover:bg-[#ffffff] active:scale-95
@@ -231,7 +237,7 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
               style={{ border: "2px solid #e7d7b1" }}
             >
               <div>
-                <div className="font-bold mb-2 text-gray-400">No events registered</div>
+                <div className="invictus-text font-bold mb-2 opacity-50">No events registered</div>
                 <div className="flex gap-2 flex-wrap">
                   <button disabled className="bg-gray-300 text-gray-500 rounded-lg px-4 py-1 font-semibold border-2 border-gray-300 cursor-not-allowed">
                     VIEW VENUE ON MAP
@@ -241,8 +247,8 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
                   </button>
                 </div>
               </div>
-              <div className="font-semibold text-gray-400">—</div>
-              <div className="font-semibold text-gray-400">—</div>
+              <div className="invictus-text font-semibold opacity-50">—</div>
+              <div className="invictus-text font-semibold opacity-50">—</div>
             </div>
           )}
 
@@ -260,9 +266,9 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
   style={{ border: "2px solid #e7d7b1" }}
 >
               <div>
-                <div className="font-bold mb-2">{ev.event.name}</div>
-                <div className="flex gap-2 flex-wrap">
-                  <button className="bg-[#b19965] text-white rounded-lg px-4 py-1 font-semibold border-2 border-[#b19965] transition hover:bg-[#d4af37] active:scale-95"   onClick={() => {
+                <div className="invictus-text font-bold uppercase mb-2">{ev.event.name}</div>
+                <div className="flex gap-2 invictus-text flex-wrap">
+                  <button className="bg-[#b19965] text-white rounded-lg px-4 py-1 font-semibold border-2 border-[#6b6140] transition hover:bg-[#6b6140] active:scale-95"   onClick={() => {
                     if (
                       ev.event.latitude == null ||
                       ev.event.longitude == null
@@ -280,15 +286,15 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
                   }}>
                     VIEW VENUE ON MAP
                   </button>
-                  <button onClick={() => openDrawer(ev)} className="bg-[#b19965] text-white rounded-lg px-4 py-1 font-semibold border-2 border-[#b19965] transition hover:bg-[#d4af37] active:scale-95">
+                  <button onClick={() => openDrawer(ev)} className="bg-[#b19965] text-white rounded-lg px-4 py-1 font-semibold border-2 border-[#b19965] transition hover:bg-[#6b6140] active:scale-95">
                     EDIT TEAM {/* registration link redirect */}
                   </button>
                 </div>
               </div>
-              <div className="font-semibold text-[#b19965]">{ev.teamName == "" ? "Solo Event" : ev.teamName}</div>
-             <div className="font-semibold text-[#b19965]">{ev.attendace === false ? "Attended" : "Yet to Attend"}</div>   {/*member or leader will fetch from backend three things to fetch here event/workshops name user has registered for there member status and unstop registration link*/}
+              <div className="invictus-text font-semibold">{ev.teamName == "" ? "Solo Event" : ev.teamName}</div>
+             <div className="invictus-text font-semibold">{ev.attendace === false ? "Attended" : "Yet to Attend"}</div>   {/*member or leader will fetch from backend three things to fetch here event/workshops name user has registered for there member status and unstop registration link*/}
               {drawerOpen && (
-                <Drawer event={ev} onClose={openDrawer} />
+                <Drawer event={singleEvent} onClose={openDrawer} />
               )}
             </motion.div>
 

@@ -100,7 +100,7 @@ export default function FAQ() {
                 {/* --- ANSWER BODY --- */}
                 <div
                   className={`
-                    overflow-hidden transition-all duration-500 ease-in-out bg-[#FFFBEB]
+                    overflow-hidden font-serif transition-all duration-500 ease-in-out bg-[#FFFBEB]
                     ${isOpen ? 'max-h-[500px] opacity-100 rounded-b-xl' : 'max-h-0 opacity-0'}
                   `}
                 >

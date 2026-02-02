@@ -9,7 +9,8 @@ export default function Landing({ setDisplayNavbar, displayLogo, setDisplayLogo 
 
   const [show, setShow] = useState(true);
   const wordArtRef = useRef(null);
-  const SNACKBAR_TIMEOUT = 10000;
+  const SNACKBAR_TIMEOUT_1 = process.env.SNACKBAR_TIMEOUT_ONE;//for cross
+  const SNACKBAR_TIMEOUT_2 = process.env.SNACKBAR_TIMEOUT_TWO;//for no
   const route = useRouter();
 
   useEffect(() => {
@@ -20,7 +21,7 @@ export default function Landing({ setDisplayNavbar, displayLogo, setDisplayLogo 
       return;
     }
     const lastShown = Number(shown);
-      if(Date.now() - lastShown > SNACKBAR_TIMEOUT) {
+      if(Date.now() - lastShown > SNACKBAR_TIMEOUT_2) {
         localStorage.removeItem("ModelSeen");
       }
     }
@@ -36,7 +37,7 @@ export default function Landing({ setDisplayNavbar, displayLogo, setDisplayLogo 
     }
     const lastShown = Number(shown);
     // console.log(Date.now() - lastShown);
-    if (Date.now() - lastShown < SNACKBAR_TIMEOUT || localStorage.getItem("ModelSeen") ) {
+    if (Date.now() - lastShown < SNACKBAR_TIMEOUT_1 || localStorage.getItem("ModelSeen") ) {
       setShow(false);
     }
   }, []);
@@ -133,6 +134,27 @@ export default function Landing({ setDisplayNavbar, displayLogo, setDisplayLogo 
           <sup className="text-[0.5em] ml-1 text-[#FFF6E0]">TH</sup>
           <span className="ml-3">FEB'26</span>
         </motion.p>
+        <p
+          className="
+            mt-4
+            text-center
+            text-3xl md:text-6xl
+            font-bold
+            tracking-[0.15em]
+            text-[#FFF6E0]
+            font-['Orbitron']
+            relative z-10
+            [text-shadow:_-1px_-1px_0_#8B6914,1px_-1px_0_#8B6914,-1px_1px_0_#8B6914,1px_1px_0_#8B6914,-2px_0_0_#8B6914,2px_0_0_#8B6914,0_-2px_0_#8B6914,0_2px_0_#8B6914]
+          "
+        >
+          27
+          <sup className="text-[0.5em] ml-1 text-[#FFF6E0]">TH</sup>
+          <span className="ml-3">FEB - 1
+          </span>
+              <sup className="text-[0.5em] ml-1 text-[#FFF6E0]">st</sup>
+              <span className="ml-3">MAR
+          </span>
+        </p>
 
         {/* BUTTONS */}
      <motion.div
@@ -144,7 +166,7 @@ export default function Landing({ setDisplayNavbar, displayLogo, setDisplayLogo 
         
         {/* JOIN GROUP - Darker Gold/Bronze Style */}
         <button
-  onClick={() => window.open('https://t.me/joinchat/Invictus26','_blank')}
+  onClick={() => window.open('https://chat.whatsapp.com/HEIcKiF77zK5NxranQ9ML6?mode=gi_t','_blank')}
   className="
     group relative
     w-full md:w-auto
@@ -206,7 +228,7 @@ export default function Landing({ setDisplayNavbar, displayLogo, setDisplayLogo 
           actionText="No"
           onAction={() => {
             localStorage.setItem("ModelSeen", "true");
-            document.cookie = "seenModel=true; path=/; max-age=10";
+            document.cookie = "seenModel=true; path=/; max-age=345600";
             handleClose();
           }}
           onClose={() => handleClose()}

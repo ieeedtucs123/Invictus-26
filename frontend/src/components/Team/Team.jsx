@@ -26,12 +26,13 @@ export default function TeamComponent({ setLotusClass, setLotusStyle, setFigureC
         : rect.left + rect.width / 2,
 
       top: isMobile ? rect.top + 30 : rect.top,
-
+      position: "absolute",
       transform: "translate(-50%, -50%)",
     });
 
     setLotusClass(`absolute
-      w-[8vw]
+      w-[15vw]
+      md:w-[8vw]
       opacity-100
       pointer-events-none
       z-[30]
@@ -107,7 +108,7 @@ export default function TeamComponent({ setLotusClass, setLotusStyle, setFigureC
 
         <span
           data-lotus-anchor-mobile
-          className='absolute top-[20%] left-[30%]'
+          className='absolute top-[25%] left-[30%]'
         />
 
       </motion.div>

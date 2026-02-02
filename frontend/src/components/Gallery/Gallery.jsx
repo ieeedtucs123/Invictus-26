@@ -72,11 +72,12 @@ export default function Gallery({ setLotusClass, setLotusStyle, setFigureClass, 
       left: anchorRect.left - parentRect.left + anchorRect.width / 2,
       top: anchorRect.top - parentRect.top + anchorRect.height / 2,
       transform: "translate(-50%, -50%)",
+      position: "absolute",
     });
 
     setLotusClass(`
       absolute
-      w-[90px] md:w-[120px] lg:w-[150px]
+      w-[0px] md:w-[120px] lg:w-[150px]
       opacity-80
       transition-all duration-700 ease-in-out
     `);
@@ -107,7 +108,6 @@ export default function Gallery({ setLotusClass, setLotusStyle, setFigureClass, 
   return (
     <div className="relative w-full bg-transparent">
       <div className="max-w-[1600px] mx-auto">
-
         {/* HEADER */}
       <motion.div
   initial={{ opacity: 0, y: 40 }}
@@ -140,10 +140,10 @@ export default function Gallery({ setLotusClass, setLotusStyle, setFigureClass, 
               data-gallery-lotus-anchor
               className="
                 absolute
-                right-[2rem] md:right-[3.5rem] lg:right-[4.5rem]
-                top-5/6
+                right-[2rem] md:right-[2.5rem] lg:right-[11.5rem]
+                top-[140%]
                 -translate-y-1/2
-                w-0 h-0
+                w-1 h-1
               "
             />
 
