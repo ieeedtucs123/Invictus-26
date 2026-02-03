@@ -41,7 +41,7 @@ export function useFigureBySection({
 
         setFigureStyle({
           left: "50%",
-          bottom: "0px",
+          bottom: "1px",
           transform: "translateX(-50%)",
         });
 
