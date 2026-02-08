@@ -18,6 +18,8 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
   const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3004';
   const { fetchUserEvents, loading, user , setLoading } = useContext(AuthContext);
   const [events, setEvents] = useState([]);
+  const [workshops, setWorkshops] = useState([]);
+  const [click, setClick] = useState(false);
   const [singleEvent, setSingleEvent] = useState([]);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const SNACKBAR_TIMEOUT_1 = Number(process.env.NEXT_PUBLIC_SNACKBAR_TIMEOUT_ONE);
@@ -75,6 +77,15 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
         const data = await fetchUserEvents(token, userData.email);
         // console.log(data);
         setEvents(data);
+
+        const workshopsRes = await fetch(`${API_BASE_URL}/events`);
+        if (workshopsRes.ok) {
+          const allEvents = await workshopsRes.json();
+          const workshopsList = allEvents.filter(ev => ev.isWorkshop);
+          setWorkshops(workshopsList);
+        }else{
+          console.error("Failed to fetch workshops");
+        }
 
       } catch (error) {
         console.error("Error fetching user events:", error);
@@ -204,28 +215,37 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
         </motion.div>
 
         {/* DASHBOARD CARD */}
-      <motion.div
-  initial={{ opacity: 0, y: 30 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ delay: 0.35, duration: 0.7 }}
-  className="mt-12 rounded-2xl p-4 sm:p-6 bg-white/80 border-[3px] border-[#b19965]"
->
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+          <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35, duration: 0.7 }}
+          className="mt-12 rounded-2xl p-4 sm:p-6 bg-white/80 border-[3px] border-[#b19965]"
+        >
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
             <span className="invictus-text font-bold text-lg">HOME</span>
             <Button></Button>
-            <button
-              className="
-                invictus-text font-bold uppercase tracking-widest rounded-lg
-                px-4 py-1
-                border-2 border-[#b19965]
-                transition hover:bg-[#ffffff] active:scale-95
-              "
-            >
-              YOUR {activeTab}
-            </button>
-          </div>
+            
+            <div className="relative group mt-8 md:mt-0">
+              <button
+              onClick={() => { setActiveTab(activeTab === "EVENTS" ? "WORKSHOPS" : "EVENTS"); setClick(true); }}
+                className="
+              invictus-text font-bold uppercase tracking-widest rounded-lg
+              px-4 py-1
+              border-2 border-[#b19965]
+              transition hover:bg-[#ffffff] active:scale-95
+                "
+              >
+                YOUR {activeTab}
+              </button>
+              {!click && <div className="absolute bottom-full left-[60%] animate-bounce transform -translate-x-1/2 mb-2 px-3 py-1 bg-[#b19965] text-white text-sm rounded-lg whitespace-nowrap opacity-100 group-hover:opacity-0 transition-opacity pointer-events-none">
+                Click to toggle between events and workshops
+              </div>
+              }
+              
+            </div>
+              </div>
 
-          {events.length === 0 && (
+              {activeTab === "EVENTS" && events.length === 0 && (
             <div
               className="
                 flex flex-col sm:flex-row
@@ -239,21 +259,89 @@ export default function Dashboard({ setLotusClass, setLotusStyle }) {
               <div>
                 <div className="invictus-text font-bold mb-2 opacity-50">No events registered</div>
                 <div className="flex gap-2 flex-wrap">
-                  <button disabled className="bg-gray-300 invictus-text text-gray-500 rounded-lg px-4 py-1 font-semibold border-2 border-gray-300 cursor-not-allowed">
-                    VIEW VENUE ON MAP
-                  </button>
-                  <button disabled className="bg-gray-300 invictus-text text-gray-500 rounded-lg px-4 py-1 font-semibold border-2 border-gray-300 cursor-not-allowed">
-                    EDIT TEAM
-                  </button>
+              <button disabled className="bg-gray-300 invictus-text text-gray-500 rounded-lg px-4 py-1 font-semibold border-2 border-gray-300 cursor-not-allowed">
+                VIEW VENUE ON MAP
+              </button>
+              <button disabled className="bg-gray-300 invictus-text text-gray-500 rounded-lg px-4 py-1 font-semibold border-2 border-gray-300 cursor-not-allowed">
+                EDIT TEAM
+              </button>
                 </div>
               </div>
               <div className="invictus-text font-semibold opacity-50">—</div>
               <div className="invictus-text font-semibold opacity-50">—</div>
             </div>
-          )}
+              )}
+
+              {activeTab === "WORKSHOPS" && workshops.length === 0 && (
+            <div
+              className="
+                flex flex-col sm:flex-row
+                sm:items-center sm:justify-between
+                gap-4
+                border rounded-xl p-4 mb-4
+                bg-[#f9f6ef] opacity-50
+              "
+              style={{ border: "2px solid #e7d7b1" }}
+            >
+              <div>
+                <div className="invictus-text font-bold mb-2 opacity-50">No workshops available</div>
+                <div className="flex gap-2 flex-wrap">
+              <button disabled className="bg-gray-300 invictus-text text-gray-500 rounded-lg px-4 py-1 font-semibold border-2 border-gray-300 cursor-not-allowed">
+                VIEW VENUE ON MAP
+              </button>
+                </div>
+              </div>
+              <div className="invictus-text font-semibold opacity-50">—</div>
+              <div className="invictus-text font-semibold opacity-50">—</div>
+            </div>
+              )}
+
+              {/* WORKSHOPS LIST */}
+          {activeTab === "WORKSHOPS" && workshops.map((workshop, idx) => (
+          <motion.div
+  key={idx}
+  variants={{
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  }}
+  whileHover={{ scale: 1.01 }}
+  transition={{ duration: 0.3 }}
+  className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border rounded-xl p-4 mb-4 bg-[#f9f6ef]"
+  style={{ border: "2px solid #e7d7b1" }}
+>
+              <div>
+                <div className="invictus-text font-bold uppercase mb-2">{workshop.name}</div>
+                <div className="flex gap-2 invictus-text flex-wrap">
+                  <button className="bg-[#b19965] text-white rounded-lg px-4 py-1 font-semibold border-2 border-[#6b6140] transition hover:bg-[#6b6140] active:scale-95"   onClick={() => {
+                    if (
+                      workshop.latitude == null ||
+                      workshop.longitude == null
+                    ) {
+                      alert("Venue location not available");
+                      return;
+                    }
+
+                    setMapDestination({
+                      name: workshop.name,
+                      lat: Number(workshop.latitude),
+                      lng: Number(workshop.longitude),
+                    });
+                    setMapOpen(true);
+                  }}>
+                    VIEW VENUE ON MAP
+                  </button>
+                </div>
+              </div>
+              <div className="invictus-text font-semibold">{workshop.date ? new Date(workshop.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : "TBA"}</div>
+             <div className="invictus-text font-semibold">{workshop.mode || "Mode TBA"}</div>
+
+            </motion.div>
+          
+          ))}
+
 
           {/* EVENT LIST */}
-          {events.map((ev, idx) => (
+          {activeTab === "EVENTS" && events.map((ev, idx) => (
           <motion.div
   key={idx}
   variants={{

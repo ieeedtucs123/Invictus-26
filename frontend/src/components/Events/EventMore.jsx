@@ -8,6 +8,7 @@ export default function EventMore({ open, onClose, event }) {
   const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3004';
 
   useEffect(() => {
+    console.log(event);
     if (open) document.body.style.overflow = "hidden";
     return () => (document.body.style.overflow = "auto");
   }, [open]);
@@ -110,17 +111,19 @@ export default function EventMore({ open, onClose, event }) {
 
                   {/* PRIZE */}
             <div className="mt-12 invictus-text">
-              <p className="text-xs tracking-widest text-[#f3efe6]/60">
+              {!event?.isWorkshop && <p className="text-xs tracking-widest text-[#f3efe6]/60">
                 PRIZES WORTH
-              </p>
-              <p className="text-4xl font-bold text-[#c9a44c] mt-2">
+              </p> }
+
+             {!event?.isWorkshop && <p className="text-4xl font-bold text-[#c9a44c] mt-2">
                 ₹ {event?.prizes || "50,000"}*
-              </p>
+              </p> 
+              }
             </div>
 
             {/* CTA */}
             <div className="flex md:gap-6 gap-2 mt-6 invictus-text">
-<button
+{!event?.isWorkshop && <button
   disabled={!event?.unstopLink}
   className="
     relative overflow-hidden
@@ -152,8 +155,7 @@ export default function EventMore({ open, onClose, event }) {
   <span className="relative z-10">
     REGISTER
   </span>
-</button>
-
+</button>}
 
 <button
   className="
@@ -191,7 +193,7 @@ export default function EventMore({ open, onClose, event }) {
             <img
               src={event?.imagePath || "/backdrop.png"}
               alt="Event Image"
-              className="w-full h-full object-contain"
+              className="w-full h-[300px] object-contain"
             />
             <div className="absolute inset-0 bg-linear-to-t from-[#1a1815]/60 to-transparent" />
           </div>
