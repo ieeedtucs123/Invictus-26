@@ -112,7 +112,7 @@ export default function Navbar({ className = "" }) {
 
   return (
     <div className="flex justify-center">
-      <nav className={`${className} fixed top-4 right-0 md:right-auto w-auto md:w-fit z-[50] flex bg-transparent backdrop-blur-md text-black rounded-l-2xl rounded-r-2xl border-3 border-[#897b4b] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.15)]`}>
+      <nav className={`${className} fixed top-4 right-0 md:right-auto w-auto md:w-fit z-[80] flex bg-transparent backdrop-blur-md text-black rounded-l-2xl rounded-r-2xl border-3 border-[#897b4b] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.15)]`}>
         <div className="px-4 py-3 flex items-center">
 
           {/* desktop menu */}
