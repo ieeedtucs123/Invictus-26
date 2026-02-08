@@ -13,7 +13,7 @@ export function AudioProvider({ children }) {
 
     const audio = new Audio("/audio/bg-audio.mp3");
     audio.loop = true;
-    audio.volume = muted ? 0 : 0.1;
+    audio.volume = muted ? 0 : 0.2;
 
     audio
       .play()
@@ -29,7 +29,7 @@ export function AudioProvider({ children }) {
   const toggleMute = () => {
     setMuted((prev) => {
       if (audioRef.current) {
-        audioRef.current.volume = prev ? 0.1 : 0;
+        audioRef.current.volume = prev ? 0.2 : 0;
       }
       localStorage.setItem("bg-muted", (!prev).toString());
       return !prev;

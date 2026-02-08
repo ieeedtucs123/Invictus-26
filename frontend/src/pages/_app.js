@@ -12,6 +12,7 @@ import "@/styles/globals.css";
 import GlobalBirdCanvas from "@/components/Landing/Three/GlobalBirdCanvas";
 import InstallPrompt from "@/utils/InstallPrompt";
 import { useRouter } from "next/router";
+import BottomSlider from "@/utils/BottomSlider";
 import Script from "next/script";
 import Head from "next/head";
 
@@ -152,7 +153,8 @@ export default function App({ Component, pageProps }) {
             )}
 
             <GlobalBirdCanvas />
-
+            
+             {router.pathname === "/Home" ? <BottomSlider /> : null }
             <Component
               {...pageProps}
               setLotusClass={setLotusClass}

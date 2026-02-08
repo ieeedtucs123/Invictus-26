@@ -11,8 +11,8 @@ export default function MuteButton() {
     };
 
     // iOS needs touchstart
-    window.addEventListener("touchstart", handler, { once: true });
-    window.addEventListener("click", handler, { once: true });
+    window.addEventListener("touchstart", handler);
+    window.addEventListener("click", handler);
 
     return () => {
       window.removeEventListener("touchstart", handler);

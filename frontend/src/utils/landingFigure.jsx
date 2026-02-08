@@ -5,7 +5,7 @@ export default function landingFigure({ className, style }) {
         <div
       style={style}
       className={`
-        fixed -bottom-200 left-1/2
+        fixed -bottom-200 left-2/5
         ${className}
       `}
     >

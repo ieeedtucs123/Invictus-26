@@ -34,7 +34,7 @@ export function useFigureBySection({
         w-[80px] md:w-[100px] lg:w-[110px]
         opacity-90
         pointer-events-none
-        z-[30]
+        z-[43]
         transition-all duration-1000 ease-in-out
 
         `);
@@ -54,7 +54,7 @@ export function useFigureBySection({
           lg:w-[17vw]
           drop-shadow-[0_0_30px_rgba(255,215,138,0.55)]
           transition-all duration-1000 ease-in-out
-          z-[2]
+          z-[42]
         `);
       },
       { threshold: 0.87 }
@@ -66,7 +66,7 @@ export function useFigureBySection({
         
         setLotusClass(`
         opacity-0  w-[80px] md:w-[100px] lg:w-[110px]
-        transition-all duration-250 ease-out  
+        transition-all duration-250 ease-out z-[55] 
         `)
 
         setLotusStyle({
@@ -76,7 +76,7 @@ export function useFigureBySection({
         setFigureStyle({
           left: "0px",
           bottom: "0px",
-          transform: "translate(1%, 1%)",
+          transform: "translate(0%, 0%)",
         });
 
         setFigureClass(`
@@ -85,7 +85,7 @@ export function useFigureBySection({
           md:w-[140px]
           lg:w-[190px]
           pointer-events-none
-          z-[30]
+          z-[50]
           opacity-60
           drop-shadow-[0_0_30px_rgba(255,215,138,0.4)]
           transition-all duration-700 ease-out
